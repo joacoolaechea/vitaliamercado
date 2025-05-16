@@ -4,13 +4,13 @@ const csv = require('csv-parser');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;  // Usa el puerto que asigne Render o 3000 local
 
-// La carpeta 'public' está una carpeta arriba desde 'data'
+// Sirve archivos estáticos desde la carpeta 'public' (que está una carpeta arriba de 'data')
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-// Leer el CSV desde la misma carpeta 'data'
 console.log("Iniciando servidor...");
+
 app.get('/api/products', (req, res) => {
   const results = [];
   fs.createReadStream(path.join(__dirname, 'bdv.csv'))
