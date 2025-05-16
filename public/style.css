@@ -8,7 +8,7 @@
 
 /* 🔧 Fuente aplicada globalmente */
 body {
-  font-family: 'MADECarvingSoft', Arial, sans-serif;
+  font-family: 'MADECarvingSoft', sans-serif;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -22,27 +22,31 @@ header {
   top: 0;
   left: 0;
   width: 100%;
+  
   background-color: #a61f4d;
   text-align: center;
   padding: 0;
-  z-index: 2000;
+  z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 120px;
+  height: 320px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+  .logo {
+  max-width: 500px;
+  margin-top: -100px; /* Agrega un margen superior de 20px */
+  height: auto;
+}
 }
 
 /* 🔺 Logo */
-.logo {
-  max-width: 300px;
-  height: auto;
-}
+
 
 /* ☰ Botón menú lateral */
 .sidebar-toggle {
   position: fixed;
-  top: 40px;
+  top: 20px;
   left: 0;
   width: 220px;
   height: 80px;
@@ -61,7 +65,7 @@ header {
   position: fixed;
   top: 0;
   left: 0;
-  width: 220px;
+  width: 60vw; /* Cambiado de 220px a 50vw */
   height: 100vh;
   background-color: #7a1f42;
   overflow-y: auto;
@@ -90,12 +94,14 @@ header {
 
 /* 🧾 Contenido principal */
 .content {
-  margin-top: 140px;
+  margin-top: 350px; /* 🔺 aumentá este valor según la altura real del header */
+
   padding: 20px;
   margin-left: 220px;
   flex-grow: 1;
   transition: margin-left 0.3s ease;
 }
+
 .content.shifted {
   margin-left: 220px;
 }
@@ -109,57 +115,72 @@ header {
 }
 
 #search {
+  margin-top: -220px;
   width: 100%;
-  max-width: 500px;
-  padding: 12px 20px;
-  font-size: 18px;
+  max-width: 770px;
+  z-index: 1000;
+  padding: 24px 30px; /* agrandado */
+  font-size: 28px;     /* antes 18px */
   border-radius: 8px;
   border: none;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  margin-left: 20px;
+  margin-left: -170px;
+  position: fixed;
+ 
 }
-
 /* 📂 Categorías */
 #categoryList {
+  src: url('./fonts/MADECarvingSoftPERSONALUSE-Black.otf') format('opentype');
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 30px; /* antes 10px, ahora 3x */
 }
+
 #categoryList button {
+  src: url('./fonts/MADECarvingSoftPERSONALUSE-Black.otf') format('opentype');
   width: 100%;
-  height: 50px;
-  font-size: 18px;
+  height: 150px; /* antes 50px */
+  font-size: 54px; /* antes 18px */
   background-color: #a84a65;
-  border: 1px solid #dd8e3f;
-  border-radius: 5px;
+  border: 3px solid #dd8e3f; /* más grueso también para que no se vea débil en tamaño grande */
+  border-radius: 15px; /* proporcionalmente más suave */
   cursor: pointer;
   color: #ffffff;
 }
+
 #categoryList button:hover {
   background-color: #dd8e3f;
   color: #7a1f42;
 }
 
-/* 🧺 Producto */
+
+/* 🧺 Producto - versión 2x más grande */
 .product {
   border: 2px solid #dd8e3f;
-  padding: 45px;               /* antes 15px */
-  padding-bottom: 45px;  
-  margin-bottom: 45px;         /* antes 15px */
-  border-radius: 10px;
+  padding: 60px;              /* antes 15px -> ahora 4x cómodo para pantallas táctiles */
+  margin-bottom: 60px;        /* más espacio entre productos */
+  border-radius: 20px;
   background-color: #7a1f42;
-  font-size: 124px;             /* antes no estaba, lo agregamos */
-  line-height: 1.6;
+  color: #ffffff;
 }
 
+.product h3 {
+  font-size: 40px;            /* antes típico 24px -> 3x más grande */
+  margin: 0 0 20px;
+}
+
+.product p {
+  font-size: 10px;            /* antes 16px -> 3x más grande */
+  margin: 10px 0;
+}
 
 /* 🛒 Botón del carrito */
 .cart-button {
   position: fixed;
-  top: 40px;
+  top: 20px;
   right: 20px;
   font-size: 40px;
   cursor: pointer;
