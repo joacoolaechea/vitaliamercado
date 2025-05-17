@@ -16,17 +16,20 @@ app.get('/api/products', (req, res) => {
   fs.createReadStream(path.join(__dirname, 'bdv.csv'))
     .pipe(csv())
     .on('data', (row) => {
+      console.log("Fila:", row);
       results.push({
         name: row["Name"],
         category: row["ProductGroup"],
         price: row["Price"],
-        unit: row["MeasurementUnit"]
+        unit: row["MeasurementUnit"],
+        image: row["Image"] || ""  // Aquí si no existe pone vacío
       });
     })
     .on('end', () => {
       res.json(results);
     });
 });
+
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);

@@ -253,3 +253,27 @@ header {
   cursor: pointer;
   margin-top: 20px;
 }
+    /* 📦 iten carrito  */
+    
+.cart-item {
+  font-size: 2rem;
+  padding: 30px;
+  min-height: 200px;        /* Triplica la altura base */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  border-bottom: 2px solid #ccc;
+  background-color: #1e1e1e; /* Opcional: para que se vea mejor con íconos blancos */
+}
+
+  .cart-item input[type="number"] {
+    font-size: 1.5rem;
+    width: 80px;
+  }
+
+  .cart-item svg {
+    width: 36px;
+    height: 36px;
+    color: white;
+  }
