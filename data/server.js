@@ -4,32 +4,41 @@ const csv = require('csv-parser');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;  // Usa el puerto que asigne Render o 3000 local
+const PORT = process.env.PORT || 3000;
 
-// Sirve archivos estáticos desde la carpeta 'public' (que está una carpeta arriba de 'data')
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 console.log("Iniciando servidor...");
 
 app.get('/api/products', (req, res) => {
   const results = [];
+
   fs.createReadStream(path.join(__dirname, 'bdv.csv'))
     .pipe(csv())
     .on('data', (row) => {
-      console.log("Fila:", row);
+      const name = row["Name"]?.trim();
+      if (!name) return; // Salta filas vacías
+
+      // Limpia y convierte precio a número
+      const rawPrice = (row["Price"] || "0").replace(/,/g, '');
+      const price = parseFloat(rawPrice);
+
       results.push({
-        name: row["Name"],
-        category: row["ProductGroup"],
-        price: row["Price"],
-        unit: row["MeasurementUnit"],
-        image: row["Image"] || ""  // Aquí si no existe pone vacío
+        name: name,
+        category: row["ProductGroup"]?.trim() || "SIN CATEGORÍA",
+        price: isNaN(price) ? 0 : price,
+        unit: row["MeasurementUnit"]?.trim() || "Unidad",
+        image: (row["Image"] || "").trim()
       });
     })
     .on('end', () => {
       res.json(results);
+    })
+    .on('error', (err) => {
+      console.error("Error procesando CSV:", err);
+      res.status(500).json({ error: "Error procesando CSV" });
     });
 });
-
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);

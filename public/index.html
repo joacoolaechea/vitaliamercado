@@ -51,7 +51,7 @@
     <h3>Carrito</h3>
     <ul id="cartItems"></ul>
     <p><strong>Total: $<span id="cartTotal">0</span></strong></p>
-    <button onclick="sendWhatsApp()">Enviar por WhatsApp</button>
+    <button onclick="sendWhatsApp()">Enviar Compra</button>
   </div>
 
   <script>
@@ -63,5 +63,32 @@
     }
   </script>
   <script src="script.js"></script>
+
+<!-- Modal para detalle de producto -->
+<div id="productDetailModal" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+">
+  <div id="productDetailContent" style="
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 900px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+  ">
+    <!-- contenido generado por JS -->
+  </div>
+</div>
+
+
+
 </body>
 </html>
