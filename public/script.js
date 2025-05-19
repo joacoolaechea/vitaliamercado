@@ -171,113 +171,201 @@ function renderProducts(products) {
 
     const imageSrc = p.image && p.image.trim() !== "" ? p.image : "data/default.jpeg";
 
-div.innerHTML = `
-  <div onclick='openProductDetail(${JSON.stringify(p)})'
-       style="display:flex; align-items:center; gap:20px; padding:20px; cursor:pointer;">
-    <!-- Imagen -->
-    <img src="${imageSrc}" alt="${p.name}"
-         style="width:450px; height:450px; object-fit:cover; border-radius:8px;"
-         onerror="this.onerror=null;this.src='data/default.jpeg';">
+    div.innerHTML = `
+      <div onclick='openProductDetail(${JSON.stringify(p)})'
+           style="display:flex; align-items:center; gap:20px; padding:20px; cursor:pointer;">
+        <!-- Imagen -->
+        <img src="${imageSrc}" alt="${p.name}"
+             style="width:450px; height:450px; object-fit:cover; border-radius:8px;"
+             onerror="this.onerror=null;this.src='data/default.jpeg';">
 
-    <!-- Datos -->
-    <div style="display:flex; flex-direction:column; justify-content:center;">
-      <!-- Nombre grande -->
-      <span style="font-size:2.5rem; font-weight:700; margin-bottom:4px;">
-        ${p.name}
-      </span>
-      <!-- Categoría pequeña -->
-      <span style="font-size:1rem; color:#d78a8f; margin-bottom:16px;">
-        ${p.category}
-      </span>
-      
-      <!-- Unidad -->
-      <span style="font-size:2rem; color:#d78a8f; margin-bottom:12px;">
-        ${p.unit}
-      </span>
-      
-      <!-- Precio debajo -->
-      <span style="font-size:5rem; font-weight:700;">
-        $${p.price}
-      </span>
-    </div>
-  </div>
-`;
-
+        <!-- Datos -->
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <!-- Nombre grande -->
+          <span style="font-size:2.5rem; font-weight:700; margin-bottom:4px;">
+            ${p.name}
+          </span>
+          <!-- Categoría pequeña -->
+          <span style="font-size:1rem; color:#d78a8f; margin-bottom:170px;">
+            ${p.category}
+          </span>
+          
+          <!-- Unidad -->
+          <span style="font-size:2rem; color:#d78a8f; margin-bottom:24px;">
+            ${p.unit}
+          </span>
+          
+          <!-- Precio debajo -->
+          <span style="font-size:5rem; font-weight:700;">
+            $${p.price}
+          </span>
+        </div>
+      </div>
+    `;
 
     list.appendChild(div);
   });
 }
+
 function openProductDetail(product) {
   const modal = document.getElementById("productDetailModal");
   const content = document.getElementById("productDetailContent");
 
+  // Inyectar estilos y @font-face
+  const styleTag = document.createElement('style');
+  styleTag.textContent = `
+    @font-face {
+      font-family: 'MADECarvingSoft';
+      src: url('./fonts/MADECarvingSoftPERSONALUSE-Black.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    .product-detail-container {
+      position: relative;
+      padding: 40px;
+      font-family: 'MADECarvingSoft';
+      text-align: center;
+    }
+    .product-detail-container img {
+      width: 800px; height: 800px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 0 auto 32px;
+      display: block;
+    }
+    .product-detail-container h2 {
+      margin-bottom: 16px;
+      font-size: 4rem;
+      color: #a84a65;
+    }
+    .product-detail-container p {
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+      color: #a84a65;
+    }
+    .close-detail-btn {
+      position: absolute;
+      top: 0px; left: 0px;
+      background: #a84a65;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 100px; height: 100px;
+      font-size: 5rem;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    .quantity-control {
+      margin-bottom: 24px;
+    }
+    .quantity-control label {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #a84a65;
+    }
+    .qty-input-wrapper {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 12px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+    }
+    .qty-btn {
+      width: 90px;
+      height: 90px;
+      border: none;
+      background: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .qty-btn svg {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+    #productDetailQty {
+      width: 300px;
+      text-align: center;
+      font-size: 4.5rem;
+      padding: 27px 0;
+      border: none;
+      outline: none;
+      font-family: 'MADECarvingSoft';
+      background: white;
+    }
+    .total-price {
+      font-size: 4rem;
+      font-weight: bold;
+      margin-left: 40px;
+      color: #a84a65;
+    }
+    .add-cart-wrapper {
+      margin-top: 40px;
+    }
+    .add-cart-btn {
+      background-color: #a84a65;
+      color: white;
+      border: 1px solid #dd8e3f;
+      padding: 30px 60px;
+      font-size: 3rem;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 8px 10px rgba(168, 74, 101, 0.4);
+      font-family: 'MADECarvingSoft';
+    }
+  `;
+  const prev = document.getElementById('product-detail-styles');
+  if (prev) prev.remove();
+  styleTag.id = 'product-detail-styles';
+  document.head.appendChild(styleTag);
+
   const imageSrc = product.image && product.image.trim() !== "" ? product.image : "data/default.jpeg";
 
   content.innerHTML = `
-    <h2 style="margin-bottom: 16px; font-size: 4rem; color: #a84a65; text-align: center;">
-      ${product.name}
-    </h2>
-    <img src="${imageSrc}" alt="${product.name}" 
-         style="width:800px; height:800px; object-fit:cover; border-radius:12px; 
-                margin:0 auto 32px auto; display:block;">
-
-    <p style="font-size: 2.2rem; margin-bottom: 16px; text-align: center; color: #a84a65;">
-      Precio unitario: <strong>$${parseFloat(product.price).toFixed(2)}</strong> / ${product.unit}
-    </p>
-
-    <div style="text-align: center; margin-bottom: 24px;">
-      <label for="productDetailQty" style="font-size: 2rem; font-weight: bold; color: #a84a65;">
-        Cantidad:
-      </label>
-      <input id="productDetailQty" type="number"
-        value="${product.unit === 'Kilogramo' ? 0.1 : 1}"
-        step="${product.unit === 'Kilogramo' ? 0.1 : 1}"
-        min="${product.unit === 'Kilogramo' ? 0.1 : 1}"
-        max="100"
-        style="font-size:2.2rem; padding:14px; margin-left: 12px; width: 140px;
-               border-radius: 10px; border: 1px solid #ccc;" />
-      
-      <span id="dynamicPrice" 
-            style="font-size: 2.4rem; font-weight: bold; margin-left: 30px; color: #a84a65;">
-        $${parseFloat(product.price).toFixed(2)}
-      </span>
-    </div>
-
-    <div style="display:flex; gap:30px; justify-content: center; margin-top: 20px;">
-      <button id="addToCartBtn" style="
-        background-color: #a84a65;
-        color: white;
-        border: 1px solid #dd8e3f;
-        padding: 20px 40px;
-        font-size: 2rem;
-        border-radius: 14px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        box-shadow: 0 6px 8px rgba(168, 74, 101, 0.4);
-      ">
-        Agregar al carrito
-      </button>
-      <button onclick='closeProductDetail()' style="
-        background-color: #a84a65;
-        color: white;
-        border: 1px solid #dd8e3f;
-        padding: 20px 40px;
-        font-size: 2rem;
-        border-radius: 14px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        box-shadow: 0 6px 8px rgba(168, 74, 101, 0.4);
-      ">
-        Cerrar
-      </button>
+    <div class="product-detail-container">
+      <button id="closeDetailBtn" class="close-detail-btn">×</button>
+      <h2>${product.name}</h2>
+      <img src="${imageSrc}" alt="${product.name}" />
+      <p>Precio unitario: <strong>$${parseFloat(product.price).toFixed(2)}</strong> / ${product.unit}</p>
+      <div class="quantity-control">
+        <label for="productDetailQty">Cantidad:</label>
+        <div class="qty-input-wrapper">
+          <button id="minusBtn" class="qty-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+            </svg>
+          </button>
+          <input id="productDetailQty" type="number"
+            value="${product.unit === 'Kilogramo' ? 0.1 : 1}"
+            step="${product.unit === 'Kilogramo' ? 0.1 : 1}"
+            min="${product.unit === 'Kilogramo' ? 0.1 : 1}"
+            max="100" />
+          <button id="plusBtn" class="qty-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </button>
+        </div>
+        <span id="dynamicPrice" class="total-price">$${parseFloat(product.price).toFixed(2)}</span>
+      </div>
+      <div class="add-cart-wrapper">
+        <button id="addToCartBtn" class="add-cart-btn">AGREGAR AL CARRITO</button>
+      </div>
     </div>
   `;
-
   modal.style.display = "flex";
 
+  // Eventos
+  document.getElementById("closeDetailBtn").onclick = closeProductDetail;
   const qtyInput = document.getElementById("productDetailQty");
   const priceSpan = document.getElementById("dynamicPrice");
   const addBtn = document.getElementById("addToCartBtn");
+  const minusBtn = document.getElementById("minusBtn");
+  const plusBtn = document.getElementById("plusBtn");
 
   function updatePrice() {
     let qty = parseFloat(qtyInput.value);
@@ -288,6 +376,7 @@ function openProductDetail(product) {
     } else {
       if (product.unit === "Unidad") {
         qty = Math.floor(qty);
+        qtyInput.value = qty;
       }
       const totalPrice = qty * parseFloat(product.price);
       priceSpan.textContent = `$${totalPrice.toFixed(2)}`;
@@ -296,11 +385,32 @@ function openProductDetail(product) {
     }
   }
 
+  minusBtn.addEventListener("click", () => {
+    let step = parseFloat(qtyInput.step);
+    let val = parseFloat(qtyInput.value) - step;
+    if (val < parseFloat(qtyInput.min)) val = parseFloat(qtyInput.min);
+    qtyInput.value = val.toFixed(product.unit === "Kilogramo" ? 1 : 0);
+    updatePrice();
+  });
+
+  plusBtn.addEventListener("click", () => {
+    let step = parseFloat(qtyInput.step);
+    let val = parseFloat(qtyInput.value) + step;
+    if (val > parseFloat(qtyInput.max)) val = parseFloat(qtyInput.max);
+    qtyInput.value = val.toFixed(product.unit === "Kilogramo" ? 1 : 0);
+    updatePrice();
+  });
+
   qtyInput.addEventListener("input", updatePrice);
   updatePrice();
 
   addBtn.onclick = () => addToCartFromDetail(product);
 }
+
+
+
+
+
 
 
 function closeProductDetail() {

@@ -17,7 +17,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background-color: #a82d57;
+  background-color: #ffffff;
   color: #e9bfbf;
 }
 
@@ -35,7 +35,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 320px;
+   height: 400px; 
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 
   .logo {
@@ -138,15 +138,15 @@ header {
 /* 🔍 Input de búsqueda */
 #search {
   position: fixed;          /* fuera del flujo: no se ve afectado por .content.shifted */
-   top: 220px;             /* ajusta según tu diseño */
+   top: 260px;         /* baja un poco para acompañar el header más alto */
   left: 50%;                /* céntralo horizontalmente */
   transform: translateX(-50%);
   z-index: 1000;
 
-  width: 100%;
+  width: 150%;
   max-width: 770px;
-  padding: 24px 30px;
-  font-size: 28px;
+   padding: 36px 45px;
+  font-size: 38px;
   border: 2px solid #dd8e3f;
   border-radius: 12px;
   color: #a84a65;
@@ -181,7 +181,7 @@ header {
   width: 100%;
   height: 150px; /* antes 50px */
   font-size: 54px; /* antes 18px */
-  background-color: #a84a65;
+   background-color: #7a1f42;
   border: 3px solid #dd8e3f; /* más grueso también para que no se vea débil en tamaño grande */
   border-radius: 15px; /* proporcionalmente más suave */
   cursor: pointer;
@@ -201,8 +201,8 @@ header {
 
   border: 2px solid #dd8e3f;
   border-radius: 20px;
-  background-color: #7a1f42;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #a61f4d;
 }
 
 .product h3 {
@@ -214,6 +214,7 @@ header {
   font-size: 10px;            /* antes 16px -> 3x más grande */
   margin: 10px 0;
 }
+
 
 /* 🛒 Botón del carrito */
 .cart-button {
@@ -344,3 +345,20 @@ header {
 }
 
   /* 📦--------------- */
+  /* 📦--------COLOR DE LETRAS CANITADA EN SELECION PRODUCTO SVG -Y+ ------- */
+  .qty-btn,
+#productDetailQty {
+   color: #3b3b3b;
+}
+.qty-btn svg {
+  color: #3b3b3b;
+}
+/*------- ------- */
+
+/* asumiendo que cada .product tiene 3 <p> en orden: categoría, unidad y precio */
+.product p:nth-of-type(1) {  /* categoría */
+  margin-bottom: 40px;
+}
+.product p:nth-of-type(2) {  /* unidad */
+  margin-top: 0;  /* opcional */
+}
