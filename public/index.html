@@ -47,11 +47,49 @@
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"  stroke="white" style="width:124px; height:124px;">
         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
       </svg>
-    </button>
-    <h3>Carrito</h3>
-    <ul id="cartItems"></ul>
-    <p><strong>Total: $<span id="cartTotal">0</span></strong></p>
-    <button onclick="sendWhatsApp()">Enviar Compra</button>
+   </button>
+
+<h3 style="font-size:3rem;margin-bottom:18px;color:#fff;">Carrito</h3>
+<ul id="cartItems"></ul>
+
+<h3 style="font-size:3rem;margin:32px 0 18px 0;color:#a84a65;">Cargar dirección
+  <span style="font-size:2rem;color:#888;">(opcional)</span>
+</h3>
+
+<input id="shippingAddress" type="text" placeholder="Escribe tu dirección…"
+       style="width:50%; padding:14px 16px; font-size:1.8rem;
+              border:1px solid #dd8e3f; border-radius:10px; margin-bottom:32px; color:#a84a65; display:block; margin-left:auto; margin-right:auto;">
+
+<p style="font-size:4rem;font-weight:bold;margin:32px 0;color:#fff;">
+  Total: $<span id="cartTotal">0</span>
+</p>
+
+<style>
+  @font-face {
+    font-family: 'MADECarvingSoft';
+    src: url('./fonts/MADECarvingSoftPERSONALUSE-Black.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+  }
+</style>
+
+<button onclick="sendWhatsApp()" style="
+  background:#dd8e3f;
+  color:  #570b20;
+  border:2px solid #570b20;
+  padding:22px 48px;
+  font-size:2.4rem;
+  font-family: 'MADECarvingSoft', sans-serif;
+  font-weight: 900;
+  border-radius:14px;
+  cursor:pointer;
+  width:100%;
+  max-width:480px;
+  margin:0 auto;
+  display:block;
+">
+  Enviar Compra
+</button>
   </div>
 
   <script>

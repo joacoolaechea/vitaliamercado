@@ -6,84 +6,65 @@ function toggleCart() {
   cartPopup.style.display = cartPopup.style.display === "block" ? "none" : "block";
 }
 
-function addToCart(product) {
-  const existing = cart.find(p => p.name === product.name);
-  if (existing) {
-    existing.quantity += product.unit === "Kilogramo" ? 0.5 : 1;
-  } else {
-    cart.push({ ...product, quantity: product.unit === "Kilogramo" ? 0.5 : 1 });
-  }
-  updateCart();
-}
+
 
 function updateCart() {
   const cartItems = document.getElementById("cartItems");
-  const cartCount   = document.getElementById("cartCount");
-  const cartTotal   = document.getElementById("cartTotal");
+  const cartCount = document.getElementById("cartCount");
+  const cartTotal = document.getElementById("cartTotal");
 
   cartItems.innerHTML = "";
   let total = 0;
-  let count = 0;
 
+  /* === recorre el carrito y pinta cada producto === */
   cart.forEach((item, index) => {
     const subtotal = item.quantity * parseFloat(item.price);
     total += subtotal;
-    count += item.quantity;
 
     const min  = item.unit === "Kilogramo" ? 0.1 : 1;
     const step = item.unit === "Kilogramo" ? 0.1 : 1;
+    const imageSrc = item.image && item.image.trim() !== "" ? item.image : "data/default.jpeg";
 
-    // === NUEVO: imagen del producto (o imagen por defecto) ===
-const imageSrc =
-  item.image && item.image.trim() !== "" ? item.image : "data/default.jpeg";
+    const li = document.createElement("li");
+    li.className = "cart-item";
+    li.style.display = "flex";
+    li.style.alignItems = "center";
+    li.style.gap = "16px";
 
-const li = document.createElement("li");
-li.className = "cart-item";
-li.style.display = "flex";
-li.style.alignItems = "center";
-li.style.gap = "16px";
-
-li.innerHTML = `
-  <!-- Imagen -->
-  <img src="${imageSrc}" alt="${item.name}"
-       style="width:200px;height:200px;object-fit:cover;border-radius:8px;flex-shrink:0;">
-
-  <!-- Columna derecha -->
-  <div style="display:flex;flex-direction:column;flex:1;">
-    <!-- Nombre del producto -->
-    <span style="font-size:2rem;font-weight:600;margin-bottom:8px;">${item.name}</span>
-
-    <!-- Fila cantidad + unidad -->
+    li.innerHTML = `
+      <img src="${imageSrc}" alt="${item.name}"
+           style="width:200px;height:200px;object-fit:cover;border-radius:8px;flex-shrink:0;">
+ <div style="display:flex;flex-direction:column;flex:1;">
+  <span style="font-size:2rem;font-weight:600;margin-bottom:8px;">${item.name}</span>
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
-  <input type="number"
-         min="${min}"
-         step="${step}"
-         value="${item.quantity}"
-         onchange="changeQuantity(${index}, this.value, '${item.unit}')"
-         onblur="if('${item.unit}'==='Unidad' && this.value%1!==0) this.value=Math.floor(this.value)"
-         style="
-           width: 160px;
-           height: 50px;
-           font-size: 1.5rem;
-           border: 1px solid #ccc;
-           border-radius: 12px;
-           padding: 8px 12px;
-           background-color: #f9f9f9;
-           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-         ">
-  <span style="font-size:1.4rem;">${item.unit}</span>
+    <input type="number"
+           min="${min}" step="${step}" value="${item.quantity}"
+           onchange="changeQuantity(${index}, this.value, '${item.unit}')"
+           onblur="if('${item.unit}'==='Unidad' && this.value%1!==0) this.value=Math.floor(this.value)"
+           style="
+             width: 160px;
+             height: 50px;
+             padding: 14px 16px;
+             font-size: 1.8rem;
+             border: 2px solid #dd8e3f;
+             border-radius: 12px;
+             color: #a84a65;
+             font-family: 'MADECarvingSoft', sans-serif;
+             font-weight: 900;
+             outline: none;
+             box-sizing: border-box;
+             transition: border-color 0.3s ease, box-shadow 0.3s ease;
+           "
+           onfocus="this.style.borderColor='#a84a65'; this.style.boxShadow='0 0 8px rgba(168, 74, 101, 0.6)';"
+           onblur="this.style.borderColor='#dd8e3f'; this.style.boxShadow='none';"
+           placeholder="Cantidad" >
+    <span style="font-size:1.4rem;">${item.unit}</span>
+  </div>
+  <div style="font-size:3rem;font-weight:bold;color:#fff;">$${subtotal.toFixed(2)}</div>
 </div>
 
-
-    <!-- Precio -->
-    <div style="font-size:3rem;font-weight:bold;color:#fff;">
-      $${subtotal.toFixed(2)}
-    </div>
-  </div>
-
-  <!-- Botón eliminar -->
   <button onclick="removeFromCart(${index})"
-          aria-label="Eliminar producto"
+          aria-label="Eliminar producto"        
           style="background:none;border:none;cursor:pointer;padding:4px;">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
          viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -101,28 +82,49 @@ li.innerHTML = `
                a48.667 48.667 0 0 0-7.5 0" />
     </svg>
   </button>
-`;
 
-cartItems.appendChild(li);
-
+    `;
+    cartItems.appendChild(li);
   });
 
-  cartCount.textContent = count.toFixed(1);
+  /* === total en $ === */
   cartTotal.textContent = total.toFixed(2);
+
+  /* === burbuja del icono del carrito === */
+  const distinctItems = cart.length;
+  if (distinctItems === 0) {
+    cartCount.textContent = "";
+  } else if (distinctItems <= 9) {
+    cartCount.textContent = distinctItems;
+  } else {
+    cartCount.textContent = "9+";
+  }
 }
+
 
 
 function changeQuantity(index, value, unit) {
   value = parseFloat(value);
-  if (isNaN(value) || value <= 0) return;
 
+  /* ❌ valor no numérico */
+  if (isNaN(value)) return;
+
+  /* 🔽 límite mínimo */
   if (unit === "Unidad") {
-    value = Math.floor(value);
+    value = Math.floor(value);      // siempre entero
+    if (value < 1) value = 1;       // mínimo 1
+  } else {
+    if (value < 0.1) value = 0.1;   // mínimo 0.1 Kg
   }
+
+  /* 🔼 límite máximo */
+  if (value > 100) value = 100;
 
   cart[index].quantity = value;
   updateCart();
 }
+
+
 
 function removeFromCart(index) {
   cart.splice(index, 1);
@@ -130,17 +132,33 @@ function removeFromCart(index) {
 }
 
 function sendWhatsApp() {
-  if (cart.length === 0) return alert("El carrito está vacío.");
+  if (cart.length === 0) {
+    alert("El carrito está vacío.");
+    return;
+  }
+
+  /* --------- arma el mensaje --------- */
   let message = "Hola! Quiero hacer un pedido:\n\n";
   cart.forEach(item => {
     message += `${item.name} - ${item.quantity} ${item.unit}(s)\n`;
   });
-  const total = cart.reduce((sum, item) => sum + item.quantity * parseFloat(item.price), 0);
-  message += `\nTotal: $${total.toFixed(2)}`;
+
+  const total = cart.reduce((sum, item) =>
+    sum + item.quantity * parseFloat(item.price), 0);
+  message += `\nTotal: $${total.toFixed(2)}\n`;
+
+  /* --------- agrega dirección si existe --------- */
+  const addressInput = document.getElementById("shippingAddress");
+  if (addressInput && addressInput.value.trim() !== "") {
+    message += `\nDirección de entrega: ${addressInput.value.trim()}`;
+  }
+
+  /* --------- envía por WhatsApp --------- */
   const phone = "+5493446636978";
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  const url   = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   window.open(url, "_blank");
 }
+
 
 function renderProducts(products) {
   const list = document.getElementById("productList");
@@ -153,22 +171,38 @@ function renderProducts(products) {
 
     const imageSrc = p.image && p.image.trim() !== "" ? p.image : "data/default.jpeg";
 
-    div.innerHTML = `
-      <div onclick='openProductDetail(${JSON.stringify(p)})' 
-           style="width: 100%; padding: 20px; cursor: pointer; text-align:left;">
-        <h3>${p.name}</h3>
-        <p>Categoría: ${p.category}</p>
-        <p>Precio: $${p.price} / ${p.unit}</p>
-        <img src="${imageSrc}" alt="${p.name}"
-             style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px; margin-top: 10px;"
-             onerror="this.onerror=null;this.src='data/default.jpeg';">
-      </div>
+div.innerHTML = `
+  <div onclick='openProductDetail(${JSON.stringify(p)})'
+       style="display:flex; align-items:center; gap:20px; padding:20px; cursor:pointer;">
+    <!-- Imagen -->
+    <img src="${imageSrc}" alt="${p.name}"
+         style="width:450px; height:450px; object-fit:cover; border-radius:8px;"
+         onerror="this.onerror=null;this.src='data/default.jpeg';">
 
-      <button onclick='event.stopPropagation(); addToCart(${JSON.stringify(p)})'
-              style="position:absolute; top:10px; right:10px; font-size:1.5rem; padding:6px 12px; cursor:pointer;">
-        ➕
-      </button>
-    `;
+    <!-- Datos -->
+    <div style="display:flex; flex-direction:column; justify-content:center;">
+      <!-- Nombre grande -->
+      <span style="font-size:2.5rem; font-weight:700; margin-bottom:4px;">
+        ${p.name}
+      </span>
+      <!-- Categoría pequeña -->
+      <span style="font-size:1rem; color:#d78a8f; margin-bottom:16px;">
+        ${p.category}
+      </span>
+      
+      <!-- Unidad -->
+      <span style="font-size:2rem; color:#d78a8f; margin-bottom:12px;">
+        ${p.unit}
+      </span>
+      
+      <!-- Precio debajo -->
+      <span style="font-size:5rem; font-weight:700;">
+        $${p.price}
+      </span>
+    </div>
+  </div>
+`;
+
 
     list.appendChild(div);
   });
@@ -196,9 +230,9 @@ function openProductDetail(product) {
         Cantidad:
       </label>
       <input id="productDetailQty" type="number"
-        value="${product.unit === 'Kilogramo' ? 0.5 : 1}"
+        value="${product.unit === 'Kilogramo' ? 0.1 : 1}"
         step="${product.unit === 'Kilogramo' ? 0.1 : 1}"
-        min="${product.unit === 'Kilogramo' ? 0.5 : 1}"
+        min="${product.unit === 'Kilogramo' ? 0.1 : 1}"
         max="100"
         style="font-size:2.2rem; padding:14px; margin-left: 12px; width: 140px;
                border-radius: 10px; border: 1px solid #ccc;" />
@@ -296,15 +330,25 @@ function addToCartFromDetail(product) {
 
 
 function filterProducts() {
+  /* ► asegura que el input tenga el estilo correcto */
+  document.getElementById("search").className = "modern-input modern-input--wide";
+
   const search = document.getElementById("search").value.toLowerCase();
-  const selectedCategory = document.querySelector("#categoryList button.selected")?.dataset.category;
+  const selectedCategory =
+    document.querySelector("#categoryList button.selected")?.dataset.category;
+
   const filtered = allProducts.filter(p => {
-    const matchesSearch = p.name.toLowerCase().includes(search);
-    const matchesCategory = selectedCategory && selectedCategory !== "TODOS" ? p.category === selectedCategory : true;
+    const matchesSearch   = p.name.toLowerCase().includes(search);
+    const matchesCategory =
+      selectedCategory && selectedCategory !== "TODOS"
+        ? p.category === selectedCategory
+        : true;
     return matchesSearch && matchesCategory;
   });
+
   renderProducts(filtered);
 }
+
 
 function loadProducts(products) {
   allProducts = products;
@@ -320,11 +364,20 @@ function loadProducts(products) {
     btn.dataset.category = cat;
     btn.style.display = "block";
     btn.style.marginBottom = "5px";
-    btn.onclick = () => {
-      document.querySelectorAll("#categoryList button").forEach(b => b.classList.remove("selected"));
-      btn.classList.add("selected");
-      filterProducts();
-    };
+  btn.onclick = () => {
+  // 1) marcar selección
+  document.querySelectorAll("#categoryList button")
+    .forEach(b => b.classList.remove("selected"));
+  btn.classList.add("selected");
+
+  
+
+  // 2) filtrar productos
+  filterProducts();
+
+  // 3) cerrar el menú lateral
+  toggleSidebar();
+};
     catList.appendChild(btn);
   });
 }
