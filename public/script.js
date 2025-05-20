@@ -140,21 +140,25 @@ function updateCart() {
   cartTotal.textContent = total.toFixed(2);
 
   const shippingCostText = document.getElementById("shippingCostText");
-const pickupCheckbox = document.getElementById("pickupCheckbox");
-const shippingInput = document.getElementById("shippingAddress");
+  const pickupCheckbox = document.getElementById("pickupCheckbox");
+  const shippingInput = document.getElementById("shippingAddress");
 
-if (pickupCheckbox && shippingCostText) {
-  if (pickupCheckbox.checked) {
-    shippingCostText.textContent = "Retiro en sucursal";
-    if (shippingInput) shippingInput.style.display = "none";
-  } else {
-    shippingCostText.textContent = total >= 50000
-      ? "ENVÍO GRATIS"
-      : "Envío — A cargo del comprador.";
-    if (shippingInput) shippingInput.style.display = "block";
+  if (pickupCheckbox && shippingCostText) {
+    if (pickupCheckbox.checked) {
+     shippingCostText.innerHTML = '<span style="color: #a84a65;">(Pellegrini 18)</span>';
+      if (shippingInput) {
+        shippingInput.style.display = "none";
+        shippingInput.value = ""; // limpia la dirección
+      }
+    } else {
+      shippingCostText.textContent = total >= 50000
+       shippingCostText.innerHTML = total >= 50000
+  ? '<span style="color: #dd8e3f; font-weight: bold;">ENVÍO GRATIS</span>'
+  : "Envio a cargo del comprador";
+
+      if (shippingInput) shippingInput.style.display = "block";
+    }
   }
-}
-
 
   const distinctItems = cart.length;
   if (distinctItems === 0) {
@@ -192,6 +196,7 @@ if (pickupCheckbox && shippingCostText) {
 
   localStorage.setItem("cart", JSON.stringify(cart));
 }
+
 
 
 
@@ -241,20 +246,28 @@ function sendWhatsApp() {
     sum + item.quantity * parseFloat(item.price), 0);
   message += `\nTotal: $${total.toFixed(2)}\n`;
 
-  /* --------- agrega dirección si existe --------- */
+  /* --------- determina si es retiro o envío --------- */
+  const pickupCheckbox = document.getElementById("pickupCheckbox");
   const addressInput = document.getElementById("shippingAddress");
-  if (addressInput && addressInput.value.trim() !== "") {
+
+  if (pickupCheckbox && pickupCheckbox.checked) {
+    message += `\nRetira en Pellegrini 18`;
+  } else if (addressInput && addressInput.value.trim() !== "") {
     message += `\nDirección de entrega: ${addressInput.value.trim()}`;
+  } else {
+    message += `\nDirección de entrega: no especificada`;
   }
 
   /* --------- envía por WhatsApp --------- */
   const phone = "+5493446636978";
-  const url   = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   window.open(url, "_blank");
-    // 👉 Vacía el carrito y actualiza la vista
+
+  // 👉 Vacía el carrito y actualiza la vista
   cart = [];
-updateCart();
+  updateCart();
 }
+
 
 
 function renderProducts(products) {
