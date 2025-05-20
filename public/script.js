@@ -1,29 +1,44 @@
 let allProducts = [];
 let cart = [];
 
+loadCartFromStorage();
+updateCart();
+
+
 function toggleCart() {
   const cartPopup = document.getElementById("cartPopup");
   cartPopup.style.display = cartPopup.style.display === "block" ? "none" : "block";
 }
 
+function loadCartFromStorage() {
+  const storedCart = localStorage.getItem("cart");
+  if (storedCart) {
+    try {
+      cart = JSON.parse(storedCart);
+    } catch (e) {
+      console.error("Carrito corrupto en localStorage");
+      cart = [];
+    }
+  }
+}
 
 
 function updateCart() {
   const cartItems = document.getElementById("cartItems");
   const cartCount = document.getElementById("cartCount");
   const cartTotal = document.getElementById("cartTotal");
+  document.getElementById("pickupCheckbox").addEventListener("change", updateCart);
 
   cartItems.innerHTML = "";
   let total = 0;
 
-  /* === recorre el carrito y pinta cada producto === */
   cart.forEach((item, index) => {
     const subtotal = item.quantity * parseFloat(item.price);
     total += subtotal;
 
-    const min  = item.unit === "Kilogramo" ? 0.1 : 1;
+    const min = item.unit === "Kilogramo" ? 0.1 : 1;
     const step = item.unit === "Kilogramo" ? 0.1 : 1;
-    const imageSrc = item.image && item.image.trim() !== "" ? item.image : "data/default.jpeg";
+    const imageSrc = item.image && item.image.trim() !== "" ? item.image : "https://i.imgur.com/XSvJsFZ.jpeg";
 
     const li = document.createElement("li");
     li.className = "cart-item";
@@ -33,64 +48,114 @@ function updateCart() {
 
     li.innerHTML = `
       <img src="${imageSrc}" alt="${item.name}"
-           style="width:200px;height:200px;object-fit:cover;border-radius:8px;flex-shrink:0;">
- <div style="display:flex;flex-direction:column;flex:1;">
-  <span style="font-size:2rem;font-weight:600;margin-bottom:8px;">${item.name}</span>
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
-    <input type="number"
-           min="${min}" step="${step}" value="${item.quantity}"
-           onchange="changeQuantity(${index}, this.value, '${item.unit}')"
-           onblur="if('${item.unit}'==='Unidad' && this.value%1!==0) this.value=Math.floor(this.value)"
-           style="
-             width: 160px;
-             height: 50px;
-             padding: 14px 16px;
-             font-size: 1.8rem;
-             border: 2px solid #dd8e3f;
-             border-radius: 12px;
-             color: #a84a65;
-             font-family: 'MADECarvingSoft', sans-serif;
-             font-weight: 900;
-             outline: none;
-             box-sizing: border-box;
-             transition: border-color 0.3s ease, box-shadow 0.3s ease;
-           "
-           onfocus="this.style.borderColor='#a84a65'; this.style.boxShadow='0 0 8px rgba(168, 74, 101, 0.6)';"
-           onblur="this.style.borderColor='#dd8e3f'; this.style.boxShadow='none';"
-           placeholder="Cantidad" >
-    <span style="font-size:1.4rem;">${item.unit}</span>
-  </div>
-  <div style="font-size:3rem;font-weight:bold;color:#fff;">$${subtotal.toFixed(2)}</div>
-</div>
+           style="width:250px;height:250px;object-fit:cover;border-radius:8px;flex-shrink:0;">
+      <div style="display:flex;flex-direction:column;flex:1;">
+        <span style="font-size:2rem;font-weight:600;margin-bottom:8px;">${item.name}</span>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+          <div style="
+            display: flex;
+            align-items: center;
+            border: 2px solid #dd8e3f;
+            border-radius: 12px;
+            overflow: hidden;
+            width: 280px;
+            background: #fff;
+          ">
+            <button class="qty-btn cart-minus-btn" data-index="${index}"
+                    style="
+                      border: none;
+                      background: #fff;
+                      color: #a84a65;
+                      font-size: 3.4rem;
+                      font-weight: 900;
+                      cursor: pointer;
+                      padding: 10 12px;
+                      user-select: none;
+                      height: 50px;
+                      line-height: 1;
+                    ">−</button>
+            <input type="number"
+                   min="${min}" step="${step}" value="${item.quantity}"
+                   onchange="changeQuantity(${index}, this.value, '${item.unit}')"
+                   onblur="if('${item.unit}'==='Unidad' && this.value%1!==0) this.value=Math.floor(this.value)"
+                   style="
+                     width: 170px;
+                     height: 80px;
+                     padding: 0;
+                     margin: 0;
+                     font-size: 3rem;
+                     font-family: 'MADECarvingSoft', sans-serif;
+                     font-weight: 900;
+                     color: #a84a65;
+                     border: none;
+                     outline: none;
+                     text-align: center;
+                     -moz-appearance: textfield;
+                   "
+                   onfocus="this.style.outline='none';"
+                   placeholder="Cantidad" >
+            <button class="qty-btn cart-plus-btn" data-index="${index}"
+                    style="
+                      border: none;
+                      background: #fff;
+                      color: #a84a65;
+                      font-size: 3.4rem;
+                      font-weight: 900;
+                      cursor: pointer;
+                      padding: 0 12px;
+                      user-select: none;
+                      height: 50px;
+                      line-height: 1;
+                    ">+</button>
+          </div>
+          <span style="font-size:1.6rem;">${item.unit}</span>
+        </div>
+        <div style="font-size:3rem;font-weight:bold;color:#fff;">$${subtotal.toFixed(2)}</div>
+      </div>
 
-  <button onclick="removeFromCart(${index})"
-          aria-label="Eliminar producto"        
-          style="background:none;border:none;cursor:pointer;padding:4px;">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-         style="width:62px;height:62px;color:white;">
-      <path stroke-linecap="round" stroke-linejoin="round"
-            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21
-               c.342.052.682.107 1.022.166m-1.022-.165
-               L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084
-               a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0
-               a48.108 48.108 0 0 0-3.478-.397m-12 .562
-               c.34-.059.68-.114 1.022-.165m0 0
-               a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916
-               c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0
-               c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0
-               a48.667 48.667 0 0 0-7.5 0" />
-    </svg>
-  </button>
-
+      <button onclick="removeFromCart(${index})"
+              aria-label="Eliminar producto"        
+              style="background:none;border:none;cursor:pointer;padding:4px;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+             style="width:62px;height:62px;color:white;">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21
+                   c.342.052.682.107 1.022.166m-1.022-.165
+                   L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084
+                   a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0
+                   a48.108 48.108 0 0 0-3.478-.397m-12 .562
+                   c.34-.059.68-.114 1.022-.165m0 0
+                   a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916
+                   c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0
+                   c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0
+                   a48.667 48.667 0 0 0-7.5 0" />
+        </svg>
+      </button>
     `;
+
     cartItems.appendChild(li);
   });
 
-  /* === total en $ === */
   cartTotal.textContent = total.toFixed(2);
 
-  /* === burbuja del icono del carrito === */
+  const shippingCostText = document.getElementById("shippingCostText");
+const pickupCheckbox = document.getElementById("pickupCheckbox");
+const shippingInput = document.getElementById("shippingAddress");
+
+if (pickupCheckbox && shippingCostText) {
+  if (pickupCheckbox.checked) {
+    shippingCostText.textContent = "Retiro en sucursal";
+    if (shippingInput) shippingInput.style.display = "none";
+  } else {
+    shippingCostText.textContent = total >= 50000
+      ? "ENVÍO GRATIS"
+      : "Envío — A cargo del comprador.";
+    if (shippingInput) shippingInput.style.display = "block";
+  }
+}
+
+
   const distinctItems = cart.length;
   if (distinctItems === 0) {
     cartCount.textContent = "";
@@ -99,7 +164,36 @@ function updateCart() {
   } else {
     cartCount.textContent = "9+";
   }
+
+  // Eventos para botones + y -
+  document.querySelectorAll(".cart-minus-btn").forEach(btn => {
+    btn.onclick = () => {
+      const idx = parseInt(btn.dataset.index);
+      let currentQty = parseFloat(cart[idx].quantity);
+      const step = cart[idx].unit === "Kilogramo" ? 0.1 : 1;
+      currentQty = Math.max(step, currentQty - step);
+      currentQty = parseFloat(currentQty.toFixed(2));
+      cart[idx].quantity = currentQty;
+      updateCart();
+    };
+  });
+
+  document.querySelectorAll(".cart-plus-btn").forEach(btn => {
+    btn.onclick = () => {
+      const idx = parseInt(btn.dataset.index);
+      let currentQty = parseFloat(cart[idx].quantity);
+      const step = cart[idx].unit === "Kilogramo" ? 0.1 : 1;
+      currentQty = Math.min(100, currentQty + step);
+      currentQty = parseFloat(currentQty.toFixed(2));
+      cart[idx].quantity = currentQty;
+      updateCart();
+    };
+  });
+
+  localStorage.setItem("cart", JSON.stringify(cart));
 }
+
+
 
 
 
@@ -157,6 +251,9 @@ function sendWhatsApp() {
   const phone = "+5493446636978";
   const url   = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   window.open(url, "_blank");
+    // 👉 Vacía el carrito y actualiza la vista
+  cart = [];
+updateCart();
 }
 
 
@@ -167,38 +264,44 @@ function renderProducts(products) {
   products.forEach(p => {
     const div = document.createElement("div");
     div.className = "product";
-    div.style.position = "relative"; // para ubicar botón en esquina
+    div.style.position = "relative";
 
-    const imageSrc = p.image && p.image.trim() !== "" ? p.image : "data/default.jpeg";
+  const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://i.imgur.com/p4tHxub.jpeg";
+
 
     div.innerHTML = `
       <div onclick='openProductDetail(${JSON.stringify(p)})'
-           style="display:flex; align-items:center; gap:20px; padding:20px; cursor:pointer;">
-        <!-- Imagen -->
+           style="display:flex; align-items:flex-start; gap:20px; padding:20px; cursor:pointer;">
         <img src="${imageSrc}" alt="${p.name}"
              style="width:450px; height:450px; object-fit:cover; border-radius:8px;"
              onerror="this.onerror=null;this.src='data/default.jpeg';">
 
-        <!-- Datos -->
-        <div style="display:flex; flex-direction:column; justify-content:center;">
-          <!-- Nombre grande -->
-          <span style="font-size:2.5rem; font-weight:700; margin-bottom:4px;">
+        <div style="display:flex; flex-direction:column; flex:1; height:450px;">
+          <!-- Nombre -->
+          <span style="
+            font-size:2.5rem;
+            font-weight:700;
+            line-height:1.2;
+            word-wrap:break-word;
+            margin-bottom:8px;
+          ">
             ${p.name}
           </span>
-          <!-- Categoría pequeña -->
-          <span style="font-size:1rem; color:#d78a8f; margin-bottom:170px;">
+
+          <!-- Categoría -->
+          <span style="font-size:1rem; color:#d78a8f; margin-bottom: auto;">
             ${p.category}
           </span>
-          
-          <!-- Unidad -->
-          <span style="font-size:2rem; color:#d78a8f; margin-bottom:24px;">
-            ${p.unit}
-          </span>
-          
-          <!-- Precio debajo -->
-          <span style="font-size:5rem; font-weight:700;">
-            $${p.price}
-          </span>
+
+          <!-- Unidad + Precio en bloque al fondo -->
+          <div style="margin-top: auto;">
+            <span style="display:block; font-size:2rem; color:#d78a8f; margin-bottom:12px;">
+              ${p.unit}
+            </span>
+            <span style="display:block; font-size:5rem; font-weight:700;">
+              $${p.price}
+            </span>
+          </div>
         </div>
       </div>
     `;
@@ -206,6 +309,7 @@ function renderProducts(products) {
     list.appendChild(div);
   });
 }
+
 
 function openProductDetail(product) {
   const modal = document.getElementById("productDetailModal");
@@ -323,7 +427,8 @@ function openProductDetail(product) {
   styleTag.id = 'product-detail-styles';
   document.head.appendChild(styleTag);
 
-  const imageSrc = product.image && product.image.trim() !== "" ? product.image : "data/default.jpeg";
+  const imageSrc = product.image && product.image.trim() !== "" ? product.image : "https://i.imgur.com/p4tHxub.jpeg";
+;
 
   content.innerHTML = `
     <div class="product-detail-container">
@@ -500,3 +605,18 @@ fetch("/api/products")
   .catch(err => {
     console.error("Error cargando productos:", err);
   });
+
+  // Al cargar la página, cargamos la dirección guardada (si existe)
+window.addEventListener('DOMContentLoaded', () => {
+  const inputAddress = document.getElementById('shippingAddress');
+  const savedAddress = localStorage.getItem('shippingAddress');
+  if (savedAddress) {
+    inputAddress.value = savedAddress;
+  }
+
+  // Guardar la dirección cada vez que cambia el input
+  inputAddress.addEventListener('input', () => {
+    localStorage.setItem('shippingAddress', inputAddress.value);
+  });
+});
+

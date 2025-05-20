@@ -142,6 +142,7 @@ header {
   left: 50%;                /* céntralo horizontalmente */
   transform: translateX(-50%);
   z-index: 1000;
+  
 
   width: 150%;
   max-width: 770px;
@@ -162,6 +163,7 @@ header {
 #search:focus {
   border-color:#a84a65;
   box-shadow:0 0 8px rgba(168,74,101,.6);
+  
 }
 
 
@@ -307,7 +309,9 @@ header {
 }
 .cart-item input[type="number"] {
   font-size: 1.5rem;
-  width: 80px;
+  width: 120px;  /* o el ancho que quieras */
+  height: 75px;  /* altura más grande */
+  padding: 0;    /* opcional para ajustar */
 }
 .cart-item svg {
   width: 36px;
@@ -317,12 +321,12 @@ header {
 
   /* 📦 DIRECCION CARGAR  */
     
-
 #shippingAddress {
-  width: 50%;
-  max-width: 400px;
+  width: 100%;
+  max-width: 800px;
+  height: 100px;       /* más alto, para varias líneas */
   padding: 14px 16px;
-  font-size: 1.8rem;
+  font-size: 2.8rem;
   border: 2px solid #dd8e3f;
   border-radius: 12px;
   color: #a84a65;
@@ -333,6 +337,7 @@ header {
   box-sizing: border-box;
   font-family: 'MADECarvingSoft', sans-serif;
   font-weight: 900;
+  resize: vertical;  /* permite que el usuario cambie la altura */
 }
 
 #shippingAddress::placeholder {
@@ -343,6 +348,7 @@ header {
   border-color: #a84a65;
   box-shadow: 0 0 8px rgba(168, 74, 101, 0.6);
 }
+
 
   /* 📦--------------- */
   /* 📦--------COLOR DE LETRAS CANITADA EN SELECION PRODUCTO SVG -Y+ ------- */
