@@ -1,26 +1,19 @@
-const express = require('express');
 const fs = require('fs');
-const csv = require('csv-parser');
 const path = require('path');
+const csv = require('csv-parser');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(express.static(path.join(__dirname, '..', 'public')));
-
-console.log("Iniciando servidor...");
-
-app.get('/api/products', (req, res) => {
+module.exports = async (req, res) => {
   const results = [];
 
- fs.createReadStream(path.join(__dirname, 'bdv.csv'))
+  const filePath = path.join(__dirname, 'bdv.csv');
 
-    .pipe(csv())
-    .on('data', (row) => {
+  try {
+    const stream = fs.createReadStream(filePath).pipe(csv());
+
+    stream.on('data', (row) => {
       const name = row["Name"]?.trim();
-      if (!name) return; // Salta filas vacías
+      if (!name) return;
 
-      // Limpia y convierte precio a número
       const rawPrice = (row["Price"] || "0").replace(/,/g, '');
       const price = parseFloat(rawPrice);
 
@@ -38,16 +31,19 @@ app.get('/api/products', (req, res) => {
           return `https://i.imgur.com/${id}.jpg`;
         })()
       });
-    })
-    .on('end', () => {
-      res.json(results);
-    })
-    .on('error', (err) => {
-      console.error("Error procesando CSV:", err);
-      res.status(500).json({ error: "Error procesando CSV" });
     });
-});
 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+    stream.on('end', () => {
+      res.status(200).json(results);
+    });
+
+    stream.on('error', (err) => {
+      console.error("Error al procesar CSV:", err);
+      res.status(500).json({ error: "Error al procesar CSV" });
+    });
+
+  } catch (err) {
+    console.error("Error general:", err);
+    res.status(500).json({ error: "Error al leer CSV" });
+  }
+};
