@@ -16,10 +16,12 @@ body {
   font-family: 'MADECarvingSoft', sans-serif;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow-x: auto;
   background-color: #ffffff;
   color: #e9bfbf;
 }
+
+
 
 /* 🔺 Encabezado fijo */
 header {
@@ -411,10 +413,10 @@ header {
 
 .styled-checkbox-label input[type="checkbox"]:checked + .checkmark::after {
   display: block;
-  left: 10px;
-  top: -30px;
-  width: 50px;  /* tamaño del check */
-  height: 100px;
+  left: 20px;
+  top: -10px;
+  width: 30px;  /* tamaño del check */
+  height: 70px;
   border: 6px solid #dd8e3f;  /* grosor del borde del check */
   border-width: 0 8px 8px 0;  /* aquí aumentás el grosor de la tilde */
   transform: rotate(45deg);
@@ -424,8 +426,8 @@ header {
   position: fixed;
   bottom: 48px;  /* Más arriba (aumenta este valor para subir más) */
   right: 48px;   /* Más a la izquierda (aumenta este valor para mover más a la izquierda) */
-  width: 72px;
-  height: 72px;
+  width: 122px;
+  height: 122px;
   background-color: white;
   border-radius: 150%;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -447,11 +449,19 @@ header {
 
 
 /* PIE PAGINA          */
+
+
 .site-footer {
-  background-color: #3a3636;
-  padding: 30px 20px;
+  background-color: #dadada;
+  width: 100%;  /* 100% del viewport */
+
   text-align: center;
-  color: #333;
+  margin: 0;            /* Elimina márgenes externos si los hay */
+  padding: 30px 0;      /* Padding solo arriba/abajo para evitar "achicamiento horizontal" */
+  position: relative;   /* Asegura comportamiento normal de flujo */
+  left: 0;
+  
+
 }
 
 .site-footer h3 {
@@ -466,3 +476,4 @@ header {
 .site-footer a:hover {
   text-decoration: underline;
 }
+

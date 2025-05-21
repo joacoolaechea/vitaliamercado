@@ -154,7 +154,7 @@ function updateCart() {
       shippingCostText.textContent = total >= 50000
        shippingCostText.innerHTML = total >= 50000
   ? '<span style="color: #dd8e3f; font-weight: bold;">ENVÍO GRATIS</span>'
-  : "Envio a cargo del comprador";
+  : '<span style="color: #a84a65; font-weight: bold;">Envio a cargo del comprador</span>'
 
       if (shippingInput) shippingInput.style.display = "block";
     }
