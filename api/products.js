@@ -13,7 +13,8 @@ console.log("Iniciando servidor...");
 app.get('/api/products', (req, res) => {
   const results = [];
 
-  fs.createReadStream(path.join(__dirname, 'bdv.csv'))
+ fs.createReadStream(path.join(__dirname, 'bdv.csv'))
+
     .pipe(csv())
     .on('data', (row) => {
       const name = row["Name"]?.trim();
