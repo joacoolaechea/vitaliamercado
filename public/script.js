@@ -268,7 +268,53 @@ function sendWhatsApp() {
   updateCart();
 }
 
+/***FAVORITOS Y RENDER PRODUCT */
 
+let favorites = [];
+
+function loadFavorites() {
+  const stored = localStorage.getItem("favorites");
+  favorites = stored ? JSON.parse(stored) : [];
+}
+loadFavorites();
+
+function saveFavorites() {
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.style.opacity = 1;
+
+  setTimeout(() => {
+    toast.style.opacity = 0;
+  }, 2500);
+}
+
+function toggleFavorite(product) {
+  const index = favorites.findIndex(f => f.name === product.name);
+  if (index !== -1) {
+    favorites.splice(index, 1);
+    showToast(`💔 ${product.name} se eliminó de favoritos`);
+  } else {
+    favorites.push(product);
+    showToast(`❤️ ${product.name} se agregó a favoritos`);
+  }
+  saveFavorites();
+  updateFavoriteIcons();
+}
+
+function updateFavoriteIcons() {
+  document.querySelectorAll(".favorite-btn").forEach(btn => {
+    const name = btn.getAttribute("data-name");
+    const isFavorite = favorites.some(f => f.name === name);
+    const svg = btn.querySelector("svg");
+    if (svg) {
+      svg.setAttribute("fill", isFavorite ? "#d78a8f" : "none");
+    }
+  });
+}
 
 function renderProducts(products) {
   const list = document.getElementById("productList");
@@ -279,10 +325,24 @@ function renderProducts(products) {
     div.className = "product";
     div.style.position = "relative";
 
-  const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://i.imgur.com/p4tHxub.jpeg";
-
+    const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://i.imgur.com/p4tHxub.jpeg";
+    const isFavorite = favorites.some(f => f.name === p.name);
 
     div.innerHTML = `
+      <button class="favorite-btn" data-name="${p.name}"
+              onclick='event.stopPropagation(); toggleFavorite(${JSON.stringify(p)})'
+              style="position:absolute; top:10px; right:10px; background:none; border:none; cursor:pointer; padding:5px;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="${isFavorite ? "#d78a8f" : "none"}"
+             viewBox="0 0 24 24" stroke-width="1.5" stroke="#d78a8f" width="62" height="62">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5
+                   -1.935 0-3.597 1.126-4.312 2.733
+                   -.715-1.607-2.377-2.733-4.313-2.733
+                   C5.1 3.75 3 5.765 3 8.25c0 7.22
+                   9 12 9 12s9-4.78 9-12Z"/>
+        </svg>
+      </button>
+
       <div onclick='openProductDetail(${JSON.stringify(p)})'
            style="display:flex; align-items:flex-start; gap:20px; padding:20px; cursor:pointer;">
         <img src="${imageSrc}" alt="${p.name}"
@@ -290,23 +350,12 @@ function renderProducts(products) {
              onerror="this.onerror=null;this.src='data/default.jpeg';">
 
         <div style="display:flex; flex-direction:column; flex:1; height:450px;">
-          <!-- Nombre -->
-          <span style="
-            font-size:2.5rem;
-            font-weight:700;
-            line-height:1.2;
-            word-wrap:break-word;
-            margin-bottom:8px;
-          ">
+          <span style="font-size:2.5rem; font-weight:700; line-height:1.2; word-wrap:break-word; margin-bottom:8px;">
             ${p.name}
           </span>
-
-          <!-- Categoría -->
           <span style="font-size:1rem; color:#d78a8f; margin-bottom: auto;">
             ${p.category}
           </span>
-
-          <!-- Unidad + Precio en bloque al fondo -->
           <div style="margin-top: auto;">
             <span style="display:block; font-size:2rem; color:#d78a8f; margin-bottom:12px;">
               ${p.unit}
@@ -321,7 +370,35 @@ function renderProducts(products) {
 
     list.appendChild(div);
   });
+
+  updateFavoriteIcons();
 }
+
+// Mostrar solo favoritos
+function showFavoritesList() {
+  renderProducts(favorites);
+}
+
+let showingFavorites = false;
+
+function toggleFavorites() {
+  const btn = document.querySelector(".favorites-button svg");
+
+  if (showingFavorites) {
+    // Volver a mostrar todos los productos
+    renderProducts(allProducts); // Asegurate de que `allProducts` esté disponible
+    btn.setAttribute("fill", "none");
+  } else {
+    // Mostrar solo favoritos
+    renderProducts(favorites);
+    btn.setAttribute("fill", "white");
+  }
+
+  showingFavorites = !showingFavorites;
+}
+
+
+
 
 
 function openProductDetail(product) {
