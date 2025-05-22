@@ -118,7 +118,7 @@ header {
 
 .content:not(.shifted) {   /* cuando el sidebar está oculto */
 
-  margin-left: -10px;       /* lo de siempre a la izquierda  */
+  margin-left: 20px;       /* lo de siempre a la izquierda  */
   margin-right: 20px;      /* ← Aumenta este valor ‑ más espacio a la derecha */
 }
 
@@ -452,12 +452,13 @@ header {
 
 
 .site-footer {
-  background-color: #dadada;
+
+
   width: 100%;  /* 100% del viewport */
 
   text-align: center;
   margin: 0;            /* Elimina márgenes externos si los hay */
-  padding: 30px 0;      /* Padding solo arriba/abajo para evitar "achicamiento horizontal" */
+  padding: 0px 0;      /* Padding solo arriba/abajo para evitar "achicamiento horizontal" */
   position: relative;   /* Asegura comportamiento normal de flujo */
   left: 0;
   
