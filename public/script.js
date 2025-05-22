@@ -1,5 +1,7 @@
 let allProducts = [];
 let cart = [];
+let currentPage = 1;
+const productsPerPage = 10;
 
 loadCartFromStorage();
 updateCart();
@@ -285,12 +287,21 @@ function saveFavorites() {
 function showToast(message) {
   const toast = document.getElementById("toast");
   toast.textContent = message;
+
+  // Agrandar cartel
+  toast.style.fontSize = "3rem";
+  toast.style.padding = "20px 40px";
+  toast.style.borderRadius = "12px";
+  toast.style.maxWidth = "80%";
+  toast.style.textAlign = "center";
+
   toast.style.opacity = 1;
 
   setTimeout(() => {
     toast.style.opacity = 0;
   }, 2500);
 }
+
 
 function toggleFavorite(product) {
   const index = favorites.findIndex(f => f.name === product.name);
@@ -328,51 +339,93 @@ function renderProducts(products) {
     const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://i.imgur.com/p4tHxub.jpeg";
     const isFavorite = favorites.some(f => f.name === p.name);
 
-    div.innerHTML = `
-      <button class="favorite-btn" data-name="${p.name}"
-              onclick='event.stopPropagation(); toggleFavorite(${JSON.stringify(p)})'
-              style="position:absolute; top:10px; right:10px; background:none; border:none; cursor:pointer; padding:5px;">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="${isFavorite ? "#d78a8f" : "none"}"
-             viewBox="0 0 24 24" stroke-width="1.5" stroke="#d78a8f" width="62" height="62">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5
-                   -1.935 0-3.597 1.126-4.312 2.733
-                   -.715-1.607-2.377-2.733-4.313-2.733
-                   C5.1 3.75 3 5.765 3 8.25c0 7.22
-                   9 12 9 12s9-4.78 9-12Z"/>
-        </svg>
-      </button>
+    const favButton = document.createElement("button");
+    favButton.className = "favorite-btn";
+    favButton.setAttribute("data-name", p.name);
+    favButton.style.cssText = "position:absolute; top:10px; right:10px; background:none; border:none; cursor:pointer; padding:5px;";
+    favButton.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" fill="${isFavorite ? "#d78a8f" : "none"}"
+           viewBox="0 0 24 24" stroke-width="1.5" stroke="#d78a8f" width="62" height="62">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5
+                 -1.935 0-3.597 1.126-4.312 2.733
+                 -.715-1.607-2.377-2.733-4.313-2.733
+                 C5.1 3.75 3 5.765 3 8.25c0 7.22
+                 9 12 9 12s9-4.78 9-12Z"/>
+      </svg>`;
+    favButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleFavorite(p);
+    });
 
-      <div onclick='openProductDetail(${JSON.stringify(p)})'
-           style="display:flex; align-items:flex-start; gap:20px; padding:20px; cursor:pointer;">
-        <img src="${imageSrc}" alt="${p.name}"
-             style="width:450px; height:450px; object-fit:cover; border-radius:8px;"
-             onerror="this.onerror=null;this.src='data/default.jpeg';">
+    const mainContent = document.createElement("div");
+    mainContent.style.cssText = "display:flex; align-items:flex-start; gap:20px; padding:20px; cursor:pointer;";
+    mainContent.addEventListener("click", () => openProductDetail(p));
 
-        <div style="display:flex; flex-direction:column; flex:1; height:450px;">
-          <span style="font-size:2.5rem; font-weight:700; line-height:1.2; word-wrap:break-word; margin-bottom:8px;">
-            ${p.name}
-          </span>
-          <span style="font-size:1rem; color:#d78a8f; margin-bottom: auto;">
-            ${p.category}
-          </span>
-          <div style="margin-top: auto;">
-            <span style="display:block; font-size:2rem; color:#d78a8f; margin-bottom:12px;">
-              ${p.unit}
-            </span>
-            <span style="display:block; font-size:5rem; font-weight:700;">
-              $${p.price}
-            </span>
-          </div>
-        </div>
+    const img = document.createElement("img");
+    img.src = imageSrc;
+    img.alt = p.name;
+    img.style.cssText = "width:450px; height:450px; object-fit:cover; border-radius:8px;";
+    img.onerror = function () {
+      this.onerror = null;
+      this.src = 'data/default.jpeg';
+    };
+
+    const info = document.createElement("div");
+    info.style.cssText = "display:flex; flex-direction:column; flex:1; height:450px;";
+
+    info.innerHTML = `
+      <span style="font-size:2.5rem; font-weight:700; line-height:1.2; word-wrap:break-word; margin-bottom:8px;">
+        ${p.name}
+      </span>
+      <span style="font-size:1rem; color:#d78a8f; margin-bottom: auto;">
+        ${p.category}
+      </span>
+      <div style="margin-top: auto;">
+        <span style="display:block; font-size:2rem; color:#d78a8f; margin-bottom:12px;">
+          ${p.unit}
+        </span>
+        <span style="display:block; font-size:5rem; font-weight:700;">
+          $${p.price}
+        </span>
       </div>
     `;
 
+    mainContent.appendChild(img);
+    mainContent.appendChild(info);
+
+    div.appendChild(favButton);
+    div.appendChild(mainContent);
     list.appendChild(div);
   });
 
   updateFavoriteIcons();
 }
+
+
+function renderPaginationControls(totalProducts) {
+  const pagination = document.getElementById("paginationControls");
+  pagination.innerHTML = "";
+
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
+
+  if (totalPages <= 1) return;
+
+  if (currentPage > 1) {
+    const prevBtn = document.createElement("button");
+    prevBtn.textContent = "Anterior";
+    prevBtn.onclick = () => renderProducts(currentFilteredProducts, currentPage - 1);
+    pagination.appendChild(prevBtn);
+  }
+
+  if (currentPage < totalPages) {
+    const nextBtn = document.createElement("button");
+    nextBtn.textContent = "Siguiente";
+    nextBtn.onclick = () => renderProducts(currentFilteredProducts, currentPage + 1);
+    pagination.appendChild(nextBtn);
+  }
+}
+
 
 // Mostrar solo favoritos
 function showFavoritesList() {
@@ -675,14 +728,16 @@ function loadProducts(products) {
     .forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
 
-  
+  // 🔹 2) limpiar el input de búsqueda
+  document.getElementById("search").value = "";
 
-  // 2) filtrar productos
+  // 🔹 3) filtrar productos
   filterProducts();
 
-  // 3) cerrar el menú lateral
+  // 🔹 4) cerrar el menú lateral
   toggleSidebar();
 };
+
     catList.appendChild(btn);
   });
 }
