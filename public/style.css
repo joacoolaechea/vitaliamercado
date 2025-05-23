@@ -5,6 +5,12 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'MadeCarving';
+  src: url('/fonts/MADECarvingSoftPERSONALUSE-Light.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 .sidebar,
 .sidebar * {

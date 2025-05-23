@@ -289,7 +289,7 @@ function showToast(message) {
   toast.textContent = message;
 
   // Agrandar cartel
-  toast.style.fontSize = "3rem";
+  toast.style.fontSize = "2.2rem";
   toast.style.padding = "20px 40px";
   toast.style.borderRadius = "12px";
   toast.style.maxWidth = "80%";
@@ -330,6 +330,9 @@ function updateFavoriteIcons() {
 function renderProducts(products) {
   const list = document.getElementById("productList");
   list.innerHTML = "";
+ // 🔠 Ordenar alfabéticamente por nombre (de A a Z)
+  products.sort((a, b) => a.name.localeCompare(b.name));
+  ////
 
   products.forEach(p => {
     const div = document.createElement("div");
@@ -722,25 +725,38 @@ function loadProducts(products) {
     btn.dataset.category = cat;
     btn.style.display = "block";
     btn.style.marginBottom = "5px";
-  btn.onclick = () => {
+
+    btn.onclick = () => {
   // 1) marcar selección
   document.querySelectorAll("#categoryList button")
     .forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
 
-  // 🔹 2) limpiar el input de búsqueda
+  // 2) limpiar el input de búsqueda
   document.getElementById("search").value = "";
 
-  // 🔹 3) filtrar productos
+  // 3) cancelar favoritos si estaban activos
+  showingFavorites = false;
+  document.querySelector(".favorites-button")?.classList.remove("selected");
+
+  // ⬇️ restaurar el ícono del botón de favoritos
+  const favBtnIcon = document.querySelector(".favorites-button svg");
+  if (favBtnIcon) {
+    favBtnIcon.setAttribute("fill", "none");
+  }
+
+  // 4) filtrar productos normalmente
   filterProducts();
 
-  // 🔹 4) cerrar el menú lateral
+  // 5) cerrar el menú lateral
   toggleSidebar();
 };
+
 
     catList.appendChild(btn);
   });
 }
+
 
 fetch("/api/products")
   .then(res => res.json())
