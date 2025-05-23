@@ -322,18 +322,18 @@ function updateFavoriteIcons() {
     const isFavorite = favorites.some(f => f.name === name);
     const svg = btn.querySelector("svg");
     if (svg) {
-      svg.setAttribute("fill", isFavorite ? "#d78a8f" : "none");
+      svg.setAttribute("fill", isFavorite ? "#a61f4d" : "none");
     }
   });
 }
+
 
 function renderProducts(products) {
   const list = document.getElementById("productList");
   list.innerHTML = "";
  // 🔠 Ordenar alfabéticamente por nombre (de A a Z)
   products.sort((a, b) => a.name.localeCompare(b.name));
-  ////
-
+  
   products.forEach(p => {
     const div = document.createElement("div");
     div.className = "product";
@@ -347,15 +347,17 @@ function renderProducts(products) {
     favButton.setAttribute("data-name", p.name);
     favButton.style.cssText = "position:absolute; top:10px; right:10px; background:none; border:none; cursor:pointer; padding:5px;";
     favButton.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" fill="${isFavorite ? "#d78a8f" : "none"}"
-           viewBox="0 0 24 24" stroke-width="1.5" stroke="#d78a8f" width="62" height="62">
-        <path stroke-linecap="round" stroke-linejoin="round"
-              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5
-                 -1.935 0-3.597 1.126-4.312 2.733
-                 -.715-1.607-2.377-2.733-4.313-2.733
-                 C5.1 3.75 3 5.765 3 8.25c0 7.22
-                 9 12 9 12s9-4.78 9-12Z"/>
-      </svg>`;
+   
+  <svg xmlns="http://www.w3.org/2000/svg" fill="${isFavorite ? "#a61f4d" : "none"}"
+       viewBox="0 0 24 24" stroke-width="1.5" stroke="#a61f4d" width="62" height="62">
+    <path stroke-linecap="round" stroke-linejoin="round"
+          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5
+             -1.935 0-3.597 1.126-4.312 2.733
+             -.715-1.607-2.377-2.733-4.313-2.733
+             C5.1 3.75 3 5.765 3 8.25c0 7.22
+             9 12 9 12s9-4.78 9-12Z"/>
+  </svg>`;
+
     favButton.addEventListener("click", (event) => {
       event.stopPropagation();
       toggleFavorite(p);
