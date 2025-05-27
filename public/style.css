@@ -446,7 +446,7 @@ header {
   transform: rotate(45deg);
 }
 .styled-checkbox-label .checkbox-text {
-  color: #fff; /* color default */
+  color: #ffffff; /* color default */
   transition: color 0.3s ease;
 }
 

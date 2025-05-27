@@ -243,10 +243,9 @@ function removeFromCart(index) {
 
 function sendWhatsApp() {
   if (cart.length === 0) {
-    alert("El carrito está vacío.");
+    showToast('<span style="color: white;">El carrito está vacío.</span>', "#a61f4d");
     return;
   }
-
   /* --------- arma el mensaje --------- */
   let message = "Hola! Quiero hacer un pedido:\n\n";
   cart.forEach(item => {
@@ -293,10 +292,10 @@ function saveFavorites() {
   localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
-function showToast(message) {
+function showToast(message, backgroundColor = "#7a1f4296") {
   const toast = document.getElementById("toast");
 
-  toast.innerHTML = message; // <-- antes era textContent
+  toast.innerHTML = message;
 
   // Estilos del cartel
   toast.style.fontSize = "2.2rem";
@@ -304,13 +303,15 @@ function showToast(message) {
   toast.style.borderRadius = "12px";
   toast.style.maxWidth = "80%";
   toast.style.textAlign = "center";
-
+  toast.style.backgroundColor = backgroundColor;
   toast.style.opacity = 1;
 
   setTimeout(() => {
     toast.style.opacity = 0;
   }, 2500);
 }
+
+
 
 
 function toggleFavorite(product) {
@@ -342,14 +343,13 @@ function toggleFavorite(product) {
                a48.667 48.667 0 0 0-7.5 0" />
     </svg>`;
 
-  if (index !== -1) {
-    favorites.splice(index, 1);
-    showToast(`${brokenHeart}${product.name} se eliminó de favoritos`);
-  } else {
-    favorites.push(product);
-    showToast(`${filledHeart}${product.name} se agregó a favoritos`);
-  }
-
+if (index !== -1) {
+  favorites.splice(index, 1);
+  showToast(`${brokenHeart}${product.name} se eliminó de favoritos`, "#7a1f4296");
+} else {
+  favorites.push(product);
+  showToast(`${filledHeart}${product.name} se agregó a favoritos`, "#73ff00a8");
+}
   saveFavorites();
   updateFavoriteIcons();
 }
