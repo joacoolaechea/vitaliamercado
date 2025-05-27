@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+  
 <head>
   <meta charset="UTF-8">
   <title>Vitalia</title>
@@ -22,6 +23,7 @@
 
 
 <body>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
   <header>
 
 
@@ -84,12 +86,12 @@
   .custom-select {
 
     margin-top: 15px;
-    padding: 14px 16px;
-    font-size: 24px;
+    padding: 20px 16px;
+    font-size: 35px;
      border-radius: 20px;
-    border: 2px solid #a84a65;
-    background-color: white;
-    color: #a84a65;
+    border: 2px solid #7a1f42;
+    background-color: #a84a6565;
+    color: #7a1f42;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     width: 100%;
     max-width: 400px;
@@ -109,7 +111,7 @@
   }
 
   .filter-label {
-    font-size: 24px;
+    font-size: 35px;
     font-weight: bold;
     color: #7a1f42;
     margin-bottom: 10px;
@@ -158,8 +160,8 @@ document.addEventListener("click", function (event) {
     <button onclick="clearFilters()" style=  "
       font-family: 'MadeCarving', sans-serif;
       margin-top: 30px;
-      padding: 10px 20px;
-      font-size: 24px;
+      padding: 20px 30px;
+     font-size: 35px;
       background-color: #dd8e3f;
       color:#7a1f42;
       border: 2px solid #7a1f42;
@@ -234,7 +236,9 @@ document.addEventListener("click", function (event) {
       </svg>
    </button>
 
-<h3 style="font-size:3rem;margin-bottom:18px;color:#fff;">Carrito</h3>
+<h3 style="font-size:3rem; margin-bottom:18px; color:#fff; font-family: 'MadeCarving', sans-serif;">Carrito de compras</h3>
+
+
 <ul id="cartItems"></ul>
 
 <h3 style="font-size:3rem;margin:32px 0 18px 0;color:#a84a65;">Elegí la forma de entrega
@@ -249,11 +253,13 @@ document.addEventListener("click", function (event) {
   <p id="shippingCostText" style="font-size:2.4rem; color:#fff; font-weight: bold;">
     Envío: a cargo del comprador.
   </p>
-<label class="styled-checkbox-label" style="font-size: 3.5rem; padding: 0.5rem 0;">
+<label class="styled-checkbox-label" style="font-size: 3.5rem; padding: 0.5rem 0; font-family: 'MadeCarving', sans-serif;">
   <input type="checkbox" id="pickupCheckbox" />
   <span class="checkmark"></span>
-  Retiro en sucursal
+  <span class="checkbox-text">Retiro en sucursal</span>
 </label>
+
+
 <hr style="border: none; border-bottom: 2px solid #dd8e3f; width: 100%; margin: 16px auto;">
 
 </div>
@@ -287,7 +293,7 @@ document.addEventListener("click", function (event) {
   margin:0 auto;
   display:block;
 ">
-  Enviar Compra
+  Enviar Pedido
 </button>
 
   </div>
@@ -381,8 +387,8 @@ document.addEventListener("click", function (event) {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #dd8e3f;
-  color: rgb(255, 255, 255);
+  background:  #a61f4c96;
+  color:  #ffffff;
   padding: 12px 20px;
   border-radius: 8px;
   font-size: 1rem;

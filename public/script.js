@@ -5,6 +5,8 @@ const productsPerPage = 10;
 let showingFavorites = false;
 
 
+
+
 loadCartFromStorage();
 updateCart();
 
@@ -149,7 +151,10 @@ function updateCart() {
 
   if (pickupCheckbox && shippingCostText) {
     if (pickupCheckbox.checked) {
-     shippingCostText.innerHTML = '<span style="color: #a84a65;">(Pellegrini 18)</span>';
+shippingCostText.innerHTML = `
+  <span style="color: #dd8e3f;  font-family: 'MadeCarving', sans-serif;">10% OFF EN EFECTIVO </span><br>
+  <span style="color: #dd8e3f;  font-family: 'MadeCarving', sans-serif; font-size: 26px;">(Pellegrini 18)</span>
+`;
       if (shippingInput) {
         shippingInput.style.display = "none";
         shippingInput.value = ""; // limpia la dirección
@@ -157,8 +162,10 @@ function updateCart() {
     } else {
       shippingCostText.textContent = total >= 50000
        shippingCostText.innerHTML = total >= 50000
-  ? '<span style="color: #dd8e3f; font-weight: bold;">ENVÍO GRATIS</span>'
-  : '<span style="color: #a84a65; font-weight: bold;">Envio a cargo del comprador</span>'
+ ? '<span style="color: #dd8e3f; font-weight: bold;">ENVÍO GRATIS <span style="font-family: \'MadeCarving\', sans-serif; font-size: 0.7em;">(solo zona Gualeguaychú)</span></span>'
+
+: '<span style="color: #a84a65; font-weight: bold; font-family: \'MadeCarving\', sans-serif;">Envio a cargo del comprador</span>'
+
 
       if (shippingInput) shippingInput.style.display = "block";
     }
@@ -288,9 +295,10 @@ function saveFavorites() {
 
 function showToast(message) {
   const toast = document.getElementById("toast");
-  toast.textContent = message;
 
-  // Agrandar cartel
+  toast.innerHTML = message; // <-- antes era textContent
+
+  // Estilos del cartel
   toast.style.fontSize = "2.2rem";
   toast.style.padding = "20px 40px";
   toast.style.borderRadius = "12px";
@@ -307,16 +315,46 @@ function showToast(message) {
 
 function toggleFavorite(product) {
   const index = favorites.findIndex(f => f.name === product.name);
+
+  const filledHeart = `
+    <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+         style="width:40px;height:40px;margin-right:8px;vertical-align:middle;">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733
+               -.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25
+               c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+    </svg>`;
+
+  const brokenHeart = `
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+         style="width:40px;height:40px;margin-right:8px;vertical-align:middle;color:white;">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21
+               c.342.052.682.107 1.022.166m-1.022-.165
+               L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084
+               a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0
+               a48.108 48.108 0 0 0-3.478-.397m-12 .562
+               c.34-.059.68-.114 1.022-.165m0 0
+               a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916
+               c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0
+               c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0
+               a48.667 48.667 0 0 0-7.5 0" />
+    </svg>`;
+
   if (index !== -1) {
     favorites.splice(index, 1);
-    showToast(`💔 ${product.name} se eliminó de favoritos`);
+    showToast(`${brokenHeart}${product.name} se eliminó de favoritos`);
   } else {
     favorites.push(product);
-    showToast(`❤️ ${product.name} se agregó a favoritos`);
+    showToast(`${filledHeart}${product.name} se agregó a favoritos`);
   }
+
   saveFavorites();
   updateFavoriteIcons();
 }
+
+
 
 function updateFavoriteIcons() {
   document.querySelectorAll(".favorite-btn").forEach(btn => {
@@ -410,9 +448,6 @@ function renderProducts(products) {
 }
 
 
-/***FILTROS PRODUCTOS */
-
-/***FILTROS PRODUCTOS */
 
 /***FILTROS PRODUCTOS */
 document.getElementById("filterButton").addEventListener("click", () => {
@@ -790,6 +825,50 @@ function addToCartFromDetail(product) {
   closeProductDetail();
 }
 
+
+// CIERRE .SIDEBAR DESLIZANDO
+
+let fuse; // Global
+
+function setupFuse(products) {
+  const options = {
+    keys: ['name'],
+    threshold: 0.4, // Podés ajustar esto: 0.2 = más exacto, 0.5 = más permisivo
+  };
+  fuse = new Fuse(products, options);
+}
+
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener("touchstart", function (e) {
+  touchStartX = e.changedTouches[0].screenX;
+}, false);
+
+document.addEventListener("touchend", function (e) {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipeGesture();
+}, false);
+
+function handleSwipeGesture() {
+  const sidebar = document.querySelector(".sidebar");
+  const isOpen = sidebar.classList.contains("open");
+  const swipeDistance = touchEndX - touchStartX;
+
+  // Si la barra no está abierta y el usuario desliza hacia la derecha
+  if (!isOpen && swipeDistance > 70 && touchStartX < 80) {
+    sidebar.classList.add("open");
+  }
+
+  // Si está abierta y el usuario desliza hacia la izquierda
+  if (isOpen && swipeDistance < -70) {
+    sidebar.classList.remove("open");
+  }
+}
+
+// -------------------------------------------
+
 function filterProducts() {
   document.getElementById("search").className = "modern-input modern-input--wide";
 
@@ -800,7 +879,7 @@ function filterProducts() {
   let baseProducts;
 
   if (search) {
-    // Buscar ignora categoría y cancela favoritos
+    // Cancelar favoritos
     showingFavorites = false;
     document.querySelector(".favorites-button")?.classList.remove("selected");
 
@@ -809,25 +888,26 @@ function filterProducts() {
       favBtnIcon.setAttribute("fill", "none");
     }
 
-    baseProducts = allProducts.filter(p =>
-      p.name.toLowerCase().includes(search)
-    );
+    // Búsqueda flexible con Fuse.js
+    const results = fuse.search(search);
+    baseProducts = results.map(r => r.item);
+
   } else if (selectedCategory && selectedCategory !== "TODOS") {
-    baseProducts = allProducts.filter(p =>
-      p.category === selectedCategory
-    );
+    baseProducts = allProducts.filter(p => p.category === selectedCategory);
   } else {
     baseProducts = [...allProducts];
   }
 
-  // Aplicamos los filtros sobre los productos ya filtrados por búsqueda/categoría
   applyFilters(baseProducts);
 }
 
 
 
+
 function loadProducts(products) {
   allProducts = products;
+  setupFuse(products); // 🔥 Preparar Fuse.js
+
   renderProducts(products);
 
   const categories = ["TODOS", ...new Set(products.map(p => p.category))];
@@ -842,35 +922,31 @@ function loadProducts(products) {
     btn.style.marginBottom = "5px";
 
     btn.onclick = () => {
-  // 1) marcar selección
-  document.querySelectorAll("#categoryList button")
-    .forEach(b => b.classList.remove("selected"));
-  btn.classList.add("selected");
+      document.querySelectorAll("#categoryList button")
+        .forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
 
-  // 2) limpiar el input de búsqueda
-  document.getElementById("search").value = "";
+      document.getElementById("search").value = "";
 
-  // 3) cancelar favoritos si estaban activos
-  showingFavorites = false;
-  document.querySelector(".favorites-button")?.classList.remove("selected");
+      showingFavorites = false;
+      document.querySelector(".favorites-button")?.classList.remove("selected");
 
-  // ⬇️ restaurar el ícono del botón de favoritos
-  const favBtnIcon = document.querySelector(".favorites-button svg");
-  if (favBtnIcon) {
-    favBtnIcon.setAttribute("fill", "none");
-  }
+      const favBtnIcon = document.querySelector(".favorites-button svg");
+      if (favBtnIcon) {
+        favBtnIcon.setAttribute("fill", "none");
+      }
 
-  // 4) filtrar productos normalmente
-  filterProducts();
-
-  // 5) cerrar el menú lateral
-  toggleSidebar();
-};
-
+      filterProducts();
+      toggleSidebar();
+    };
 
     catList.appendChild(btn);
   });
 }
+
+
+
+  // ---------------------------
 
 
 fetch("/api/products")

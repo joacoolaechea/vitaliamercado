@@ -360,13 +360,14 @@ header {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   outline: none;
   box-sizing: border-box;
-  font-family: 'MADECarvingSoft', sans-serif;
+  font-family: 'MADECarving', sans-serif;
   font-weight: 900;
   resize: vertical;  /* permite que el usuario cambie la altura */
 }
 
 #shippingAddress::placeholder {
   color: #d78a8f;
+  
 }
 
 #shippingAddress:focus {
@@ -444,6 +445,15 @@ header {
   border-width: 0 8px 8px 0;  /* aquí aumentás el grosor de la tilde */
   transform: rotate(45deg);
 }
+.styled-checkbox-label .checkbox-text {
+  color: #fff; /* color default */
+  transition: color 0.3s ease;
+}
+
+.styled-checkbox-label input[type="checkbox"]:checked + .checkmark + .checkbox-text {
+  color: #dd8e3f;
+}
+
 
 .whatsapp-button {
   position: fixed;
