@@ -447,10 +447,10 @@ header {
 
 .whatsapp-button {
   position: fixed;
-  bottom: 48px;  /* Más arriba (aumenta este valor para subir más) */
-  right: 48px;   /* Más a la izquierda (aumenta este valor para mover más a la izquierda) */
-  width: 122px;
-  height: 122px;
+  bottom: 100px;  /* Más arriba (aumenta este valor para subir más) */
+  right: 45px;   /* Más a la izquierda (aumenta este valor para mover más a la izquierda) */
+  width: 120px;
+  height: 1220x;
   background-color: white;
   border-radius: 150%;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -500,4 +500,6 @@ header {
 .site-footer a:hover {
   text-decoration: underline;
 }
+
+/* FILTROS PRODUCTOS /
 

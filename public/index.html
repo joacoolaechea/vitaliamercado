@@ -37,6 +37,143 @@
   </svg>
 </button>
 
+
+<!-- FILTRO PRODUCTOS -->
+<div id="filterContainer" style="margin: -120px 20px 20px 20px; position:fixed; z-index: 1500;">
+  <button id="filterButton" style="background:none; border:none; cursor:pointer;">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+         stroke-width="1.5" stroke="white" width="80" height="80">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+    </svg>
+  </button>
+
+  <div id="filterMenu" style="
+    display: none;
+    padding: 30px;
+    border: none;
+    border-radius: 20px;
+    background:#dd8e3f;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    width: 450px;
+    font-size: 50px;
+    position: absolute;
+    top: -50px;
+    left: 100px;
+    z-index: 1500;
+    transition: all 0.3s ease;">
+
+  <style>
+       @font-face {
+    font-family: 'MadeCarving';
+    src: url('/fonts/MADECarvingSoftPERSONALUSE-Light.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  #filterMenu {
+  font-family: 'MadeCarving', sans-serif;
+}
+#filterContainer{
+    font-family: 'MadeCarving', sans-serif;
+}
+ #priceFilte{
+      font-family: 'MadeCarving', sans-serif;
+}
+
+
+  .custom-select {
+
+    margin-top: 15px;
+    padding: 14px 16px;
+    font-size: 24px;
+     border-radius: 20px;
+    border: 2px solid #a84a65;
+    background-color: white;
+    color: #a84a65;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    width: 100%;
+    max-width: 400px;
+    transition: all 0.2s ease;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23dd8e3f" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+  }
+
+
+  .custom-select:focus {
+    outline: none;
+    border-color: #a84a65;
+    box-shadow: 0 0 0 3px rgba(221, 63, 63, 0.3);
+  }
+
+  .filter-label {
+    font-size: 24px;
+    font-weight: bold;
+    color: #7a1f42;
+    margin-bottom: 10px;
+    display: block;
+  }
+ 
+</style>
+
+<label style="display: block; margin-bottom: 30px; font-family: 'MadeCarving', sans-serif;">
+  <span class="filter-label">Filtrar por unidad:</span>
+  <select id="unitFilter" class="custom-select" style="font-family: 'MadeCarving', sans-serif;">
+    <option value="">Todas</option>
+    <option value="Kilogramo">Kilogramo</option>
+    <option value="Unidad">Unidad</option>
+  </select>
+</label>
+
+<label style="display: block; margin-bottom: 30px; font-family: 'MadeCarving', sans-serif;">
+  <span class="filter-label">Ordenar por precio:</span>
+  <select id="priceFilter" class="custom-select" style="font-family: 'MadeCarving', sans-serif;">
+    <option value="">Sin ordenar</option>
+    <option value="asc">Menor precio</option>
+    <option value="desc">Mayor precio</option>
+  </select>
+</label>
+
+
+    <!-- CERRAR FILTROS -->
+     <script>
+document.addEventListener("click", function (event) {
+  const filterContainer = document.getElementById("filterContainer");
+  const filterMenu = document.getElementById("filterMenu");
+
+  // Si el filtro está abierto Y el clic no fue dentro del contenedor
+  if (
+    filterMenu.style.display === "block" &&
+    !filterContainer.contains(event.target)
+  ) {
+    filterMenu.style.display = "none";
+  }
+});
+     </script>
+
+
+    <!-- BOTÓN LIMPIAR -->
+    <button onclick="clearFilters()" style=  "
+      font-family: 'MadeCarving', sans-serif;
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 24px;
+      background-color: #dd8e3f;
+      color:#7a1f42;
+      border: 2px solid #7a1f42;
+      border-radius: 20px;
+      cursor: pointer;
+    ">Limpiar filtros</button>
+
+  </div>
+</div>
+
+
+
+
+<!-- BOTON WHATSAP CONSULTAS -->
 <a href="https://wa.me/5493446636978" target="_blank" class="whatsapp-button" aria-label="Consultar por WhatsApp">
   <svg height="102px" width="102px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" class="whatsapp-icon" fill="#25D366">
     <g>
@@ -254,6 +391,10 @@
   transition: opacity 0.3s ease;
   pointer-events: none;
 "></div>
+
+
+
+    <!--  -->
 
 
 </body>
