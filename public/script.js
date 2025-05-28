@@ -292,24 +292,24 @@ function saveFavorites() {
   localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
-function showToast(message, backgroundColor = "#7a1f4296") {
+function showToast(message, backgroundColor = "#7a1f4296", textColor = "#fff") {
   const toast = document.getElementById("toast");
 
   toast.innerHTML = message;
-
-  // Estilos del cartel
   toast.style.fontSize = "2.2rem";
   toast.style.padding = "20px 40px";
   toast.style.borderRadius = "12px";
   toast.style.maxWidth = "80%";
   toast.style.textAlign = "center";
   toast.style.backgroundColor = backgroundColor;
+  toast.style.color = textColor;
   toast.style.opacity = 1;
 
   setTimeout(() => {
     toast.style.opacity = 0;
   }, 2500);
 }
+
 
 
 
@@ -345,11 +345,12 @@ function toggleFavorite(product) {
 
 if (index !== -1) {
   favorites.splice(index, 1);
-  showToast(`${brokenHeart}${product.name} se eliminó de favoritos`, "#7a1f4296");
+  showToast(`${brokenHeart}${product.name} se eliminó de favoritos`, "#7a1f4296", "#fff");
 } else {
   favorites.push(product);
-  showToast(`${filledHeart}${product.name} se agregó a favoritos`, "#73ff00a8");
+  showToast(`${filledHeart}${product.name} se agregó a favoritos`, "#73ff00a8", "#fff");
 }
+
   saveFavorites();
   updateFavoriteIcons();
 }
