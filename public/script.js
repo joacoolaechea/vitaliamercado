@@ -343,17 +343,18 @@ function toggleFavorite(product) {
                a48.667 48.667 0 0 0-7.5 0" />
     </svg>`;
 
-if (index !== -1) {
-  favorites.splice(index, 1);
-  showToast(`${brokenHeart}${product.name} se eliminó de favoritos`, "#7a1f4296", "#fff");
-} else {
-  favorites.push(product);
-  showToast(`${filledHeart}${product.name} se agregó a favoritos`, "#73ff00a8", "#fff");
-}
+  if (index !== -1) {
+    favorites.splice(index, 1);
+    showToast(`${brokenHeart}${product.name} se eliminó de favoritos`, "#8a8a8ecc", "#fff");  // gris claro
+  } else {
+    favorites.push(product);
+    showToast(`${filledHeart}${product.name} se agregó a favoritos`, "#7a1f4296", "#fff"); // bordo
+  }
 
   saveFavorites();
   updateFavoriteIcons();
 }
+
 
 
 
