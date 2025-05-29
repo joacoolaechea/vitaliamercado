@@ -1,6 +1,7 @@
 const express = require('express');
-const fs = require('fs');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const csv = require('csv-parser');
+const { Readable } = require('stream');
 const path = require('path');
 
 const app = express();
@@ -8,43 +9,49 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-console.log("Iniciando servidor...");
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVnd3iRmCdp6dgsxtrXgzLSKgAhQfExgute0iiXotc2HOp8WkMhk3A0nhMS3iSEDG9Q-jDiO38YF8A/pub?gid=2069375949&single=true&output=csv';
 
-app.get('/api/products', (req, res) => {
-  const results = [];
+app.get('/api/products', async (req, res) => {
+  try {
+    const response = await fetch(CSV_URL);
+    if (!response.ok) throw new Error('No se pudo descargar el CSV');
 
-  fs.createReadStream(path.join(__dirname, 'bdv.csv'))
-    .pipe(csv())
-    .on('data', (row) => {
-      const name = row["Name"]?.trim();
-      if (!name) return; // Salta filas vacías
+    const results = [];
 
-      // Limpia y convierte precio a número
-      const rawPrice = (row["Price"] || "0").replace(/,/g, '');
-      const price = parseFloat(rawPrice);
+    response.body
+      .pipe(csv())
+      .on('data', (row) => {
+        const name = row["Name"]?.trim();
+        if (!name) return;
 
-      results.push({
-        name: name,
-        category: row["ProductGroup"]?.trim() || "SIN CATEGORÍA",
-        price: isNaN(price) ? 0 : price,
-        unit: row["MeasurementUnit"]?.trim() || "Unidad",
-        image: (() => {
-          const raw = (row["Image"] || "").trim();
-          if (!raw) return "";
-          if (/\.(jpg|jpeg|png|webp)$/i.test(raw)) return raw;
-          const match = raw.match(/(?:imgur\.com\/)?([a-zA-Z0-9]+)/);
-          const id = match ? match[1] : raw;
-          return `https://i.imgur.com/${id}.jpg`;
-        })()
+        const rawPrice = (row["Price"] || "0").replace(/,/g, '');
+        const price = parseFloat(rawPrice);
+
+        results.push({
+          name,
+          category: row["ProductGroup"]?.trim() || "SIN CATEGORÍA",
+          price: isNaN(price) ? 0 : price,
+          unit: row["MeasurementUnit"]?.trim() || "Unidad",
+          image: (() => {
+            const raw = (row["Image"] || "").trim();
+            if (!raw) return "";
+            if (/\.(jpg|jpeg|png|webp)$/i.test(raw)) return raw;
+            const match = raw.match(/(?:imgur\.com\/)?([a-zA-Z0-9]+)/);
+            const id = match ? match[1] : raw;
+            return `https://i.imgur.com/${id}.jpg`;
+          })()
+        });
+      })
+      .on('end', () => res.json(results))
+      .on('error', (err) => {
+        console.error("Error procesando CSV:", err);
+        res.status(500).json({ error: "Error procesando CSV" });
       });
-    })
-    .on('end', () => {
-      res.json(results);
-    })
-    .on('error', (err) => {
-      console.error("Error procesando CSV:", err);
-      res.status(500).json({ error: "Error procesando CSV" });
-    });
+
+  } catch (err) {
+    console.error("Error descargando CSV:", err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.listen(PORT, () => {
