@@ -11,10 +11,42 @@ loadCartFromStorage();
 updateCart();
 
 
-function toggleCart() {
+// Abre el carrito y actualiza la URL con un hash (#cart)
+function openCart() {
   const cartPopup = document.getElementById("cartPopup");
-  cartPopup.style.display = cartPopup.style.display === "block" ? "none" : "block";
+  cartPopup.style.display = "block";
+  location.hash = "cart"; // cambia la URL para poder usar el botón "atrás"
 }
+
+// Cierra el carrito (y si hay hash, simula volver atrás)
+function closeCart() {
+  const cartPopup = document.getElementById("cartPopup");
+  cartPopup.style.display = "none";
+  if (location.hash === "#cart") {
+    history.back(); // simula el botón "atrás"
+  }
+}
+
+// Escucha el cambio en la URL (hash) para detectar botón atrás(CARRITO)
+window.addEventListener("hashchange", () => {
+  const cartPopup = document.getElementById("cartPopup");
+  if (location.hash === "#cart") {
+    cartPopup.style.display = "block";
+  } else {
+    cartPopup.style.display = "none";
+  }
+});
+
+// Reemplaza tu función toggleCart con esta:
+function toggleCart() {
+  if (location.hash === "#cart") {
+    closeCart(); // si ya estaba abierto, cerrar
+  } else {
+    openCart(); // si estaba cerrado, abrir
+  }
+}
+
+
 
 function loadCartFromStorage() {
   const storedCart = localStorage.getItem("cart");
@@ -712,7 +744,6 @@ function openProductDetail(product) {
   document.head.appendChild(styleTag);
 
   const imageSrc = product.image && product.image.trim() !== "" ? product.image : "https://i.imgur.com/p4tHxub.jpeg";
-;
 
   content.innerHTML = `
     <div class="product-detail-container">
@@ -794,16 +825,34 @@ function openProductDetail(product) {
   updatePrice();
 
   addBtn.onclick = () => addToCartFromDetail(product);
+
+  // Agregar estado al historial
+  history.pushState({ modalOpen: true }, "", "#detalle");
 }
 
-
+window.addEventListener("popstate", (event) => {
+  const modal = document.getElementById("productDetailModal");
+  if (modal && modal.style.display === "flex") {
+    closeProductDetail();
+  }
+});
 
 
 
 
 
 function closeProductDetail() {
-  document.getElementById("productDetailModal").style.display = "none";
+  const modal = document.getElementById("productDetailModal");
+  modal.style.display = "none";
+
+  // Eliminar estilos inyectados si existen
+  const styleTag = document.getElementById('product-detail-styles');
+  if (styleTag) styleTag.remove();
+
+  // Si el hash es "#detalle", retroceder en el historial
+  if (location.hash === "#detalle") {
+    history.back();
+  }
 }
 
 function addToCartFromDetail(product) {
