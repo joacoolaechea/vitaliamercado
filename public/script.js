@@ -614,14 +614,34 @@ function toggleFavorites() {
   showingFavorites = !showingFavorites;
 
   if (showingFavorites) {
-    clearFiltersForFavorites(); // Nueva función, no aplica filtros
+    clearFiltersForFavorites(); // No aplica filtros
     renderProducts(favorites);
     btn.setAttribute("fill", "white");
+
+    // 👉 Guardar en el historial que se activó favoritos
+    history.pushState({ favoritesOpen: true }, "");
   } else {
     renderProducts(allProducts);
     btn.setAttribute("fill", "none");
   }
 }
+
+window.addEventListener("popstate", () => {
+  const btn = document.querySelector(".favorites-button svg");
+
+  // Si estaba en modo favoritos, salir
+  if (showingFavorites) {
+    showingFavorites = false;
+    renderProducts(allProducts);
+    btn.setAttribute("fill", "none");
+  }
+
+  // (opcional: cerrar sidebar si querés)
+  const sidebar = document.getElementById("sidebar");
+  if (sidebar?.classList.contains("open")) {
+    sidebar.classList.remove("open");
+  }
+});
 
 
 
@@ -994,6 +1014,33 @@ function loadProducts(products) {
     catList.appendChild(btn);
   });
 }
+
+///----
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const isOpen = sidebar.classList.contains("open");
+
+  if (!isOpen) {
+    sidebar.classList.add("open");
+
+    // Empujamos un nuevo estado al historial
+    history.pushState({ sidebarOpen: true }, "");
+  } else {
+    sidebar.classList.remove("open");
+
+    // Volver al estado anterior si el sidebar estaba abierto
+    if (history.state?.sidebarOpen) {
+      history.back();
+    }
+  }
+}
+
+window.addEventListener("popstate", (event) => {
+  const sidebar = document.getElementById("sidebar");
+  if (sidebar.classList.contains("open")) {
+    sidebar.classList.remove("open");
+  }
+});
 
 
 
