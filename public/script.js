@@ -1040,6 +1040,7 @@ function filterProducts() {
 
 
 
+///----
 
 function loadProducts(products) {
   allProducts = products;
@@ -1083,49 +1084,6 @@ function loadProducts(products) {
 }
 
 
-
-
-
-function loadProducts(products) {
-  allProducts = products;
-  setupFuse(products); // 🔥 Preparar Fuse.js
-
-  renderProducts(products);
-
-  const categories = ["TODOS", ...new Set(products.map(p => p.category))];
-  const catList = document.getElementById("categoryList");
-  catList.innerHTML = "";
-
-  categories.forEach(cat => {
-    const btn = document.createElement("button");
-    btn.textContent = cat;
-    btn.dataset.category = cat;
-    btn.style.display = "block";
-    btn.style.marginBottom = "5px";
-
-    btn.onclick = () => {
-      document.querySelectorAll("#categoryList button")
-        .forEach(b => b.classList.remove("selected"));
-      btn.classList.add("selected");
-
-      document.getElementById("search").value = "";
-
-      showingFavorites = false;
-      document.querySelector(".favorites-button")?.classList.remove("selected");
-
-      const favBtnIcon = document.querySelector(".favorites-button svg");
-      if (favBtnIcon) {
-        favBtnIcon.setAttribute("fill", "none");
-      }
-
-      filterProducts();
-      toggleSidebar();
-    };
-
-    catList.appendChild(btn);
-  });
-}
-
 ///----
 function toggleSidebar() {
   const sidebar = document.getElementById("sidebar");
@@ -1154,14 +1112,32 @@ window.addEventListener("popstate", (event) => {
 });
 
 
+function actualizarPublicidad(products) {
+  const imgPublicidad = document.getElementById("publicidad-img");
+  
+  if (!imgPublicidad) return; // Por si no existe el elemento
+
+  // Buscamos la primera publicidad que no sea vacía
+  const productoConPublicidad = products.find(p => p.publicidad && p.publicidad.trim() !== "");
+
+  if (productoConPublicidad) {
+    const nuevaURL = productoConPublicidad.publicidad.trim();
+    if (imgPublicidad.src !== nuevaURL) {
+      imgPublicidad.src = nuevaURL;
+    }
+  }
+}
+
+
+
   // ---------------------------
 
 fetch("/api/products")
   .then(res => res.json())
   .then(products => {
-    loadProducts(products);
-    mostrarPublicidadYRestaurarMargen()
-    
+    loadProducts(products);          // Tu función que carga productos en pantalla
+    actualizarPublicidad(products);  // Actualiza el src de la imagen de publicidad
+    mostrarPublicidadYRestaurarMargen();
   })
   .catch(err => {
     console.error("Error cargando productos:", err);
