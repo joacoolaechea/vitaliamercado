@@ -138,7 +138,11 @@ header {
 /* 🧾 Contenido principal */
 .content {
   /* separa del header */
-  margin-top: 400px;
+  margin-top: 10px;
+}
+
+.content.shifted-margin {
+  margin-top: 400px !important;
 }
 
 
@@ -511,6 +515,26 @@ header {
 .site-footer a:hover {
   text-decoration: underline;
 }
+
+
+/* PUBLICIDAD */
+.promo-image {
+  text-align: center;
+  margin: 400px 0 40px;
+}
+
+.promo-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.hidden {
+  display: none !important;
+}
+
+
 
 /* FILTROS PRODUCTOS /
 

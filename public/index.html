@@ -5,40 +5,6 @@
   <meta charset="UTF-8">
   <title>Vitalia</title>
   <link rel="stylesheet" href="style.css">
-</head>
-<style>
-  * {
-    box-sizing: border-box;
-  }
-
- 
-
-  footer {
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-
-</style>
-
-
-<body>
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
-  <header>
-
-
-    
-    <img src="logo.png" alt="Logo Vitalia" class="logo">
-  </header>
-<button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Abrir menú">
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-       stroke-width="1.5" stroke="currentColor"
-       style="width: 120px; height: 120px; color: white;">
-    <path stroke-linecap="round" stroke-linejoin="round"
-          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-  </svg>
-</button>
-
 
 <!-- FILTRO PRODUCTOS -->
 <div id="filterContainer" style="margin: -120px 20px 20px 20px; position:fixed; z-index: 1500;">
@@ -172,6 +138,63 @@ document.addEventListener("click", function (event) {
   </div>
 </div>
 
+
+</head>
+
+<!-- Imagen de publicidad -->
+<div class="promo-image">
+  <img id="publicidad-img" src="" alt="Publicidad Vitalia" />
+</div>
+<!-- Imagen de publicidad -->
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+ 
+
+  footer {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+
+</style>
+
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+ <header>
+  <img src="logo.png" alt="Logo Vitalia" class="logo" onclick="mostrarPublicidadYRestaurarMargen()" style="cursor: pointer;">
+</header>
+
+<button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Abrir menú">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+       stroke-width="1.5" stroke="currentColor"
+       style="width: 120px; height: 120px; color: white;">
+    <path stroke-linecap="round" stroke-linejoin="round"
+          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+  </svg>
+</button>
+
+<!-- FILTRO PRODUCTOS -->
+
+
+<!--   CATEGORIA SELECCIONADA (NO FUNCIONA AUN)
+   
+<h2 id="categoryTitle"
+    style="
+      text-align: center;
+      margin: 320px 0 30px; /* margen top para estar justo debajo del search fijo */
+      font-size: 3rem;
+      color: #7a1f42;
+      position: relative;
+      z-index: 999999;
+    ">
+</h2>
+
+-->
 
 
 

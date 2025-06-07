@@ -26,21 +26,29 @@ app.get('/api/products', async (req, res) => {
 
         const rawPrice = (row["Price"] || "0").replace(/,/g, '');
         const price = parseFloat(rawPrice);
+results.push({
+  name,
+  category: row["ProductGroup"]?.trim() || "SIN CATEGORÍA",
+  price: isNaN(price) ? 0 : price,
+  unit: row["MeasurementUnit"]?.trim() || "Unidad",
+  image: (() => {
+    const raw = (row["Image"] || "").trim();
+    if (!raw) return "";
+    if (/\.(jpg|jpeg|png|webp)$/i.test(raw)) return raw;
+    const match = raw.match(/(?:imgur\.com\/)?([a-zA-Z0-9]+)/);
+    const id = match ? match[1] : raw;
+    return `https://i.imgur.com/${id}.jpg`;
+  })(),
+  publicidad: (() => {
+    const raw = (row["Publicidad"] || "").trim();
+    if (!raw) return "";
+    if (/\.(jpg|jpeg|png|webp)$/i.test(raw)) return raw;
+    const match = raw.match(/(?:imgur\.com\/)?([a-zA-Z0-9]+)/);
+    const id = match ? match[1] : raw;
+    return `https://i.imgur.com/${id}.jpg`;
+  })()
+});
 
-        results.push({
-          name,
-          category: row["ProductGroup"]?.trim() || "SIN CATEGORÍA",
-          price: isNaN(price) ? 0 : price,
-          unit: row["MeasurementUnit"]?.trim() || "Unidad",
-          image: (() => {
-            const raw = (row["Image"] || "").trim();
-            if (!raw) return "";
-            if (/\.(jpg|jpeg|png|webp)$/i.test(raw)) return raw;
-            const match = raw.match(/(?:imgur\.com\/)?([a-zA-Z0-9]+)/);
-            const id = match ? match[1] : raw;
-            return `https://i.imgur.com/${id}.jpg`;
-          })()
-        });
       })
       .on('end', () => res.json(results))
       .on('error', (err) => {

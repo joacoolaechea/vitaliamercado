@@ -401,13 +401,78 @@ function updateFavoriteIcons() {
   });
 }
 
+/**** OCULTAR PUBLICIDAD  */
+function ocultarPublicidadYExpandirContenido() {
+  const promo = document.querySelector(".promo-image");
+  const content = document.querySelector(".content");
+
+  if (promo) {
+    promo.style.display = "none";
+  }
+
+  if (content) {
+    content.style.marginTop = "400px";
+  }
+
+}
+/**** mostrar  */
+
+function mostrarPublicidadYRestaurarMargen() {
+  const promo = document.querySelector(".promo-image");
+  const productos = document.querySelectorAll(".product");
+  const content = document.querySelector(".content");
+
+  document.getElementById("unitFilter").value = "";
+  document.getElementById("priceFilter").value = "";
+  document.getElementById("search").value = "";
+
+  // Cargar imagen de publicidad si existe
+  const prodConPublicidad = allProducts.find(p => p.publicidad); // 👈 busca el primero con publicidad
+  if (prodConPublicidad && promo?.querySelector("img")) {
+    promo.querySelector("img").src = prodConPublicidad.publicidad;
+  }
+
+  // Mostrar la promo
+  if (promo) {
+    promo.style.display = "block";
+  }
+
+  // Restaurar margen superior
+  if (content) {
+    content.style.marginTop = "0px";
+  }
+
+  // Ocultar todos los productos
+  productos.forEach(producto => {
+    producto.style.display = "none";
+  });
+
+  // Salir del modo favoritos
+  showingFavorites = false;
+  document.querySelector(".favorites-button")?.classList.remove("selected");
+
+  // Cambiar el icono del corazón a "sin pintar"
+  const favBtnIcon = document.querySelector(".favorites-button svg");
+  if (favBtnIcon) {
+    favBtnIcon.setAttribute("fill", "none");
+  }
+
+  // Quitar selección de categorías
+  document.querySelectorAll("#categoryList button")
+    .forEach(b => b.classList.remove("selected"));
+}
+
+
+
+
 
 function renderProducts(products) {
   const list = document.getElementById("productList");
   list.innerHTML = "";
- // 🔠 Ordenar alfabéticamente por nombre (de A a Z)
- // products.sort((a, b) => a.name.localeCompare(b.name));
-  
+
+
+
+
   products.forEach(p => {
     const div = document.createElement("div");
     div.className = "product";
@@ -492,7 +557,7 @@ document.getElementById("filterButton").addEventListener("click", () => {
 function applyFilters(products = null) {
   const unit = document.getElementById("unitFilter").value;
   const priceOrder = document.getElementById("priceFilter").value;
-
+   ocultarPublicidadYExpandirContenido()
   // Si está activada la vista de favoritos, la desactivamos
   if (showingFavorites) {
     showingFavorites = false;
@@ -536,6 +601,7 @@ function applyFilters(products = null) {
   }
 
   renderProducts(filtered);
+  
 }
 
 
@@ -610,7 +676,7 @@ function clearFiltersForFavorites() {
 
 function toggleFavorites() {
   const btn = document.querySelector(".favorites-button svg");
-
+  ocultarPublicidadYExpandirContenido()
   showingFavorites = !showingFavorites;
 
   if (showingFavorites) {
@@ -982,6 +1048,51 @@ function loadProducts(products) {
   renderProducts(products);
 
   const categories = ["TODOS", ...new Set(products.map(p => p.category))];
+  
+  const catList = document.getElementById("categoryList");
+  catList.innerHTML = "";
+
+  categories.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.textContent = cat;
+    btn.dataset.category = cat;
+    btn.style.display = "block";
+    btn.style.marginBottom = "5px";
+
+    btn.onclick = () => {
+      document.querySelectorAll("#categoryList button")
+        .forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+
+      document.getElementById("search").value = "";
+
+      showingFavorites = false;
+      document.querySelector(".favorites-button")?.classList.remove("selected");
+
+      const favBtnIcon = document.querySelector(".favorites-button svg");
+      if (favBtnIcon) {
+        favBtnIcon.setAttribute("fill", "none");
+      }
+
+      filterProducts();
+      toggleSidebar();
+    };
+
+    catList.appendChild(btn);
+  });
+}
+
+
+
+
+
+function loadProducts(products) {
+  allProducts = products;
+  setupFuse(products); // 🔥 Preparar Fuse.js
+
+  renderProducts(products);
+
+  const categories = ["TODOS", ...new Set(products.map(p => p.category))];
   const catList = document.getElementById("categoryList");
   catList.innerHTML = "";
 
@@ -1043,14 +1154,14 @@ window.addEventListener("popstate", (event) => {
 });
 
 
-
   // ---------------------------
-
 
 fetch("/api/products")
   .then(res => res.json())
   .then(products => {
     loadProducts(products);
+    mostrarPublicidadYRestaurarMargen()
+    
   })
   .catch(err => {
     console.error("Error cargando productos:", err);
