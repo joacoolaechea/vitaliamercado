@@ -145,9 +145,13 @@ document.addEventListener("click", function (event) {
 <div class="promo-image">
   <img id="publicidad-img" src="" alt="Publicidad Vitalia" />
 </div>
----->
+
 <div class="promo-image">
   <img id="publicidad-img" src="https://i.imgur.com/aZ81bam.png" alt="Publicidad Vitalia" style="max-width:100%;" />
+</div>
+---->
+<div class="promo-image">
+  <img id="publicidad-img" src="/portada.png" alt="Publicidad Vitalia" style="max-width:100%;" />
 </div>
 
 <!-- Imagen de publicidad -->
@@ -176,12 +180,12 @@ document.addEventListener("click", function (event) {
 
 <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Abrir menú">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-       stroke-width="1.5" stroke="currentColor"
-       style="width: 120px; height: 120px; color: white;">
+       stroke-width="1.5" stroke="currentColor" class="sidebar-icon">
     <path stroke-linecap="round" stroke-linejoin="round"
           d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
   </svg>
 </button>
+
 
 <!-- FILTRO PRODUCTOS -->
 
@@ -243,14 +247,21 @@ document.addEventListener("click", function (event) {
   </svg>
 </div>
 
-            <!-- CARRITO -->
-      <div class="cart-button" onclick="toggleCart()" aria-label="Abrir carrito">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:100px; height:100px; color: white;">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-        </svg>
-        <span id="cartCount" style="margin-left: 4px; font-weight: bold; font-size: 50px; color:#dd8e3f;"></span>
+ <!-- CARRITO -->
+<div class="cart-button" onclick="toggleCart()" aria-label="Abrir carrito">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+       viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+       class="cart-icon">
+    <path stroke-linecap="round" stroke-linejoin="round"
+          d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75
+             m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138
+             a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25L5.106 5.272
+             M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0
+             a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+  </svg>
+  <span id="cartCount" class="cart-count"></span>
+</div>
 
-      </div>
     </div>
     <div id="productList"></div>
   </div>
@@ -415,7 +426,7 @@ document.addEventListener("click", function (event) {
       <svg fill="#ffffff" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
         <path d="M960 112.941c-467.125 0-847.059 379.934-847.059 847.059 0 467.125 379.934 847.059 847.059 847.059 467.125 0 847.059-379.934 847.059-847.059 0-467.125-379.934-847.059-847.059-847.059M960 1920C430.645 1920 0 1489.355 0 960S430.645 0 960 0s960 430.645 960 960-430.645 960-960 960m417.905-575.955L903.552 988.28V395.34h112.941v536.47l429.177 321.77-67.765 90.465Z" fill-rule="evenodd"></path>
       </svg>
-  <span style="font-weight: bold; font-size: 1.2em;">Horarios:</span>
+  <span style="font-weight: bold; font-size: 1.1em;">Horarios:</span>
     </span>
 
     <br>Lunes a Viernes:  

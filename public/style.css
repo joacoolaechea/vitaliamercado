@@ -1,3 +1,5 @@
+
+
 /* 🔠 Fuente personalizada */
 @font-face {
   font-family: 'MADECarvingSoft';
@@ -76,6 +78,16 @@ header {
 
 
 /* ☰ Botón menú lateral */
+
+
+
+.sidebar-icon {
+  width: 120px;
+  height: 120px;
+  color: white;
+}
+
+
 .sidebar-toggle {
   position: fixed;
   top: 20px;
@@ -249,6 +261,9 @@ header {
 
 
 /* 🛒 Botón del carrito */
+
+
+
 .cart-button {
   position: fixed;
   top: 20px;
@@ -261,6 +276,20 @@ header {
   padding: 10px 15px;
   z-index: 3000;
 }
+
+.cart-icon {
+  width: 100px;
+  height: 100px;
+  color: white;
+}
+
+.cart-count {
+  margin-left: 8px;
+  font-weight: bold;
+  font-size: 50px;
+  color: #dd8e3f;
+}
+
 
 /* 📦 Carrito desplegable */
 /* 📦 Carrito desplegable – pantalla completa REAL */
@@ -536,5 +565,200 @@ header {
 
 
 
-/* FILTROS PRODUCTOS /
+/**FILTROS UNIDAD O PRECIO */
 
+
+
+/****-------------------------
+
+/*pc  AJUSTE TAMAÑO PANTALLA A PC*/
+
+@media (min-width: 1024px) {
+
+  
+
+  
+#filterContainer {
+  display: none;
+}
+
+  /* PUBLICIDAD pc*/
+.promo-image {
+  text-align: center;
+  margin: 150px 0 0px; /* más espacio arriba */
+}
+
+.promo-image img {
+  width: 100%;
+  max-width: 600px; /* más angosta en PC */
+  height: auto;
+  aspect-ratio: 3 / 1.4; /* fuerza que sea más fina: ancho 3x, alto 1x */
+  object-fit: cover; /* recorta si es necesario */
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+  
+  
+  /* Contenedor principal centrado y ancho limitado */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Header más pequeño */
+  header {
+    height: 150px;
+  }
+
+  /* Logo más pequeño y sin margen superior */
+  header .logo {
+    max-width: 250px;
+    margin-top: -50px;
+  }
+
+  /* Sidebar más estrecho */
+  .sidebar {
+    width: 300px;
+  }
+
+  /* Productos: menos padding y fuente más chica */
+  .product {
+    padding: 30px;           /* antes 60px, bajamos a 30px */
+  }
+
+  .product h3 {
+    font-size: 20px;         /* antes 40px, bajamos a 20px */
+  }
+
+  .product p {
+    font-size: 12px;         /* antes 10px, subimos un poco para legibilidad */
+  }
+
+  /* Input búsqueda más pequeño */
+  #search {
+    width: 720px;            /* antes 720px, bajamos a 400px */
+ /* Ajustes para hacerlo más fino verticalmente */
+  padding: 6px 22px;     /* menos padding vertical */
+  font-size: 16px;       /* texto más chico */
+    top: 100px;
+  }
+.cart-button {
+  
+  top: 20px;
+  right: 20px;
+  font-size: 5px;       /* antes: 10px */
+  padding: 2.5px 4px;   /* antes: 5px 8px */
+}
+
+
+/* Botón menú lateral reducido a la mitad */
+.sidebar-toggle {
+  width: 110px;         /* 220 / 2 */
+  height: 40px;         /* 80 / 2 */
+  font-size: 16px;      /* 32 / 2 */
+}
+  /* Botones categorías más pequeños */
+  #categoryList button {
+    height: 50px;           /* antes 150px */
+    font-size: 15px;         /* antes 54px */
+    border-width: 2px;       /* un poco más delgado */
+    border-radius: 10px;     /* un poco menos redondeado */
+  }
+
+  /* Checkbox label más pequeño */
+  .styled-checkbox-label {
+    font-size: 1.6rem;       /* antes 2.4rem */
+    gap: 40px;               /* antes 100px */
+  }
+
+  .styled-checkbox-label .checkmark {
+    width: 50px;             /* antes 86px */
+    height: 50px;
+    border-width: 2px;       /* antes 3px */
+    margin-left: 70px;       /* antes 150px */
+  }
+
+  .styled-checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+    left: 12px;              /* antes 20px */
+    top: -6px;               /* antes -10px */
+    width: 18px;             /* antes 30px */
+    height: 40px;            /* antes 70px */
+    border-width: 0 5px 5px 0; /* antes 0 8px 8px 0 */
+  }
+
+  /* Dirección para envío */
+  #shippingAddress {
+    max-width: 600px;        /* antes 800px */
+    height: 70px;            /* antes 100px */
+    font-size: 1.6rem;       /* antes 2.8rem */
+    padding: 10px 12px;      /* antes 14px 16px */
+  }
+
+  /* Cart popup ajustes para texto más chico */
+  .cart-popup h3 {
+    font-size: 20px;         /* antes 28px */
+  }
+
+  .cart-popup li {
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+ .cart-icon {
+  width: 50px;
+  height: 50px;
+  color: white;
+}
+
+.cart-count {
+  margin-left: 8px;
+  font-weight: bold;
+  font-size: 20px;
+  color: #dd8e3f;
+}
+
+
+  /* WhatsApp button más chico */
+  .whatsapp-button {
+    width: 80px;
+    height: 80px;
+    bottom: 70px;
+    right: 30px;
+  }
+
+  .whatsapp-icon {
+    width: 80px;
+    height: 80px;
+  }
+  .favorites-button {
+  font-size: 2px;        /* la mitad de 10px */
+  padding: 1px 2px;    /* la mitad de 5px 8px */
+  top:90px;             /* si antes era 20px, subir 3x más = 60px más arriba */
+  left: 1040px;            /* más a la izquierda, ajustá según lo necesites */
+  position: fixed;    /* asegurate de que tenga position para aplicar top/left */
+      width: 50px;
+    height: 50px;
+}
+.filtros-button {
+  font-size: 2px;
+  padding: 1px 2px;
+  width: 50px;
+  height: 50px;
+  top: 20px;        /* misma altura que .favorites-button */
+  left: 870px;      /* ajustá según lo necesites respecto a .favorites-button */
+  position: fixed;  /* necesario para usar top/left */
+}
+
+
+.sidebar-icon {
+  width: 50px;
+  height: 50px;
+  color: white;
+}
+
+
+
+
+
+}

@@ -11,6 +11,8 @@ loadCartFromStorage();
 updateCart();
 
 
+
+
 // Abre el carrito y actualiza la URL con un hash (#cart)
 function openCart() {
   const cartPopup = document.getElementById("cartPopup");
