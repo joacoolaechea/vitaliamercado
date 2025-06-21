@@ -330,7 +330,12 @@ function showToast(message, backgroundColor = "#7a1f4296", textColor = "#fff") {
   const toast = document.getElementById("toast");
 
   toast.innerHTML = message;
-  toast.style.fontSize = "2.2rem";
+   // Ajustar tamaño según ancho de pantalla
+  if (window.innerWidth <= 1024) {
+    toast.style.fontSize = "2.2rem";
+  } else {
+    toast.style.fontSize = "1rem";
+  }
   toast.style.padding = "20px 40px";
   toast.style.borderRadius = "12px";
   toast.style.maxWidth = "80%";
@@ -413,10 +418,14 @@ function ocultarPublicidadYExpandirContenido() {
   }
 
   if (content) {
-    content.style.marginTop = "400px";
+    if (window.innerWidth > 1024) {
+      content.style.marginTop = "150px";  // PC
+    } else {
+      content.style.marginTop = "400px";  // Móvil/Tablet
+    }
   }
-
 }
+
 /**** mostrar  */
 
 function mostrarPublicidadYRestaurarMargen() {
@@ -472,13 +481,18 @@ function renderProducts(products) {
   const list = document.getElementById("productList");
   list.innerHTML = "";
 
+  const isDesktop = window.innerWidth > 1024;
 
-
+  // Cambiar layout del contenedor padre según dispositivo
+  list.style.display = isDesktop ? "grid" : "block";
+ list.style.gridTemplateColumns = isDesktop ? "71% 71%" : "auto";
+  list.style.gap = isDesktop ? "20px" : "0";
 
   products.forEach(p => {
     const div = document.createElement("div");
     div.className = "product";
     div.style.position = "relative";
+    div.style.width = "auto";  // Dejamos ancho automático, el grid define el ancho
 
     const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://i.imgur.com/p4tHxub.jpeg";
     const isFavorite = favorites.some(f => f.name === p.name);
@@ -486,18 +500,26 @@ function renderProducts(products) {
     const favButton = document.createElement("button");
     favButton.className = "favorite-btn";
     favButton.setAttribute("data-name", p.name);
-    favButton.style.cssText = "position:absolute; top:10px; right:10px; background:none; border:none; cursor:pointer; padding:5px;";
+    favButton.style.cssText = `
+      position:absolute;
+      top:${isDesktop ? "5px" : "10px"};
+      right:${isDesktop ? "5px" : "10px"};
+      background:none;
+      border:none;
+      cursor:pointer;
+      padding:${isDesktop ? "2px" : "5px"};
+    `;
     favButton.innerHTML = `
-   
-  <svg xmlns="http://www.w3.org/2000/svg" fill="${isFavorite ? "#a61f4d" : "none"}"
-       viewBox="0 0 24 24" stroke-width="1.5" stroke="#a61f4d" width="62" height="62">
-    <path stroke-linecap="round" stroke-linejoin="round"
-          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5
-             -1.935 0-3.597 1.126-4.312 2.733
-             -.715-1.607-2.377-2.733-4.313-2.733
-             C5.1 3.75 3 5.765 3 8.25c0 7.22
-             9 12 9 12s9-4.78 9-12Z"/>
-  </svg>`;
+      <svg xmlns="http://www.w3.org/2000/svg" fill="${isFavorite ? "#a61f4d" : "none"}"
+           viewBox="0 0 24 24" stroke-width="1.5" stroke="#a61f4d"
+           width="${isDesktop ? "35" : "62"}" height="${isDesktop ? "35" : "62"}">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5
+                 -1.935 0-3.597 1.126-4.312 2.733
+                 -.715-1.607-2.377-2.733-4.313-2.733
+                 C5.1 3.75 3 5.765 3 8.25c0 7.22
+                 9 12 9 12s9-4.78 9-12Z"/>
+      </svg>`;
 
     favButton.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -505,33 +527,50 @@ function renderProducts(products) {
     });
 
     const mainContent = document.createElement("div");
-    mainContent.style.cssText = "display:flex; align-items:flex-start; gap:20px; padding:20px; cursor:pointer;";
+    mainContent.style.cssText = `
+      display:flex;
+      align-items:flex-start;
+      gap:${isDesktop ? "10px" : "20px"};
+      padding:${isDesktop ? "10px" : "20px"};
+      cursor:pointer;
+      width: 100%;
+    `;
     mainContent.addEventListener("click", () => openProductDetail(p));
 
     const img = document.createElement("img");
     img.src = imageSrc;
     img.alt = p.name;
-    img.style.cssText = "width:450px; height:450px; object-fit:cover; border-radius:8px;";
+    img.style.cssText = `
+      width:${isDesktop ? "225px" : "450px"};
+      height:${isDesktop ? "225px" : "450px"};
+      object-fit:cover;
+      border-radius:8px;
+    `;
     img.onerror = function () {
       this.onerror = null;
       this.src = 'data/default.jpeg';
     };
 
     const info = document.createElement("div");
-    info.style.cssText = "display:flex; flex-direction:column; flex:1; height:450px;";
+    info.style.cssText = `
+      display:flex;
+      flex-direction:column;
+      flex:1;
+      height:${isDesktop ? "225px" : "450px"};
+    `;
 
     info.innerHTML = `
-      <span style="font-size:2.5rem; font-weight:700; line-height:1.2; word-wrap:break-word; margin-bottom:8px;">
+      <span style="font-size:${isDesktop ? "1.25rem" : "2.5rem"}; font-weight:700; line-height:1.2; word-wrap:break-word; margin-bottom:8px;">
         ${p.name}
       </span>
-      <span style="font-size:1rem; color:#d78a8f; margin-bottom: auto;">
+      <span style="font-size:${isDesktop ? "0.7rem" : "1.1rem"}; color:#d78a8f; margin-bottom:auto;">
         ${p.category}
       </span>
-      <div style="margin-top: auto;">
-        <span style="display:block; font-size:2rem; color:#d78a8f; margin-bottom:12px;">
+      <div style="margin-top:auto;">
+        <span style="display:block; font-size:${isDesktop ? "1rem" : "2rem"}; color:#d78a8f; margin-bottom:12px;">
           ${p.unit}
         </span>
-        <span style="display:block; font-size:5rem; font-weight:700;">
+        <span style="display:block; font-size:${isDesktop ? "2.5rem" : "5rem"}; font-weight:700;">
           $${p.price}
         </span>
       </div>
@@ -547,6 +586,8 @@ function renderProducts(products) {
 
   updateFavoriteIcons();
 }
+
+
 
 
 

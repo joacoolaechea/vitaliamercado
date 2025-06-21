@@ -145,7 +145,7 @@ document.addEventListener("click", function (event) {
 <div class="promo-image">
   <img id="publicidad-img" src="" alt="Publicidad Vitalia" />
 </div>
-
+-------------------------
 <div class="promo-image">
   <img id="publicidad-img" src="https://i.imgur.com/aZ81bam.png" alt="Publicidad Vitalia" style="max-width:100%;" />
 </div>
@@ -221,8 +221,8 @@ document.addEventListener("click", function (event) {
 
 
 <div class="sidebar" id="sidebar">
-  <button onclick="toggleSidebar()" class="close-sidebar" aria-label="Cerrar menú" style="background: none; border: none; cursor: pointer; padding: 10px;">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 64px; height: 64px;">
+  <button class="close-sidebar" onclick="toggleSidebar()" aria-label="Cerrar menú">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
     </svg>
   </button>
@@ -348,28 +348,12 @@ document.addEventListener("click", function (event) {
   <script src="script.js"></script>
 
 <!-- Modal para detalle de producto -->
-<div id="productDetailModal" style="
-  display:none;
-  position:fixed;
-  inset:0;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-">
-  <div id="productDetailContent" style="
-    background: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    max-width: 900px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-sizing: border-box;
-  ">
+<div id="productDetailModal" class="modal">
+  <div id="productDetailContent" class="modal-content">
     <!-- contenido generado por JS -->
   </div>
 </div>
+
 
 
 <!-- PIE PAGINA -->
