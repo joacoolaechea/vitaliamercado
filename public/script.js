@@ -201,7 +201,7 @@ function updateCart() {
         shippingInput.value = "";
       }
     } else {
-      shippingCostText.innerHTML = total >= 30000
+      shippingCostText.innerHTML = total >= 35000
         ? '<span style="color: #dd8e3f; font-weight: bold;">ENVÍO GRATIS <span style="font-family: \'MadeCarving\', sans-serif; font-size: 0.7em;">(solo zona Gualeguaychú)</span></span>'
         : '<span style="color: #a84a65; font-weight: bold; font-family: \'MadeCarving\', sans-serif;">Envio a cargo del comprador</span>';
       if (shippingInput) shippingInput.style.display = "block";
@@ -471,23 +471,32 @@ function mostrarPublicidadYRestaurarMargen() {
 
 
 
-
 function renderProducts(products) {
   const list = document.getElementById("productList");
   list.innerHTML = "";
 
-  const isDesktop = window.innerWidth > 1024;
+  const screenWidth = window.innerWidth;
+  const isDesktop = screenWidth > 1024;
+  const isLargeDesktop = screenWidth >= 1920;
 
   // Cambiar layout del contenedor padre según dispositivo
   list.style.display = isDesktop ? "grid" : "block";
- list.style.gridTemplateColumns = isDesktop ? "71% 71%" : "auto";
+
+  if (isLargeDesktop) {
+    list.style.gridTemplateColumns = "68% 68% 68%";
+  } else if (isDesktop) {
+    list.style.gridTemplateColumns = "71% 71%";
+  } else {
+    list.style.gridTemplateColumns = "auto";
+  }
+
   list.style.gap = isDesktop ? "20px" : "0";
 
   products.forEach(p => {
     const div = document.createElement("div");
     div.className = "product";
     div.style.position = "relative";
-    div.style.width = "auto";  // Dejamos ancho automático, el grid define el ancho
+    div.style.width = "auto";  // El grid define el ancho
 
     const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://i.imgur.com/p4tHxub.jpeg";
     const isFavorite = favorites.some(f => f.name === p.name);
@@ -581,7 +590,6 @@ function renderProducts(products) {
 
   updateFavoriteIcons();
 }
-
 
 
 

@@ -816,7 +816,9 @@ header {
 
 
 
-/****-------------------------
+/****-------------------------*/
+
+
 
 /*pc  AJUSTE TAMAÑO PANTALLA A PC*/
 
@@ -1048,11 +1050,13 @@ header {
   font-size: 2px;        /* la mitad de 10px */
   padding: 1px 2px;    /* la mitad de 5px 8px */
   top:90px;             /* si antes era 20px, subir 3x más = 60px más arriba */
-  left: 1040px;            /* más a la izquierda, ajustá según lo necesites */
+   right: 40px;           /* más a la izquierda, ajustá según lo necesites */
   position: fixed;    /* asegurate de que tenga position para aplicar top/left */
       width: 50px;
     height: 50px;
 }
+
+
 .filtros-button {
   font-size: 2px;
   padding: 1px 2px;
@@ -1214,4 +1218,10 @@ header {
 }
 
 
+}
+
+@media (min-width: 1920px) {
+  .cart-total {
+    margin-left: 750px; /* ajustá este valor según necesites */
+  }
 }
