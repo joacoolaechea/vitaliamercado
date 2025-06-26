@@ -17,17 +17,22 @@ updateCart();
 function openCart() {
   const cartPopup = document.getElementById("cartPopup");
   cartPopup.style.display = "block";
-  location.hash = "cart"; // cambia la URL para poder usar el botón "atrás"
+  document.body.style.overflow = "hidden"; // Desactiva el scroll del fondo
+  location.hash = "cart"; // Cambia la URL
 }
 
 // Cierra el carrito (y si hay hash, simula volver atrás)
 function closeCart() {
   const cartPopup = document.getElementById("cartPopup");
   cartPopup.style.display = "none";
+  document.body.style.overflow = "auto"; // Restaura el scroll
+
   if (location.hash === "#cart") {
-    history.back(); // simula el botón "atrás"
+    history.back(); // Simula botón "atrás"
   }
 }
+
+
 
 // Escucha el cambio en la URL (hash) para detectar botón atrás(CARRITO)
 window.addEventListener("hashchange", () => {
@@ -64,6 +69,8 @@ function loadCartFromStorage() {
 
 
 function updateCart() {
+  const isDesktop = window.innerWidth >= 1024;
+
   const cartItems = document.getElementById("cartItems");
   const cartCount = document.getElementById("cartCount");
   const cartTotal = document.getElementById("cartTotal");
@@ -84,13 +91,13 @@ function updateCart() {
     li.className = "cart-item";
     li.style.display = "flex";
     li.style.alignItems = "center";
-    li.style.gap = "16px";
+    li.style.gap = isDesktop ? "8px" : "16px";
 
     li.innerHTML = `
       <img src="${imageSrc}" alt="${item.name}"
-           style="width:250px;height:250px;object-fit:cover;border-radius:8px;flex-shrink:0;">
+           style="width:${isDesktop ? '125px' : '250px'};height:${isDesktop ? '125px' : '250px'};object-fit:cover;border-radius:8px;flex-shrink:0;">
       <div style="display:flex;flex-direction:column;flex:1;">
-        <span style="font-size:2rem;font-weight:600;margin-bottom:8px;">${item.name}</span>
+        <span style="font-size:${isDesktop ? '1rem' : '2rem'};font-weight:600;margin-bottom:8px;">${item.name}</span>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
           <div style="
             display: flex;
@@ -98,7 +105,7 @@ function updateCart() {
             border: 2px solid #dd8e3f;
             border-radius: 12px;
             overflow: hidden;
-            width: 280px;
+            width: ${isDesktop ? '140px' : '280px'};
             background: #fff;
           ">
             <button class="qty-btn cart-minus-btn" data-index="${index}"
@@ -106,12 +113,12 @@ function updateCart() {
                       border: none;
                       background: #fff;
                       color: #a84a65;
-                      font-size: 3.4rem;
+                      font-size: ${isDesktop ? '1.7rem' : '3.4rem'};
                       font-weight: 900;
                       cursor: pointer;
-                      padding: 10 12px;
+                      padding: 0 6px;
                       user-select: none;
-                      height: 50px;
+                      height: ${isDesktop ? '25px' : '50px'};
                       line-height: 1;
                     ">−</button>
             <input type="number"
@@ -119,11 +126,11 @@ function updateCart() {
                    onchange="changeQuantity(${index}, this.value, '${item.unit}')"
                    onblur="if('${item.unit}'==='Unidad' && this.value%1!==0) this.value=Math.floor(this.value)"
                    style="
-                     width: 170px;
-                     height: 80px;
+                     width: ${isDesktop ? '80px' : '170px'};
+                     height: ${isDesktop ? '40px' : '80px'};
                      padding: 0;
                      margin: 0;
-                     font-size: 3rem;
+                     font-size: ${isDesktop ? '1.5rem' : '3rem'};
                      font-family: 'MADECarvingSoft', sans-serif;
                      font-weight: 900;
                      color: #a84a65;
@@ -139,18 +146,18 @@ function updateCart() {
                       border: none;
                       background: #fff;
                       color: #a84a65;
-                      font-size: 3.4rem;
+                      font-size: ${isDesktop ? '1.7rem' : '3.4rem'};
                       font-weight: 900;
                       cursor: pointer;
-                      padding: 0 12px;
+                      padding: 0 6px;
                       user-select: none;
-                      height: 50px;
+                      height: ${isDesktop ? '25px' : '50px'};
                       line-height: 1;
                     ">+</button>
           </div>
-          <span style="font-size:1.6rem;">${item.unit}</span>
+          <span style="font-size:${isDesktop ? '0.8rem' : '1.6rem'};">${item.unit}</span>
         </div>
-        <div style="font-size:3rem;font-weight:bold;color:#fff;">$${subtotal.toFixed(2)}</div>
+        <div style="font-size:${isDesktop ? '1.5rem' : '3rem'};font-weight:bold;color:#fff;">$${subtotal.toFixed(2)}</div>
       </div>
 
       <button onclick="removeFromCart(${index})"
@@ -158,7 +165,7 @@ function updateCart() {
               style="background:none;border:none;cursor:pointer;padding:4px;">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-             style="width:62px;height:62px;color:white;">
+             style="width:${isDesktop ? '31px' : '62px'};height:${isDesktop ? '31px' : '62px'};color:white;">
           <path stroke-linecap="round" stroke-linejoin="round"
                 d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21
                    c.342.052.682.107 1.022.166m-1.022-.165
@@ -185,44 +192,32 @@ function updateCart() {
 
   if (pickupCheckbox && shippingCostText) {
     if (pickupCheckbox.checked) {
-shippingCostText.innerHTML = `
-  <span style="color: #dd8e3f;  font-family: 'MadeCarving', sans-serif;">10% OFF EN EFECTIVO </span><br>
-  <span style="color: #dd8e3f;  font-family: 'MadeCarving', sans-serif; font-size: 26px;">(Pellegrini 18)</span>
-`;
+      shippingCostText.innerHTML = `
+        <span style="color: #dd8e3f;  font-family: 'MadeCarving', sans-serif;">10% OFF EN EFECTIVO </span><br>
+        <span style="color: #dd8e3f;  font-family: 'MadeCarving', sans-serif; font-size: 26px;">(Pellegrini 18)</span>
+      `;
       if (shippingInput) {
         shippingInput.style.display = "none";
-        shippingInput.value = ""; // limpia la dirección
+        shippingInput.value = "";
       }
     } else {
-      shippingCostText.textContent = total >= 50000
-       shippingCostText.innerHTML = total >= 50000
- ? '<span style="color: #dd8e3f; font-weight: bold;">ENVÍO GRATIS <span style="font-family: \'MadeCarving\', sans-serif; font-size: 0.7em;">(solo zona Gualeguaychú)</span></span>'
-
-: '<span style="color: #a84a65; font-weight: bold; font-family: \'MadeCarving\', sans-serif;">Envio a cargo del comprador</span>'
-
-
+      shippingCostText.innerHTML = total >= 30000
+        ? '<span style="color: #dd8e3f; font-weight: bold;">ENVÍO GRATIS <span style="font-family: \'MadeCarving\', sans-serif; font-size: 0.7em;">(solo zona Gualeguaychú)</span></span>'
+        : '<span style="color: #a84a65; font-weight: bold; font-family: \'MadeCarving\', sans-serif;">Envio a cargo del comprador</span>';
       if (shippingInput) shippingInput.style.display = "block";
     }
   }
 
   const distinctItems = cart.length;
-  if (distinctItems === 0) {
-    cartCount.textContent = "";
-  } else if (distinctItems <= 9) {
-    cartCount.textContent = distinctItems;
-  } else {
-    cartCount.textContent = "9+";
-  }
+  cartCount.textContent = distinctItems === 0 ? "" : distinctItems <= 9 ? distinctItems : "9+";
 
-  // Eventos para botones + y -
   document.querySelectorAll(".cart-minus-btn").forEach(btn => {
     btn.onclick = () => {
       const idx = parseInt(btn.dataset.index);
       let currentQty = parseFloat(cart[idx].quantity);
       const step = cart[idx].unit === "Kilogramo" ? 0.1 : 1;
       currentQty = Math.max(step, currentQty - step);
-      currentQty = parseFloat(currentQty.toFixed(2));
-      cart[idx].quantity = currentQty;
+      cart[idx].quantity = parseFloat(currentQty.toFixed(2));
       updateCart();
     };
   });
@@ -233,14 +228,14 @@ shippingCostText.innerHTML = `
       let currentQty = parseFloat(cart[idx].quantity);
       const step = cart[idx].unit === "Kilogramo" ? 0.1 : 1;
       currentQty = Math.min(100, currentQty + step);
-      currentQty = parseFloat(currentQty.toFixed(2));
-      cart[idx].quantity = currentQty;
+      cart[idx].quantity = parseFloat(currentQty.toFixed(2));
       updateCart();
     };
   });
 
   localStorage.setItem("cart", JSON.stringify(cart));
 }
+
 
 
 
@@ -757,26 +752,30 @@ window.addEventListener("popstate", () => {
 
 
 function openProductDetail(product) {
+
+  // Desactivar scroll de fondo
+document.body.style.overflow = "hidden";
+
   const modal = document.getElementById("productDetailModal");
   const content = document.getElementById("productDetailContent");
 
-  // Inyectar estilos y @font-face
+  const isDesktop = window.innerWidth >= 1024;
+
   const styleTag = document.createElement('style');
   styleTag.textContent = `
     @font-face {
       font-family: 'MADECarvingSoft';
       src: url('./fonts/MADECarvingSoftPERSONALUSE-Black.otf') format('opentype');
-      font-weight: normal;
-      font-style: normal;
     }
     .product-detail-container {
       position: relative;
-      padding: 40px;
+      padding: ${isDesktop ? '20px' : '40px'};
       font-family: 'MADECarvingSoft';
       text-align: center;
     }
     .product-detail-container img {
-      width: 800px; height: 800px;
+      width: ${isDesktop ? '600px' : '800px'};
+      height: ${isDesktop ? '400px' : '800px'};
       object-fit: cover;
       border-radius: 12px;
       margin: 0 auto 32px;
@@ -784,31 +783,33 @@ function openProductDetail(product) {
     }
     .product-detail-container h2 {
       margin-bottom: 16px;
-      font-size: 4rem;
+      font-size: ${isDesktop ? '2rem' : '4rem'};
       color: #a84a65;
     }
     .product-detail-container p {
-      font-size: 2.2rem;
+      font-size: ${isDesktop ? '1.1rem' : '2.2rem'};
       margin-bottom: 16px;
       color: #a84a65;
     }
     .close-detail-btn {
       position: absolute;
-      top: 0px; left: 0px;
+      top: 0px;
+      left: 0px;
       background: #a84a65;
       color: white;
       border: none;
       border-radius: 50%;
-      width: 100px; height: 100px;
-      font-size: 5rem;
+      width: ${isDesktop ? '50px' : '100px'};
+      height: ${isDesktop ? '50px' : '100px'};
+      font-size: ${isDesktop ? '2.5rem' : '5rem'};
       cursor: pointer;
       box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
     .quantity-control {
-      margin-bottom: 24px;
+      margin-bottom: ${isDesktop ? '12px' : '24px'};
     }
     .quantity-control label {
-      font-size: 2rem;
+      font-size: ${isDesktop ? '1rem' : '2rem'};
       font-weight: bold;
       color: #a84a65;
     }
@@ -822,8 +823,8 @@ function openProductDetail(product) {
       background: white;
     }
     .qty-btn {
-      width: 90px;
-      height: 90px;
+      width: ${isDesktop ? '45px' : '90px'};
+      height: ${isDesktop ? '45px' : '90px'};
       border: none;
       background: white;
       cursor: pointer;
@@ -832,34 +833,34 @@ function openProductDetail(product) {
       justify-content: center;
     }
     .qty-btn svg {
-      width: 2.25rem;
-      height: 2.25rem;
+      width: ${isDesktop ? '1.125rem' : '2.25rem'};
+      height: ${isDesktop ? '1.125rem' : '2.25rem'};
     }
     #productDetailQty {
-      width: 300px;
+      width: ${isDesktop ? '100px' : '300px'};
       text-align: center;
-      font-size: 4.5rem;
-      padding: 27px 0;
+      font-size: ${isDesktop ? '2rem' : '4.5rem'};
+      padding: ${isDesktop ? '5px 0' : '27px 0'};
       border: none;
       outline: none;
       font-family: 'MADECarvingSoft';
       background: white;
     }
     .total-price {
-      font-size: 4rem;
+      font-size: ${isDesktop ? '2rem' : '4rem'};
       font-weight: bold;
       margin-left: 40px;
       color: #a84a65;
     }
     .add-cart-wrapper {
-      margin-top: 40px;
+      margin-top: ${isDesktop ? '20px' : '40px'};
     }
     .add-cart-btn {
       background-color: #a84a65;
       color: white;
       border: 1px solid #dd8e3f;
-      padding: 30px 60px;
-      font-size: 3rem;
+      padding: ${isDesktop ? '15px 30px' : '30px 60px'};
+      font-size: ${isDesktop ? '1.5rem' : '3rem'};
       border-radius: 16px;
       cursor: pointer;
       transition: background-color 0.3s ease;
@@ -908,8 +909,8 @@ function openProductDetail(product) {
   `;
   modal.style.display = "flex";
 
-  // Eventos
   document.getElementById("closeDetailBtn").onclick = closeProductDetail;
+
   const qtyInput = document.getElementById("productDetailQty");
   const priceSpan = document.getElementById("dynamicPrice");
   const addBtn = document.getElementById("addToCartBtn");
@@ -955,7 +956,6 @@ function openProductDetail(product) {
 
   addBtn.onclick = () => addToCartFromDetail(product);
 
-  // Agregar estado al historial
   history.pushState({ modalOpen: true }, "", "#detalle");
 }
 
@@ -971,6 +971,10 @@ window.addEventListener("popstate", (event) => {
 
 
 function closeProductDetail() {
+
+    // Restaurar scroll de fondo
+  document.body.style.overflow = "auto";
+
   const modal = document.getElementById("productDetailModal");
   modal.style.display = "none";
 

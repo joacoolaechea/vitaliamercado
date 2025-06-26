@@ -268,74 +268,39 @@ document.addEventListener("click", function (event) {
 
 
 
-  <div class="cart-popup" id="cartPopup">
-    <button onclick="toggleCart()" class="close-cart-btn" aria-label="Cerrar carrito" style="background:none; border:none; cursor:pointer; padding:5px; color:inherit;">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"  stroke="white" style="width:124px; height:124px;">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-      </svg>
-   </button>
+<div class="cart-popup" id="cartPopup">
+  <button onclick="toggleCart()" class="close-cart-btn" aria-label="Cerrar carrito">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+    </svg>
+  </button>
 
-<h3 style="font-size:3rem; margin-bottom:18px; color:#fff; font-family: 'MadeCarving', sans-serif;">Carrito de compras</h3>
+  <h3 class="cart-title">Carrito de compras</h3>
 
+  <ul id="cartItems"></ul>
 
-<ul id="cartItems"></ul>
+  <h3 class="delivery-title">Elegí la forma de entrega</h3>
 
-<h3 style="font-size:3rem;margin:32px 0 18px 0;color:#a84a65;">Elegí la forma de entrega
-  
-</h3>
+  <input id="shippingAddress" type="text" placeholder="Escribe tu dirección…">
 
-<input id="shippingAddress" type="text" placeholder="Escribe tu dirección…"
-       style="width:70%; padding:14px 16px; font-size:2.8rem;
-              border:1px solid #dd8e3f; border-radius:10px; margin-bottom:32px; color:#a84a65; display:block; margin-left:auto; margin-right:auto;">
+  <div id="shippingOptions">
+    <p id="shippingCostText">Envío: a cargo del comprador.</p>
 
-<div id="shippingOptions" style="text-align:center; margin-bottom: 32px;">
-  <p id="shippingCostText" style="font-size:2.4rem; color:#fff; font-weight: bold;">
-    Envío: a cargo del comprador.
-  </p>
-<label class="styled-checkbox-label" style="font-size: 3.5rem; padding: 0.5rem 0; font-family: 'MadeCarving', sans-serif;">
-  <input type="checkbox" id="pickupCheckbox" />
-  <span class="checkmark"></span>
-  <span class="checkbox-text">Retiro en sucursal</span>
-</label>
+    <label class="styled-checkbox-label">
+      <input type="checkbox" id="pickupCheckbox" />
+      <span class="checkmark"></span>
+      <span class="checkbox-text">Retiro en sucursal</span>
+    </label>
 
+    <hr class="divider">
+  </div>
 
-<hr style="border: none; border-bottom: 2px solid #dd8e3f; width: 100%; margin: 16px auto;">
+  <p class="cart-total">Total:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $<span id="cartTotal">0</span></p>
 
+  <button onclick="sendWhatsApp()" class="send-order-btn">Enviar Pedido</button>
 </div>
 
 
-<p style="font-size:4rem; font-weight:bold; color:#fff; margin-left: 150px;">
-  Total:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $<span id="cartTotal">0</span>
-</p>
-
-<style>
-  @font-face {
-    font-family: 'MADECarvingSoft';
-    src: url('./fonts/MADECarvingSoftPERSONALUSE-Black.otf') format('opentype');
-    font-weight: 900;
-    font-style: normal;
-  }
-</style>
-
-<button onclick="sendWhatsApp()" style="
-  background:#dd8e3f;
-  color:  #570b20;
-  border:2px solid #570b20;
- padding: 40px 48px;
-  font-size:3.4rem;
-  font-family: 'MADECarvingSoft', sans-serif;
-  font-weight: 900;
-  border-radius: 150px;  /* más redondeado */
-  cursor:pointer;
-  width:100%;
-  max-width:580px;
-  margin:0 auto;
-  display:block;
-">
-  Enviar Pedido
-</button>
-
-  </div>
 
   <script>
     function toggleSidebar() {
@@ -357,60 +322,62 @@ document.addEventListener("click", function (event) {
 
 
 <!-- PIE PAGINA -->
-<footer style="width: 100%; background-color: #dadada; padding: 30px 20px; text-align: left; color: #7a1f42; font-size: 2.5em; margin: 0; font-weight: 300; font-family: 'MadeCarving', sans-serif;">
+<footer class="footer">
+  <h3 class="footer-title">Contactános</h3>
+  <h4 class="espacio"></h4>
+  <p class="footer-content">
 
+    <a href="https://wa.me/5493446636978" target="_blank" class="footer-link">
+      <span class="footer-item">
+        <svg class="footer-icon-wsp" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12.005 2C6.478 2 2 6.478 2 12.005c0 1.93.488 3.743 1.343 5.337L2 22l4.779-1.285A9.931 9.931 0 0012.005 22C17.532 22 22 17.522 22 11.995 22 6.468 17.532 2 12.005 2z" />
+          <path d="M15.61 13.59c-.2-.1-1.17-.58-1.35-.64s-.39-.04-.59.23-.37.51-.51.62-.26.13-.49.01c-.25-.13-1.03-.38-1.96-1.21-.73-.65-1.22-1.45-1.36-1.69s-.01-.38.11-.5.25-.28.37-.43c.12-.15.16-.25.24-.41.08-.16.04-.31-.02-.43s-.55-1.32-.75-1.81c-.2-.47-.4-.41-.55-.42l-.47-.01c-.16 0-.43.06-.65.29s-.86.84-.86 2.05c0 1.21.88 2.38 1 2.54.13.17 1.73 2.64 4.2 3.7.59.25 1.05.4 1.4.52.59.18 1.12.15 1.55.1.47-.07 1.45-.59 1.65-1.16.21-.57.21-1.06.15-1.16-.07-.1-.23-.16-.47-.28z" />
+        </svg>
+        +54 9 3446 636978
+      </span>
+    </a><br>
 
-  <h3 style="margin-bottom: 16px;">Contactános</h3>
-  <p style="margin: 0 0 20px 0;">
-   <span style="display: flex; align-items: center; gap: 10px; font-size: 1em;">
-  <!-- WhatsApp SVG fino con tamaño 92x92 -->
-  <svg xmlns="http://www.w3.org/2000/svg" width="62" height="62" viewBox="0 0 24 24" fill="none" stroke="#7a1f42" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12.005 2C6.478 2 2 6.478 2 12.005c0 1.93.488 3.743 1.343 5.337L2 22l4.779-1.285A9.931 9.931 0 0012.005 22C17.532 22 22 17.522 22 11.995 22 6.468 17.532 2 12.005 2z" />
-    <path d="M15.61 13.59c-.2-.1-1.17-.58-1.35-.64s-.39-.04-.59.23-.37.51-.51.62-.26.13-.49.01c-.25-.13-1.03-.38-1.96-1.21-.73-.65-1.22-1.45-1.36-1.69s-.01-.38.11-.5.25-.28.37-.43c.12-.15.16-.25.24-.41.08-.16.04-.31-.02-.43s-.55-1.32-.75-1.81c-.2-.47-.4-.41-.55-.42l-.47-.01c-.16 0-.43.06-.65.29s-.86.84-.86 2.05c0 1.21.88 2.38 1 2.54.13.17 1.73 2.64 4.2 3.7.59.25 1.05.4 1.4.52.59.18 1.12.15 1.55.1.47-.07 1.45-.59 1.65-1.16.21-.57.21-1.06.15-1.16-.07-.1-.23-.16-.47-.28z" />
-  </svg>
-  <a href="https://wa.me/5493446636978" target="_blank" style="color: #7a1f42; text-decoration: none;">+54 9 3446 636978</a>
-</span><br>
+    <a href="mailto:vitalia.mercadonatural@gmail.com" class="footer-link">
+      <span class="footer-item">
+        <svg class="footer-icon-email" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7" />
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+        </svg>
+        vitalia.mercadonatural@gmail.com
+      </span>
+    </a><br>
 
+    <a href="https://www.instagram.com/vitalia.mercadonatural" target="_blank" class="footer-link">
+      <span class="footer-item">
+        <svg class="footer-icon-instagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+          <path d="M16 3C8.83 3 3 8.83 3 16v18c0 7.17 5.83 13 13 13h18c7.17 0 13-5.83 13-13V16c0-7.17-5.83-13-13-13H16zm0 2h18c6.09 0 11 4.91 11 11v18c0 6.09-4.91 11-11 11H16c-6.09 0-11-4.91-11-11V16c0-6.09 4.91-11 11-11zm21 6a2 2 0 100 4 2 2 0 000-4zM25 14c-6.06 0-11 4.94-11 11s4.94 11 11 11 11-4.94 11-11-4.94-11-11-11zm0 2c4.98 0 9 4.02 9 9s-4.02 9-9 9-9-4.02-9-9 4.02-9 9-9z"/>
+        </svg>
+        @vitalia.mercadonatural
+      </span>
+    </a><br>
 
-   <span style="display: flex; align-items: center; gap: 10px; font-size: 1em;">
-  <!-- Email SVG bordó -->
-  <svg width="72" height="72" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7" stroke="#7a1f42" stroke-width="0.72" stroke-linecap="round" stroke-linejoin="round"></path>
-    <rect x="3" y="5" width="18" height="14" rx="2" stroke="#7a1f42" stroke-width="0.72" stroke-linecap="round"></rect>
-  </svg>
-  <a href="mailto:vitalia.mercadonatural@gmail.com" style="color: #7a1f42; text-decoration: none;">vitalia.mercadonatural@gmail.com</a>
-</span><br>
-
-
-    <span style="display: flex; align-items: center; gap: 10px; font-size: 1em;">
-      <!-- Instagram SVG -->
-      <svg xmlns="http://www.w3.org/2000/svg" width="62" height="62" viewBox="0 0 50 50" fill="#7a1f42">
-        <path d="M16 3C8.83 3 3 8.83 3 16v18c0 7.17 5.83 13 13 13h18c7.17 0 13-5.83 13-13V16c0-7.17-5.83-13-13-13H16zm0 2h18c6.09 0 11 4.91 11 11v18c0 6.09-4.91 11-11 11H16c-6.09 0-11-4.91-11-11V16c0-6.09 4.91-11 11-11zm21 6a2 2 0 100 4 2 2 0 000-4zM25 14c-6.06 0-11 4.94-11 11s4.94 11 11 11 11-4.94 11-11-4.94-11-11-11zm0 2c4.98 0 9 4.02 9 9s-4.02 9-9 9-9-4.02-9-9 4.02-9 9-9z"/>
-      </svg>
-      <a href="https://www.instagram.com/vitalia.mercadonatural" target="_blank" style="color: #7a1f42; text-decoration: none;">@vitalia.mercadonatural</a>
-    </span><br>
-
-   <a href="https://www.google.com.ar/maps/place/Vitalia+Mercado+Natural+%7C+Dietetica/@-33.0088434,-58.5152801,17z/data=!3m1!4b1!4m6!3m5!1s0x95baa9000372dd53:0xdbfd0d7b884de293!8m2!3d-33.0088479!4d-58.5127052!16s%2Fg%2F11wmpj5jk7?hl=es&entry=ttu" target="_blank" style="text-decoration: none; color: #7a1f42;">
-  <span style="display: flex; align-items: center; gap: 10px; font-size: 1em;">
-    <!-- Ícono ubicación bordó -->
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#7a1f42" width="62" height="62">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-    </svg>
-    Pellegrini 18, Gualeguaychú - Entre Ríos
-  </span>
-</a>
+    <a href="https://www.google.com.ar/maps/place/Vitalia+Mercado+Natural+%7C+Dietetica/@-33.0088434,-58.5152801,17z/data=!3m1!4b1!4m6!3m5!1s0x95baa9000372dd53:0xdbfd0d7b884de293!8m2!3d-33.0088479!4d-58.5127052!16s%2Fg%2F11wmpj5jk7?hl=es&entry=ttu" target="_blank" class="footer-link">
+      <span class="footer-item">
+        <svg class="footer-icon-location" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+          <path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+        </svg>
+        Pellegrini 18, Gualeguaychú - Entre Ríos
+      </span>
+    </a>
 
   </p>
 </footer>
+
+
 <!-- PIE DE PAGINA SECUNDARIO PARA HORARIOS -->
-<div style="width: 100%; background-color: #a61f4d; padding: 20px; text-align: left; color: white; font-size: 2.5em; font-family: 'MadeCarving', sans-serif; line-height: 1.4;">
-  <p style="margin: 0; font-weight: 300;">
-    <span style="display: inline-flex; align-items: center; gap: 10px;">
-      <svg fill="#ffffff" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
-        <path d="M960 112.941c-467.125 0-847.059 379.934-847.059 847.059 0 467.125 379.934 847.059 847.059 847.059 467.125 0 847.059-379.934 847.059-847.059 0-467.125-379.934-847.059-847.059-847.059M960 1920C430.645 1920 0 1489.355 0 960S430.645 0 960 0s960 430.645 960 960-430.645 960-960 960m417.905-575.955L903.552 988.28V395.34h112.941v536.47l429.177 321.77-67.765 90.465Z" fill-rule="evenodd"></path>
+<div class="footer-secondary">
+  <p>
+    <span class="footer-secondary-header">
+      <svg class="footer-secondary-icon" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <path fill-rule="evenodd" d="M960 112.941c-467.125 0-847.059 379.934-847.059 847.059 0 467.125 379.934 847.059 847.059 847.059 467.125 0 847.059-379.934 847.059-847.059 0-467.125-379.934-847.059-847.059-847.059M960 1920C430.645 1920 0 1489.355 0 960S430.645 0 960 0s960 430.645 960 960-430.645 960-960 960m417.905-575.955L903.552 988.28V395.34h112.941v536.47l429.177 321.77-67.765 90.465Z"></path>
       </svg>
-  <span style="font-weight: bold; font-size: 1.1em;">Horarios:</span>
+      <span class="footer-secondary-title"> Horarios:</span>
     </span>
 
     <br>Lunes a Viernes:  
@@ -422,6 +389,7 @@ document.addEventListener("click", function (event) {
     <br>15:30 - 19:30
   </p>
 </div>
+
 
 
 
