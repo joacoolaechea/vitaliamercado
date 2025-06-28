@@ -160,8 +160,9 @@ ULTIMA PUBLICIDAD
 
 <---------------------->
 
+
 <div class="promo-image">
-  <img id="publicidad-img" src="" alt="Publicidad Vitalia" style="max-width:100%;" />
+  <img id="publicidad-img" src="/portada.png" alt="Publicidad Vitalia" style="max-width:100%;" />
 </div>
 
 <script>
@@ -169,18 +170,21 @@ ULTIMA PUBLICIDAD
 
   // Detectar si estamos en PC o celular
   const isDesktop = window.innerWidth >= 1024;
-  const portadaInicial = isDesktop ? "/portadapc.png" : "/portada.png";
 
-  // Mostrar la portada correspondiente como pantalla de carga
-  imgElement.src = portadaInicial;
+  // Reemplazar portada si es PC
+  if (isDesktop) {
+    imgElement.src = "/portadapc.png";
+  }
 
   // Pre-cargar la imagen de publicidad final
   const publicidadFinal = new Image();
-  publicidadFinal.src = "/publicidad.png";
+  publicidadFinal.src = isDesktop ? "/publicidadpc.png" : "/publicidad.png";
+
   publicidadFinal.onload = () => {
     imgElement.src = publicidadFinal.src;
   };
 </script>
+
 
 
 <!-- Imagen de publicidad -->
