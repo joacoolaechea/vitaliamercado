@@ -149,11 +149,41 @@ document.addEventListener("click", function (event) {
 <div class="promo-image">
   <img id="publicidad-img" src="https://i.imgur.com/aZ81bam.png" alt="Publicidad Vitalia" style="max-width:100%;" />
 </div>
----->
+-------
+
+ULTIMA PUBLICIDAD
 <div class="promo-image">
   <img id="publicidad-img" src="/portada.png" alt="Publicidad Vitalia" style="max-width:100%;" />
 </div>
 
+->
+
+<---------------------->
+
+<div class="promo-image">
+  <img id="publicidad-img" src="" alt="Publicidad Vitalia" style="max-width:100%;" />
+</div>
+
+<script>
+  const imgElement = document.getElementById("publicidad-img");
+
+  // Detectar si estamos en PC o celular
+  const isDesktop = window.innerWidth >= 1024;
+  const portadaInicial = isDesktop ? "/portadapc.png" : "/portada.png";
+
+  // Mostrar la portada correspondiente como pantalla de carga
+  imgElement.src = portadaInicial;
+
+  // Pre-cargar la imagen de publicidad final
+  const publicidadFinal = new Image();
+  publicidadFinal.src = "/publicidad.png";
+  publicidadFinal.onload = () => {
+    imgElement.src = publicidadFinal.src;
+  };
+</script>
+
+
+<!-- Imagen de publicidad -->
 <!-- Imagen de publicidad -->
 
 <style>

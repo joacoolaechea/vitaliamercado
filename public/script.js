@@ -432,9 +432,15 @@ function mostrarPublicidadYRestaurarMargen() {
   document.getElementById("priceFilter").value = "";
   document.getElementById("search").value = "";
 
-  // Cargar imagen de publicidad si existe
-  const prodConPublicidad = allProducts.find(p => p.publicidad); // 👈 busca el primero con publicidad
-  if (prodConPublicidad && promo?.querySelector("img")) {
+  // Detectar si estamos en PC o celular
+  const isDesktop = window.innerWidth >= 1024;
+
+  // Seleccionar el producto correspondiente con publicidad
+  const index = isDesktop ? 1 : 0;
+  const prodConPublicidad = allProducts[index];
+
+  // Si existe y tiene publicidad, cambiar la imagen
+  if (prodConPublicidad?.publicidad && promo?.querySelector("img")) {
     promo.querySelector("img").src = prodConPublicidad.publicidad;
   }
 
@@ -467,6 +473,7 @@ function mostrarPublicidadYRestaurarMargen() {
   document.querySelectorAll("#categoryList button")
     .forEach(b => b.classList.remove("selected"));
 }
+
 
 
 

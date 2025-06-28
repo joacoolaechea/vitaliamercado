@@ -841,7 +841,8 @@ header {
   width: 100%;
   max-width: 600px; /* más angosta en PC */
   height: auto;
-  aspect-ratio: 3 / 1.4; /* fuerza que sea más fina: ancho 3x, alto 1x */
+  /*aspect-ratio: 3 / 1.4; /* fuerza que sea más fina: ancho 3x, alto 1x */
+   aspect-ratio: 3 / 1;
   object-fit: cover; /* recorta si es necesario */
   border-radius: 20px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.2);
