@@ -85,7 +85,7 @@ function updateCart() {
 
     const min = item.unit === "Kilogramo" ? 0.1 : 1;
     const step = item.unit === "Kilogramo" ? 0.1 : 1;
-    const imageSrc = item.image && item.image.trim() !== "" ? item.image : "https://i.imgur.com/XSvJsFZ.jpeg";
+    const imageSrc = item.image && item.image.trim() !== "" ? item.image : "https://i.imgur.com/p4tHxub.png";
 
     const li = document.createElement("li");
     li.className = "cart-item";
@@ -97,12 +97,14 @@ function updateCart() {
       <img src="${imageSrc}" alt="${item.name}"
            style="width:${isDesktop ? '125px' : '250px'};height:${isDesktop ? '125px' : '250px'};object-fit:cover;border-radius:8px;flex-shrink:0;">
       <div style="display:flex;flex-direction:column;flex:1;">
-        <span style="font-size:${isDesktop ? '1rem' : '2rem'};font-weight:600;margin-bottom:8px;">${item.name}</span>
+        <span style="font-size:${isDesktop ? '1rem' : '2rem'};font-weight:600;margin-bottom:8px;color:#A11E4A;">
+  ${item.name}
+</span>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
           <div style="
             display: flex;
             align-items: center;
-            border: 2px solid #dd8e3f;
+            border: 2px solid #686868;
             border-radius: 12px;
             overflow: hidden;
             width: ${isDesktop ? '140px' : '280px'};
@@ -112,7 +114,7 @@ function updateCart() {
                     style="
                       border: none;
                       background: #fff;
-                      color: #a84a65;
+                      color:#A11E4A;
                       font-size: ${isDesktop ? '1.7rem' : '3.4rem'};
                       font-weight: 900;
                       cursor: pointer;
@@ -133,7 +135,7 @@ function updateCart() {
                      font-size: ${isDesktop ? '1.5rem' : '3rem'};
                      font-family: 'MADECarvingSoft', sans-serif;
                      font-weight: 900;
-                     color: #a84a65;
+                     color: #686868;
                      border: none;
                      outline: none;
                      text-align: center;
@@ -145,7 +147,7 @@ function updateCart() {
                     style="
                       border: none;
                       background: #fff;
-                      color: #a84a65;
+                      color: #A11E4A;
                       font-size: ${isDesktop ? '1.7rem' : '3.4rem'};
                       font-weight: 900;
                       cursor: pointer;
@@ -155,30 +157,21 @@ function updateCart() {
                       line-height: 1;
                     ">+</button>
           </div>
-          <span style="font-size:${isDesktop ? '0.8rem' : '1.6rem'};">${item.unit}</span>
+          <span style="font-size:${isDesktop ? '0.8rem' : '1.6rem'};color:#686868;">
+  ${item.unit}
+</span>
         </div>
-        <div style="font-size:${isDesktop ? '1.5rem' : '3rem'};font-weight:bold;color:#fff;">$${subtotal.toFixed(2)}</div>
+        <div style="font-size:${isDesktop ? '1.5rem' : '3rem'};font-weight:bold;color:#A11E4A;">$${subtotal.toFixed(2)}</div>
       </div>
+<button onclick="removeFromCart(${index})"
+        aria-label="Eliminar producto"        
+        style="background:none;border:none;cursor:pointer;padding:4px;">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#686868" width="108" height="108">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+</svg>
 
-      <button onclick="removeFromCart(${index})"
-              aria-label="Eliminar producto"        
-              style="background:none;border:none;cursor:pointer;padding:4px;">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-             style="width:${isDesktop ? '31px' : '62px'};height:${isDesktop ? '31px' : '62px'};color:white;">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21
-                   c.342.052.682.107 1.022.166m-1.022-.165
-                   L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084
-                   a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0
-                   a48.108 48.108 0 0 0-3.478-.397m-12 .562
-                   c.34-.059.68-.114 1.022-.165m0 0
-                   a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916
-                   c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0
-                   c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0
-                   a48.667 48.667 0 0 0-7.5 0" />
-        </svg>
-      </button>
+</button>
+
     `;
 
     cartItems.appendChild(li);
@@ -193,8 +186,12 @@ function updateCart() {
   if (pickupCheckbox && shippingCostText) {
     if (pickupCheckbox.checked) {
       shippingCostText.innerHTML = `
-        <span style="color: #dd8e3f;  font-family: 'MadeCarving', sans-serif;">10% OFF EN EFECTIVO </span><br>
-        <span style="color: #dd8e3f;  font-family: 'MadeCarving', sans-serif; font-size: 26px;">(Pellegrini 18)</span>
+        <span style="color: #A11E4A;  font-family: 'MadeCarving', sans-serif;">10% OFF EN EFECTIVO </span><br>
+        <span style="color:#686868; 
+             font-family:'MadeCarving', sans-serif; 
+             font-size:${isDesktop ? "15px" : "30px"};">
+  (Pellegrini 18)
+</span>
       `;
       if (shippingInput) {
         shippingInput.style.display = "none";
@@ -202,8 +199,8 @@ function updateCart() {
       }
     } else {
       shippingCostText.innerHTML = total >= 35000
-        ? '<span style="color: #dd8e3f; font-weight: bold;">ENVÍO GRATIS <span style="font-family: \'MadeCarving\', sans-serif; font-size: 0.7em;">(solo zona Gualeguaychú)</span></span>'
-        : '<span style="color: #a84a65; font-weight: bold; font-family: \'MadeCarving\', sans-serif;">Envio a cargo del comprador</span>';
+        ? '<span style="color: #A11E4A; font-weight: bold;">ENVÍO GRATIS <span style="font-family: \'MadeCarving\', sans-serif; font-size: 0.7em;">(solo zona Gualeguaychú)</span></span>'
+        : '<span style="color: #686868;font-weight: bold; font-family: \'MadeCarving\', sans-serif;">Envio a cargo del comprador</span>';
       if (shippingInput) shippingInput.style.display = "block";
     }
   }
@@ -272,7 +269,7 @@ function removeFromCart(index) {
 
 function sendWhatsApp() {
   if (cart.length === 0) {
-    showToast('<span style="color: white;">El carrito está vacío.</span>', "#a61f4d");
+    showToast('<span style="color: white;">El carrito está vacío.</span>', "#A11E4A");
     return;
   }
   /* --------- arma el mensaje --------- */
@@ -321,7 +318,7 @@ function saveFavorites() {
   localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
-function showToast(message, backgroundColor = "#7a1f4296", textColor = "#fff") {
+function showToast(message, backgroundColor = "#A11E4A", textColor = "#fff") {
   const toast = document.getElementById("toast");
 
   toast.innerHTML = message;
@@ -382,7 +379,7 @@ function toggleFavorite(product) {
     showToast(`${brokenHeart}${product.name} se eliminó de favoritos`, "#8a8a8ecc", "#fff");  // gris claro
   } else {
     favorites.push(product);
-    showToast(`${filledHeart}${product.name} se agregó a favoritos`, "#7a1f4296", "#fff"); // bordo
+    showToast(`${filledHeart}${product.name} se agregó a favoritos`, "#a11e4aad", "#fff"); // bordo
   }
 
   saveFavorites();
@@ -398,18 +395,29 @@ function updateFavoriteIcons() {
     const isFavorite = favorites.some(f => f.name === name);
     const svg = btn.querySelector("svg");
     if (svg) {
-      svg.setAttribute("fill", isFavorite ? "#a61f4d" : "none");
+      svg.setAttribute("fill", isFavorite ? "#A11E4A" : "none");
     }
   });
 }
 
 /**** OCULTAR PUBLICIDAD  */
+
 function ocultarPublicidadYExpandirContenido() {
   const promo = document.querySelector(".promo-image");
+  const infoBar = document.querySelector(".info-bar"); 
   const content = document.querySelector(".content");
+  const featured = document.getElementById("featuredContainer"); // 👉 Referencia a destacados
 
   if (promo) {
     promo.style.display = "none";
+  }
+
+  if (infoBar) {
+    infoBar.style.display = "none"; 
+  }
+
+  if (featured) {
+    featured.style.display = "none"; // 👉 Ocultar destacados
   }
 
   if (content) {
@@ -423,58 +431,87 @@ function ocultarPublicidadYExpandirContenido() {
 
 /**** mostrar  */
 
+
 function mostrarPublicidadYRestaurarMargen() {
+  
   const promo = document.querySelector(".promo-image");
+  const infoBar = document.querySelector(".info-bar"); 
   const productos = document.querySelectorAll(".product");
   const content = document.querySelector(".content");
+  const featured = document.getElementById("featuredContainer"); // 👉 Referencia a destacados
 
   document.getElementById("unitFilter").value = "";
   document.getElementById("priceFilter").value = "";
   document.getElementById("search").value = "";
 
-  // Detectar si estamos en PC o celular
   const isDesktop = window.innerWidth >= 1024;
 
-  // Seleccionar el producto correspondiente con publicidad
-  const index = isDesktop ? 1 : 0;
-  const prodConPublicidad = allProducts[index];
+  const start = isDesktop ? 4 : 0;
+  const end = isDesktop ? 7 : 3;
 
-  // Si existe y tiene publicidad, cambiar la imagen
-  if (prodConPublicidad?.publicidad && promo?.querySelector("img")) {
-    promo.querySelector("img").src = prodConPublicidad.publicidad;
+  if (!promo) return;
+  promo.style.display = "block";
+
+  if (infoBar) infoBar.style.display = "flex"; 
+  if (featured) featured.style.display = "block"; // 👉 Mostrar destacados
+
+  const promoContainer = document.getElementById("promo-container");
+  promoContainer.innerHTML = "";
+
+  const publicidades = [];
+  for (let i = start; i <= end; i++) {
+    const prod = allProducts[i];
+    if (prod?.publicidad && prod.publicidad.trim() !== "") {
+      publicidades.push(prod.publicidad.trim());
+    }
   }
 
-  // Mostrar la promo
-  if (promo) {
-    promo.style.display = "block";
-  }
-
-  // Restaurar margen superior
-  if (content) {
-    content.style.marginTop = "0px";
-  }
-
-  // Ocultar todos los productos
-  productos.forEach(producto => {
-    producto.style.display = "none";
+  publicidades.forEach(url => {
+    const img = document.createElement("img");
+    img.src = url;
+    promoContainer.appendChild(img);
   });
 
-  // Salir del modo favoritos
+  let currentIndex = 0;
+  function updateCarousel() {
+    promoContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+  }
+
+  if (isDesktop) {
+    document.querySelector(".carousel-btn.next").onclick = () => {
+      currentIndex = (currentIndex + 1) % publicidades.length;
+      updateCarousel();
+    };
+
+    document.querySelector(".carousel-btn.prev").onclick = () => {
+      currentIndex = (currentIndex - 1 + publicidades.length) % publicidades.length;
+      updateCarousel();
+    };
+  }
+
+  let startX = 0;
+  let endX = 0;
+  promoContainer.addEventListener("touchstart", e => { startX = e.touches[0].clientX; });
+  promoContainer.addEventListener("touchend", e => {
+    endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) currentIndex = (currentIndex + 1) % publicidades.length;
+    if (endX - startX > 50) currentIndex = (currentIndex - 1 + publicidades.length) % publicidades.length;
+    updateCarousel();
+  });
+
+  updateCarousel();
+
+  if (content) content.style.marginTop = "0px";
+  productos.forEach(producto => producto.style.display = "none");
+
   showingFavorites = false;
   document.querySelector(".favorites-button")?.classList.remove("selected");
 
-  // Cambiar el icono del corazón a "sin pintar"
   const favBtnIcon = document.querySelector(".favorites-button svg");
-  if (favBtnIcon) {
-    favBtnIcon.setAttribute("fill", "none");
-  }
+  if (favBtnIcon) favBtnIcon.setAttribute("fill", "none");
 
-  // Quitar selección de categorías
-  document.querySelectorAll("#categoryList button")
-    .forEach(b => b.classList.remove("selected"));
+  document.querySelectorAll("#categoryList button").forEach(b => b.classList.remove("selected"));
 }
-
-
 
 
 
@@ -521,8 +558,8 @@ function renderProducts(products) {
       padding:${isDesktop ? "2px" : "5px"};
     `;
     favButton.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" fill="${isFavorite ? "#a61f4d" : "none"}"
-           viewBox="0 0 24 24" stroke-width="1.5" stroke="#a61f4d"
+      <svg xmlns="http://www.w3.org/2000/svg" fill="${isFavorite ? "#A11E4A" : "none"}"
+           viewBox="0 0 24 24" stroke-width="1.5" stroke="#A11E4A"
            width="${isDesktop ? "35" : "62"}" height="${isDesktop ? "35" : "62"}">
         <path stroke-linecap="round" stroke-linejoin="round"
               d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5
@@ -569,18 +606,30 @@ function renderProducts(products) {
       flex:1;
       height:${isDesktop ? "225px" : "450px"};
     `;
-
-    info.innerHTML = `
-      <span style="font-size:${isDesktop ? "1.25rem" : "2.5rem"}; font-weight:700; line-height:1.2; word-wrap:break-word; margin-bottom:8px;">
-        ${p.name}
-      </span>
-      <span style="font-size:${isDesktop ? "0.7rem" : "1.1rem"}; color:#d78a8f; margin-bottom:auto;">
-        ${p.category}
-      </span>
-      <div style="margin-top:auto;">
-        <span style="display:block; font-size:${isDesktop ? "1rem" : "2rem"}; color:#d78a8f; margin-bottom:12px;">
-          ${p.unit}
-        </span>
+info.innerHTML = `
+  <span style="font-size:${isDesktop ? "1.25rem" : "2.5rem"};
+               font-weight:700;
+               line-height:1.2;
+               word-wrap:break-word;
+               margin-bottom:8px;
+               color:#A11E4A; ">
+    ${p.name}
+  </span>
+  <span style="font-size:${isDesktop ? "1rem" : "2rem"};
+             color:#686868;
+             font-family:'MadeCarving', sans-serif;
+             margin-bottom:auto;">
+  ${p.category}
+</span>
+<div style="margin-top:auto;">
+  <span style="display:block;
+               font-size:${isDesktop ? "1rem" : "2rem"};
+               color:#686868;
+               font-family:'MadeCarving', sans-serif;
+               margin-bottom:12px;">
+    ${p.unit}
+  </span>
+</div>
         <span style="display:block; font-size:${isDesktop ? "2.5rem" : "5rem"}; font-weight:700;">
           $${p.price}
         </span>
@@ -593,6 +642,106 @@ function renderProducts(products) {
     div.appendChild(favButton);
     div.appendChild(mainContent);
     list.appendChild(div);
+  });
+
+  updateFavoriteIcons();
+}
+
+
+function renderFeatured(products) {
+  const container = document.getElementById("featuredProducts");
+  container.innerHTML = "";
+
+  const destacados = products.filter(p => p.destacado === true);
+
+  if (destacados.length === 0) {
+    container.parentElement.style.display = "none";
+    return;
+  } else {
+    container.parentElement.style.display = "block";
+  }
+
+  const isMobile = window.innerWidth <= 1024; // Detecta celular
+
+  destacados.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "featured-item";
+
+    // Estilos base
+    card.style.cssText = `
+      min-width: ${isMobile ? "500px" : "250px"};
+      flex-shrink: 0;
+      background: white;
+      border-radius: ${isMobile ? "24px" : "12px"};
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: ${isMobile ? "30px" : "15px"};
+      cursor: pointer;
+      position: relative;
+    `;
+
+    const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://i.imgur.com/p4tHxub.jpeg";
+
+    // Contenido de la tarjeta
+    card.innerHTML = `
+      <img src="${imageSrc}" alt="${p.name}" 
+           style="
+             width:100%; 
+             height:${isMobile ? "360px" : "180px"}; 
+             object-fit:cover; 
+             border-radius:${isMobile ? "16px" : "8px"};">
+      <h3 style="
+           font-size:${isMobile ? "2rem" : "1rem"}; 
+           font-weight:normal; 
+           margin:10px 0 5px 0; 
+           color:#686868; 
+           font-family: 'MadeCarving', sans-serif;">
+        ${p.name}
+      </h3>
+      <p style="
+           font-size:${isMobile ? "3rem" : "1.5rem"}; 
+           font-weight:bold; 
+           color:#A11E4A; 
+           margin:0;">
+        $${p.price}
+      </p>
+    `;
+
+    // Botón de favoritos
+    const isFavorite = favorites.some(f => f.name === p.name);
+    const favButton = document.createElement("button");
+    favButton.className = "favorite-btn";
+    favButton.setAttribute("data-name", p.name);
+    favButton.style.cssText = `
+      position:absolute;
+      bottom:5px;  
+      right:5px;
+      background:none;
+      border:none;
+      cursor:pointer;
+    `;
+    favButton.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" fill="${isFavorite ? "#A11E4A" : "none"}"
+           viewBox="0 0 24 24" stroke-width="1.5" stroke="#A11E4A"
+           width="${isMobile ? 65 : 28}" height="${isMobile ? 65 : 28}">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5
+                 -1.935 0-3.597 1.126-4.312 2.733
+                 -.715-1.607-2.377-2.733-4.313-2.733
+                 C5.1 3.75 3 5.765 3 8.25c0 7.22
+                 9 12 9 12s9-4.78 9-12Z"/>
+      </svg>`;
+
+    favButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleFavorite(p);
+    });
+
+    card.appendChild(favButton);
+
+    // Abrir detalle al clickear
+    card.addEventListener("click", () => openProductDetail(p));
+
+    container.appendChild(card);
   });
 
   updateFavoriteIcons();
@@ -799,7 +948,7 @@ document.body.style.overflow = "hidden";
     .product-detail-container h2 {
       margin-bottom: 16px;
       font-size: ${isDesktop ? '2rem' : '4rem'};
-      color: #a84a65;
+      color: #A11E4A;
     }
     .product-detail-container p {
       font-size: ${isDesktop ? '1.1rem' : '2.2rem'};
@@ -810,7 +959,7 @@ document.body.style.overflow = "hidden";
       position: absolute;
       top: 0px;
       left: 0px;
-      background: #a84a65;
+      background: #A11E4A;
       color: white;
       border: none;
       border-radius: 50%;
@@ -826,7 +975,7 @@ document.body.style.overflow = "hidden";
     .quantity-control label {
       font-size: ${isDesktop ? '1rem' : '2rem'};
       font-weight: bold;
-      color: #a84a65;
+      color: #686868;
     }
     .qty-input-wrapper {
       display: inline-flex;
@@ -865,21 +1014,21 @@ document.body.style.overflow = "hidden";
       font-size: ${isDesktop ? '2rem' : '4rem'};
       font-weight: bold;
       margin-left: 40px;
-      color: #a84a65;
+      color:  #A11E4A;
     }
     .add-cart-wrapper {
       margin-top: ${isDesktop ? '20px' : '40px'};
     }
     .add-cart-btn {
-      background-color: #a84a65;
+      background-color:  #A11E4A;
       color: white;
-      border: 1px solid #dd8e3f;
+      border: 1px solid #686868;
       padding: ${isDesktop ? '15px 30px' : '30px 60px'};
       font-size: ${isDesktop ? '1.5rem' : '3rem'};
       border-radius: 16px;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      box-shadow: 0 8px 10px rgba(168, 74, 101, 0.4);
+      box-shadow: 0 8px 10px  #686868;
       font-family: 'MADECarvingSoft';
     }
   `;
@@ -895,7 +1044,11 @@ document.body.style.overflow = "hidden";
       <button id="closeDetailBtn" class="close-detail-btn">×</button>
       <h2>${product.name}</h2>
       <img src="${imageSrc}" alt="${product.name}" />
-      <p>Precio unitario: <strong>$${parseFloat(product.price).toFixed(2)}</strong> / ${product.unit}</p>
+<p style="color:#686868; font-family:'MadeCarving', sans-serif;">
+  Precio unitario: <strong style="color:#686868; font-family:'MadeCarving', sans-serif;">
+    $${parseFloat(product.price).toFixed(2)}
+  </strong> / ${product.unit}
+</p>
       <div class="quantity-control">
         <label for="productDetailQty">Cantidad:</label>
         <div class="qty-input-wrapper">
@@ -1102,48 +1255,207 @@ function filterProducts() {
 
 
 
-///----
+
+///---- FUNCION .SIDEBAR CATEGORIAS PRODUCTOS - CONTACTO 
+
+let expanded = false; 
 
 function loadProducts(products) {
   allProducts = products;
-  setupFuse(products); // 🔥 Preparar Fuse.js
-
+  setupFuse(products); 
   renderProducts(products);
 
-  const categories = ["TODOS", ...new Set(products.map(p => p.category))];
-  
+  const categories = ["Productos", ...new Set(products.map(p => p.category))];
   const catList = document.getElementById("categoryList");
   catList.innerHTML = "";
 
-  categories.forEach(cat => {
+  const spacing = window.innerWidth <= 768 ? "px" : "10px";
+
+  function getSvgSize() {
+    return window.innerWidth < 1024 ? 40 : 20;
+  }
+
+  function createButton(text, cat, bold = false, withIcon = false) {
     const btn = document.createElement("button");
-    btn.textContent = cat;
     btn.dataset.category = cat;
-    btn.style.display = "block";
-    btn.style.marginBottom = "5px";
+    btn.style.display = "flex";
+    btn.style.alignItems = "center";
+    btn.style.justifyContent = "space-between";
+    btn.style.width = "100%";
+    btn.style.marginBottom = spacing;
+    btn.style.textAlign = "left";
+    btn.style.color = "white";
+    if (bold) btn.style.fontWeight = "bold";
 
-    btn.onclick = () => {
-      document.querySelectorAll("#categoryList button")
-        .forEach(b => b.classList.remove("selected"));
-      btn.classList.add("selected");
+    const spanText = document.createElement("span");
+    spanText.textContent = text;
+    btn.appendChild(spanText);
 
-      document.getElementById("search").value = "";
+    if (withIcon) {
+      const svgSpan = document.createElement("span");
+      svgSpan.classList.add("btn-icon");
+      const size = getSvgSize();
+      svgSpan.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor"
+             style="width:${size}px; height:${size}px; color:white;">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+        </svg>`;
+      btn.appendChild(svgSpan);
+    }
 
-      showingFavorites = false;
-      document.querySelector(".favorites-button")?.classList.remove("selected");
+    return btn;
+  }
 
-      const favBtnIcon = document.querySelector(".favorites-button svg");
-      if (favBtnIcon) {
-        favBtnIcon.setAttribute("fill", "none");
-      }
+  function createDivider(color = "#686868", margin = "2px 0", isOrange = false) {
+    const hr = document.createElement("hr");
+    hr.style.margin = margin;
+    hr.style.border = "0";
+    let thickness;
+    if (isOrange) thickness = window.matchMedia("(min-width: 1024px)").matches ? "3px" : "4px";
+    else thickness = window.matchMedia("(min-width: 1024px)").matches ? "1px" : "3px";
+    hr.style.borderTop = `${thickness} solid ${color}`;
+    return hr;
+  }
 
-      filterProducts();
+  const btnInicio = createButton("Inicio", "Inicio", true);
+  const btnProductos = createButton("Productos", "Productos", true, true);
+  const btnRecetario = createButton("Recetario", "Recetario");
+  const btnReseñas = createButton("Reseñas", "Reseñas");
+  const btnContacto = createButton("Contacto", "Contacto");
+
+  function openLinkAndClose(link) {
+    window.open(link, "_blank");
+    if (expanded) toggleSidebar();
+  }
+
+  btnRecetario.onclick = () => { openLinkAndClose("https://drive.google.com/file/d/1he_YS_GzFRxU0LCX0Rflnx4w-yU9R3s6/view"); toggleSidebar(); };
+  btnReseñas.onclick = () => { openLinkAndClose("https://g.page/r/CZPiTYh7Df3bEBM/review"); toggleSidebar(); };
+
+  btnContacto.onclick = () => {
+    const footer = document.querySelector("footer.footer");
+    toggleSidebar();
+    setTimeout(() => {
+      if (footer) window.scrollTo({ top: footer.getBoundingClientRect().top + window.scrollY - 150, behavior: "smooth" });
+    }, 300);
+  };
+
+  function compressSidebar() {
+    catList.innerHTML = "";
+    catList.appendChild(createDivider());
+    catList.appendChild(btnInicio);
+    catList.appendChild(createDivider());
+    catList.appendChild(btnProductos);
+    catList.appendChild(createDivider());
+    catList.appendChild(btnRecetario);
+    catList.appendChild(createDivider());
+    catList.appendChild(btnReseñas);
+    catList.appendChild(createDivider());
+    catList.appendChild(btnContacto);
+    catList.appendChild(createDivider());
+    expanded = false;
+
+    const icon = btnProductos.querySelector(".btn-icon");
+    if (icon) {
+      const size = getSvgSize();
+      icon.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor"
+             style="width:${size}px; height:${size}px; color:white;">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+        </svg>`;
+    }
+  }
+
+  compressSidebar();
+
+  btnInicio.onclick = () => {
+    mostrarPublicidadYRestaurarMargen();
+    toggleSidebar();
+  };
+
+  btnProductos.onclick = () => {
+    const icon = btnProductos.querySelector(".btn-icon");
+    const size = getSvgSize();
+
+    if (expanded) {
+      compressSidebar();
+      return;
+    }
+
+    if (icon) {
+      icon.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor"
+             style="width:${size}px; height:${size}px; color:white;">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>`;
+    }
+
+    document.querySelectorAll("#categoryList button").forEach(b => b.classList.remove("selected"));
+    btnProductos.classList.add("selected");
+    document.getElementById("search").value = "";
+    showingFavorites = false;
+    document.querySelector(".favorites-button")?.classList.remove("selected");
+
+    catList.innerHTML = "";
+    catList.appendChild(createDivider());
+    catList.appendChild(btnProductos);
+    catList.appendChild(createDivider("#E2833D", "6px 0", true));
+
+    const btnTodos = createButton("Todos los productos", "TODOS", true);
+    btnTodos.onclick = () => {
+      document.querySelectorAll("#categoryList button").forEach(b => b.classList.remove("selected"));
+      btnTodos.classList.add("selected");
+
+      ocultarPublicidadYExpandirContenido();
+      renderProducts(allProducts);
       toggleSidebar();
     };
+    catList.appendChild(btnTodos);
+    catList.appendChild(createDivider());
 
-    catList.appendChild(btn);
-  });
+    categories.slice(1).forEach((cat, index, arr) => {
+      const btn = createButton(cat, cat);
+      btn.onclick = () => {
+        document.querySelectorAll("#categoryList button").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+
+        ocultarPublicidadYExpandirContenido();
+        filterProducts(cat);
+        toggleSidebar();
+      };
+      catList.appendChild(btn);
+      catList.appendChild(index === arr.length - 1 ? createDivider("#E2833D", "6px 0", true) : createDivider());
+    });
+
+    catList.appendChild(btnRecetario);
+    catList.appendChild(createDivider());
+    catList.appendChild(btnReseñas);
+    catList.appendChild(createDivider());
+    catList.appendChild(btnContacto);
+    catList.appendChild(createDivider());
+
+    expanded = true;
+  };
+
+  const originalToggleSidebar = toggleSidebar;
+  toggleSidebar = function() { 
+    if (expanded) compressSidebar(); 
+    originalToggleSidebar(); 
+  };
 }
+///----fin funcion LoadCATEGORIAS
+
+
+
+
+
+
+
 
 
 ///----
@@ -1200,6 +1512,7 @@ fetch("/api/products")
     loadProducts(products);          // Tu función que carga productos en pantalla
     actualizarPublicidad(products);  // Actualiza el src de la imagen de publicidad
     mostrarPublicidadYRestaurarMargen();
+    renderFeatured(products);
   })
   .catch(err => {
     console.error("Error cargando productos:", err);
@@ -1218,4 +1531,18 @@ window.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('shippingAddress', inputAddress.value);
   });
 });
+
+
+/** MOVER FLECHA DESTACADOS. */
+
+const featuredList = document.getElementById("featuredProducts");
+
+document.querySelector("#featuredContainer .prev").addEventListener("click", () => {
+  featuredList.scrollBy({ left: -300, behavior: "smooth" });
+});
+
+document.querySelector("#featuredContainer .next").addEventListener("click", () => {
+  featuredList.scrollBy({ left: 300, behavior: "smooth" });
+});
+
 

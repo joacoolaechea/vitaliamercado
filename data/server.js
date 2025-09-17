@@ -1,7 +1,6 @@
 const express = require('express');
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const csv = require('csv-parser');
-const { Readable } = require('stream');
 const path = require('path');
 
 const app = express();
@@ -26,29 +25,34 @@ app.get('/api/products', async (req, res) => {
 
         const rawPrice = (row["Price"] || "0").replace(/,/g, '');
         const price = parseFloat(rawPrice);
-results.push({
-  name,
-  category: row["ProductGroup"]?.trim() || "SIN CATEGORÍA",
-  price: isNaN(price) ? 0 : price,
-  unit: row["MeasurementUnit"]?.trim() || "Unidad",
-  image: (() => {
-    const raw = (row["Image"] || "").trim();
-    if (!raw) return "";
-    if (/\.(jpg|jpeg|png|webp)$/i.test(raw)) return raw;
-    const match = raw.match(/(?:imgur\.com\/)?([a-zA-Z0-9]+)/);
-    const id = match ? match[1] : raw;
-    return `https://i.imgur.com/${id}.jpg`;
-  })(),
-  publicidad: (() => {
-    const raw = (row["Publicidad"] || "").trim();
-    if (!raw) return "";
-    if (/\.(jpg|jpeg|png|webp)$/i.test(raw)) return raw;
-    const match = raw.match(/(?:imgur\.com\/)?([a-zA-Z0-9]+)/);
-    const id = match ? match[1] : raw;
-    return `https://i.imgur.com/${id}.jpg`;
-  })()
-});
 
+        results.push({
+          name,
+          category: row["ProductGroup"]?.trim() || "SIN CATEGORÍA",
+          price: isNaN(price) ? 0 : price,
+          unit: row["MeasurementUnit"]?.trim() || "Unidad",
+          image: (() => {
+            const raw = (row["Image"] || "").trim();
+            if (!raw) return "";
+            if (/\.(jpg|jpeg|png|webp)$/i.test(raw)) return raw;
+            const match = raw.match(/(?:imgur\.com\/)?([a-zA-Z0-9]+)/);
+            const id = match ? match[1] : raw;
+            return `https://i.imgur.com/${id}.jpg`;
+          })(),
+          publicidad: (() => {
+            const raw = (row["Publicidad"] || "").trim();
+            if (!raw) return "";
+            if (/\.(jpg|jpeg|png|webp)$/i.test(raw)) return raw;
+            const match = raw.match(/(?:imgur\.com\/)?([a-zA-Z0-9]+)/);
+            const id = match ? match[1] : raw;
+            return `https://i.imgur.com/${id}.jpg`;
+          })(),
+          destacado: (() => {
+            const raw = (row["Destacado"] || "").trim().toLowerCase();
+            // Puede ser "SI", "TRUE", "1" para marcar como destacado
+            return ["si", "true", "1"].includes(raw);
+          })()
+        });
       })
       .on('end', () => res.json(results))
       .on('error', (err) => {

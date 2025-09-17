@@ -15,11 +15,12 @@
 }
 
 
-
+/* Sidebar general (PC y desktop) */
 .sidebar,
 .sidebar * {
-  font-family: 'MADECarvingSoft', sans-serif !important;
+  font-family: 'MADECarving', sans-serif;
 }
+
 
 /* 🔧 Fuente aplicada globalmente */
 body {
@@ -33,6 +34,8 @@ body {
 
 
 
+
+
 /* 🔺 Encabezado fijo */
 header {
   position: fixed;
@@ -40,7 +43,7 @@ header {
   left: 0;
   width: 100%;
   
-  background-color: #a61f4d;
+  background-color: #A11E4A;
   text-align: center;
   padding: 0;
   z-index: 1000;
@@ -100,7 +103,7 @@ header {
   font-size: 32px;
   font-weight: bold;
   border: none;
-  background-color: #a61f4d;
+  background-color: #A11E4A;
   color: white;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
@@ -117,7 +120,7 @@ header {
   min-height: 100vh;
   width: 60vw;
   
-  background-color: #7a1f42;
+  background-color: #A11E4A;
   overflow-y: auto;
   transform: translateX(-100%);
   transition: transform 0.3s ease;
@@ -230,9 +233,9 @@ header {
   max-width: 720px;
    padding: 36px 45px;
   font-size: 38px;
-  border: 2px solid #dd8e3f;
+  border: 2px solid  #686868;
   border-radius: 12px;
-  color: #a84a65;
+  color: #A11E4A;
   box-shadow: 0 0 8px rgba(0,0,0,0.2);
   font-family: 'MADECarvingSoft', sans-serif;
   font-weight: 900;
@@ -241,41 +244,55 @@ header {
   outline: none;
 }
 
-#search::placeholder { color:#d78a8f; }
+#search::placeholder { color:#a11e4ab0; }
 #search:focus {
-  border-color:#a84a65;
-  box-shadow:0 0 8px rgba(168,74,101,.6);
-  
+  border-color:#E2833D;
+  box-shadow:0 0 8px #E2833D;
+
 }
 
 
 /* 📂 Categorías */
+
+#categoryList hr {
+  border: 0;
+  border-top: 2px solid #686868;
+  width: 100vw;         /* ocupa todo el ancho de la ventana */
+ 
+}
+
 #categoryList {
-  src: url('./fonts/MADECarvingSoftPERSONALUSE-Black.otf') format('opentype');
-  list-style: none;
-  padding: 0;
-  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 30px; /* antes 10px, ahora 3x */
+  padding: 0;
+  margin: 0;
+ 
+}
+
+
+
+@media (max-width: 1024px) {
+  #categoryList {
+    gap: 26px; /* separación entre botones */
+  }
 }
 
 #categoryList button {
-  src: url('./fonts/MADECarvingSoftPERSONALUSE-Black.otf') format('opentype');
   width: 100%;
-  height: 150px; /* antes 50px */
-  font-size: 54px; /* antes 18px */
-   background-color: #7a1f42;
-  border: 3px solid #dd8e3f; /* más grueso también para que no se vea débil en tamaño grande */
-  border-radius: 15px; /* proporcionalmente más suave */
+  font-size: 46px;
+  background-color: #A11E4A;
+  border: none;
+  border-radius: 0;
   cursor: pointer;
   color: #ffffff;
+  padding: 0;
 }
 
 #categoryList button:hover {
-  background-color: #dd8e3f;
-  color: #7a1f42;
+  background-color: #A11E4A;
+  color: #E2833D;
 }
+
 
 
 .product {
@@ -283,10 +300,10 @@ header {
   margin: 0 10px 60px;       /* top 0, right 10 px, bottom 60 px, left 10 px */
   padding: 60px;
 
-  border: 2px solid #dd8e3f;
+  border: 2px solid #686868;
   border-radius: 20px;
   background-color: #ffffff;
-  color: #a61f4d;
+  color: #A11E4A;
 }
 
 .product h3 {
@@ -310,7 +327,7 @@ header {
   right: 20px;
   font-size: 40px;
   cursor: pointer;
-  background-color: #a61f4d;
+  background-color: #A11E4A;
   border: none;
   border-radius: 5px;
   padding: 10px 15px;
@@ -327,7 +344,7 @@ header {
   margin-left: 8px;
   font-weight: bold;
   font-size: 50px;
-  color: #dd8e3f;
+  color:#E2833D;
 }
 
 
@@ -340,7 +357,7 @@ header {
   height: 100%;              /* 100 % de la ventana, no 100vh */
 
   /* Visual */
-  background-color: #7a1f42;
+  background-color: #fff;  /*FONDO CARRITO */
   color: #fff;
 
   /* Layout */
@@ -359,7 +376,7 @@ header {
   margin-top: 0;
   text-align: center;
   /*color: #ffc36a;*/
-  border-bottom: 2px solid #dd8e3f;
+  border-bottom: 2px solid #686868;
   padding-bottom: 15px;
 }
 
@@ -370,8 +387,8 @@ header {
 }
 
 .cart-popup li {
-  background-color: #a84a65;
-  border: 1px solid #dd8e3f;
+  background-color: #fff;
+  border: 1px solid #686868;
   border-radius: 10px;
   padding: 15px;
   margin-bottom: 15px;
@@ -407,14 +424,17 @@ header {
 .cart-title {
   font-size: 3rem;
   margin-bottom: 18px;
-  color: #fff;
-  font-family: 'MadeCarving', sans-serif;
+  color: #A11E4A;
+
+    font-family: 'MADECarvingSoft';
 }
 
 .delivery-title {
-  font-size: 3rem;
+  font-size: 2.6rem;
   margin: 32px 0 18px 0;
-  color: #a84a65;
+  color:  #A11E4A;
+    font-family: 'MADECarving';
+  
 }
 
 
@@ -425,7 +445,7 @@ header {
 
 #shippingCostText {
   font-size: 2.4rem;
-  color: #fff;
+  color: #A11E4A;
   font-weight: bold;
 }
 
@@ -439,24 +459,27 @@ header {
   cursor: pointer;
 }
 
+
+/*   DIVIDER TOTAL CARRITO*/
 .divider {
   border: none;
-  border-bottom: 2px solid #dd8e3f;
+  border-bottom: 5px solid #686868;  
   width: 100%;
   margin: 16px auto;
 }
 
+
 .cart-total {
   font-size: 4rem;
   font-weight: bold;
-  color: #fff;
+  color: #A11E4A;
   margin-left: 150px;
 }
 
 .send-order-btn {
-  background: #dd8e3f;
-  color: #570b20;
-  border: 2px solid #570b20;
+  background: #A11E4A;
+  color: #FFF;
+  border: 2px solid #A11E4A;
   padding: 40px 48px;
   font-size: 3.4rem;
   font-family: 'MADECarvingSoft', sans-serif;
@@ -511,7 +534,7 @@ header {
   height: 100px;       /* más alto, para varias líneas */
   padding: 14px 16px;
   font-size: 2.8rem;
-  border: 1px solid #dd8e3f;
+  border: 2px solid #686868;
 
 
   display: block;
@@ -524,20 +547,20 @@ header {
   resize: vertical;  /* permite que el usuario cambie la altura */
   border-radius: 10px;
   margin-bottom: 32px;
-  color: #a84a65;
+  color: #A11E4A;
 
   margin-left: auto;
   margin-right: auto;
 }
 
 #shippingAddress::placeholder {
-  color: #d78a8f;
+  color:#6868689d;
   
 }
 
 #shippingAddress:focus {
-  border-color: #a84a65;
-  box-shadow: 0 0 8px rgba(168, 74, 101, 0.6);
+  border-color: #A11E4A;
+  box-shadow: #A11E4A;
 }
 
 
@@ -581,7 +604,7 @@ header {
   width: 86px; /* 5 veces más grande aprox. */
   height: 86px;
   background-color: #fff;
-  border: 3px solid #a84a65;
+  border: 3px solid #686868;
   border-radius: 12px;
   position: relative;
   transition: all 0.2s ease;
@@ -589,8 +612,8 @@ header {
 }
 
 .styled-checkbox-label input[type="checkbox"]:checked + .checkmark {
-  background-color: #a84a65;
-  border-color: #a84a65;
+  background-color: #FFF;
+  border-color: #A11E4A;
 }
 
 .styled-checkbox-label .checkmark::after {
@@ -606,18 +629,18 @@ header {
   top: -10px;
   width: 30px;  /* tamaño del check */
   height: 70px;
-  border: 6px solid #dd8e3f;  /* grosor del borde del check */
+  border: 6px solid #A11E4A;  /* grosor del borde del check */
   border-width: 0 8px 8px 0;  /* aquí aumentás el grosor de la tilde */
   transform: rotate(45deg);
 }
 .styled-checkbox-label .checkbox-text {
-  color: #ffffff; /* color default */
+  color:#686868; /* color default */
   transition: color 0.3s ease;
   font-size: 3.5rem;
 }
 
 .styled-checkbox-label input[type="checkbox"]:checked + .checkmark + .checkbox-text {
-  color: #dd8e3f;
+  color: #A11E4A;
 }
 
 
@@ -682,7 +705,7 @@ header {
   background-color: #dadada;
   padding: 30px 20px;
   text-align: left;
-  color: #7a1f42;
+  color:#A11E4A;
   font-size: 2.5em;
   margin: 0;
   font-weight: 300;
@@ -706,7 +729,7 @@ header {
 }
 
 .footer-link {
-  color: #7a1f42;
+  color: #A11E4A;
   text-decoration: none;
 }
 
@@ -714,7 +737,7 @@ header {
 .footer-icon-wsp {
   width: 62px;
   height: 62px;
-  stroke: #7a1f42;
+  stroke: #A11E4A;
   fill: none;
   stroke-width: 1.2;
   stroke-linecap: round;
@@ -725,7 +748,7 @@ header {
 .footer-icon-email {
   width: 72px;
   height: 72px;
-  stroke: #7a1f42;
+  stroke: #A11E4A;
   fill: none;
   stroke-width: 0.72;
   stroke-linecap: round;
@@ -736,7 +759,7 @@ header {
 .footer-icon-instagram {
   width: 62px;
   height: 62px;
-  fill: #7a1f42;
+  fill: #A11E4A;
   stroke: none;
   margin-left: 20px;
 }
@@ -744,7 +767,7 @@ header {
 .footer-icon-location {
   width: 70px;
   height: 70px;
-  stroke: #7a1f42;
+  stroke: #A11E4A;
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -754,7 +777,7 @@ header {
 
 .footer-secondary {
   width: 100%;
-  background-color: #a61f4d;
+  background-color: #A11E4A;
   padding: 20px;
   text-align: left;
   color: white;
@@ -824,7 +847,13 @@ header {
 
 @media (min-width: 1024px) {
 
-  
+
+  /*   DIVIDER TOTAL CARRITO*/
+  .divider {
+
+  border-bottom: 2px solid #686868; /* grosor por defecto (PC) */
+
+}
 
   
 #filterContainer {
@@ -918,8 +947,9 @@ header {
     height: 50px;           /* antes 150px */
     font-size: 15px;         /* antes 54px */
     border-width: 2px;       /* un poco más delgado */
-    border-radius: 10px;     /* un poco menos redondeado */
+  
   }
+  
 
   /* Checkbox label más pequeño */
 
@@ -957,12 +987,12 @@ header {
 .cart-title {
   font-size: 1.7rem;
   margin-bottom: 18px;
-  color: #fff;
-  font-family: 'MadeCarving', sans-serif;
+  color: #A11E4A;
+  font-family: 'MADECarvingSoft';
 }
 
 .delivery-title {
-  font-size: 1.7rem;
+  font-size: 1.5rem;
  
 }
 
@@ -973,7 +1003,7 @@ header {
 
 #shippingCostText {
   font-size: 1.2rem;
-  color: #fff;
+  color: #A11E4A;
   font-weight: bold;
 }
 
@@ -990,14 +1020,14 @@ header {
 .cart-total {
   font-size: 2rem;
   font-weight: bold;
-  color: #fff;
+  color: #A11E4A;
   margin-left: 450px;
 }
 
 .send-order-btn {
-  background: #dd8e3f;
-  color: #570b20;
-  border: 1px solid #570b20;
+  background:#A11E4A;
+  color: #fff;
+  border: 1px solid #fff;
   padding: 20px 24px;
   font-size: 1.5rem;
   font-family: 'MADECarvingSoft', sans-serif;
@@ -1031,7 +1061,7 @@ header {
   margin-left: 8px;
   font-weight: bold;
   font-size: 20px;
-  color: #dd8e3f;
+  color: #E2833D;
 }
 
 
@@ -1105,7 +1135,7 @@ header {
   background-color: #dadada;
   padding: 17.64px 11.76px; /* 14.7px, 9.8px * 1.2 */
   text-align: left;
-  color: #7a1f42;
+  color: #A11E4A;
   font-size: 1.5em;
   margin: 0;
   font-weight: 300;
@@ -1130,7 +1160,7 @@ header {
 }
 
 .footer-link {
-  color: #7a1f42;
+  color: #A11E4A;
   text-decoration: none;
 }
 
@@ -1138,7 +1168,7 @@ header {
 .footer-icon-wsp {
   width: 36.46px;           /* 30.38px * 1.2 */
   height: 36.46px;
-  stroke: #7a1f42;
+  stroke:#A11E4A;
   fill: none;
   stroke-width: 0.7056;     /* 0.588 * 1.2 */
   stroke-linecap: round;
@@ -1149,7 +1179,7 @@ header {
 .footer-icon-email {
   width: 42.34px;           /* 35.28px * 1.2 */
   height: 42.34px;
-  stroke: #7a1f42;
+  stroke: #A11E4A;
   fill: none;
   stroke-width: 0.4236;     /* 0.353 * 1.2 */
   stroke-linecap: round;
@@ -1160,7 +1190,7 @@ header {
 .footer-icon-instagram {
   width: 36.46px;
   height: 36.46px;
-  fill: #7a1f42;
+  fill: #A11E4A;
   stroke: none;
   margin-left: 11.76px;
 }
@@ -1168,7 +1198,7 @@ header {
 .footer-icon-location {
   width: 41.16px;           /* 34.3px * 1.2 */
   height: 41.16px;
-  stroke: #7a1f42;
+  stroke:#A11E4A;
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -1181,7 +1211,7 @@ header {
 
 .footer-secondary {
   width: 100%;
-  background-color: #a61f4d;
+  background-color: #A11E4A;
   padding: 20px;
   text-align: left;
   color: white;
@@ -1226,3 +1256,190 @@ header {
     margin-left: 750px; /* ajustá este valor según necesites */
   }
 }
+
+
+
+/***PUBLICIDAD ESTILO Y DESLIZABLE**/
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.promo-container {
+  display: flex;
+  transition: transform 0.4s ease-in-out;
+  width: 100%;
+}
+
+.promo-container img {
+  flex: 0 0 100%;  /* cada imagen ocupa 100% del ancho */
+  max-width: 100%;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  display: none; /* ocultas por defecto, se muestran solo en PC */
+}
+
+.carousel-btn svg {
+  width: 70px;  /* tamaño doble al original que tenías */
+  height: 70px;
+  stroke: currentColor; /* toma el color de la propiedad color del botón */
+  fill: currentColor;   /* idem */
+}
+
+/* Colores manejados desde CSS */
+.carousel-btn {
+ /* color: #ffffff7e; /* o el color que quieras para las flechas */
+  color:  #6868688e;
+}
+
+
+.carousel-btn.prev {
+  left: 10px;
+}
+
+.carousel-btn.next {
+  right: 10px;
+}
+
+/* Mostrar flechas solo en PC */
+@media (min-width: 1024px) {
+  .carousel-btn {
+    display: block;
+  }
+}
+
+/****/
+
+/***BARRA INFORMATIVA  */
+@media (min-width: 1024px) {
+.info-bar {
+  width: 100%;
+  background-color: #dadada; /* gris */
+  color: #A11E4A;            /* bordó */
+  display: flex;
+  justify-content: space-around; /* reparte los bloques en fila */
+  padding: 15px 20px;
+  font-family: 'MadeCarving', sans-serif;
+  font-size: 1.2em; /* ajusté el tamaño para que no desborde */
+  text-align: center; /* centra los textos */
+}
+
+.info-bar-item {
+  display: flex;
+  flex-direction: column; /* icono arriba, texto abajo */
+  align-items: center;    /* centro horizontal */
+  gap: 8px;               /* espacio entre svg y texto */
+}
+
+.info-bar-icon {
+  width: 84px;   /* tamaño razonable del ícono */
+  height: 84px;
+  fill: #686868;
+}
+
+.info-bar-text {
+  margin: 0;
+}
+.destacado {
+  font-weight: bold;
+  font-size: 1em; /* opcional, para hacerlo un poco más grande */
+}
+}
+
+
+/*** Media query para celulares */
+
+@media (max-width: 1024px) {
+  .info-bar {
+    flex-direction: column;   /* bloques uno debajo del otro */
+    align-items: flex-start;  /* alinea los bloques a la izquierda */
+    gap: 30px;                /* espacio entre cada bloque */
+    font-size: 2em;           /* doble de tamaño del texto */
+    padding: 20px;
+    color: #A11E4A; 
+      background-color: #dadada; /* gris */
+   
+    font-family: 'MadeCarving', sans-serif;
+  }
+
+  .info-bar-item {
+    display: flex;
+    flex-direction: row;      /* SVG a la izquierda, texto a la derecha */
+    align-items: center;      /* centra verticalmente SVG y texto */
+    gap: 15px;                /* espacio entre SVG y frase */
+    width: 100%;
+  }
+
+  .info-bar-icon {
+    width: 180px;   /* doble de tamaño del icono */
+    height: 180px;
+    fill: #686868;
+  }
+
+  .info-bar-text {
+    margin: 0;
+  }
+
+  .destacado {
+    font-weight: bold;
+
+  }
+}
+
+
+/** DESTACADOS.*/
+
+/* Imágenes dentro de los productos destacados */
+.featured-list .product-card img {
+  width: 200px;       /* Ancho fijo */
+  height: 150px;      /* Alto fijo */
+  object-fit: cover;  /* Mantiene la proporción y recorta si es necesario */
+  border-radius: 8px; /* Opcional: bordes redondeados */
+}
+
+.featured-container {
+  margin: 40px 0;
+  overflow-x: auto;
+  padding: 10px;
+}
+
+.featured-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color:  #A11E4A; 
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.featured-list {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
+.featured-list::-webkit-scrollbar {
+  height: 10px;
+}
+
+
+
+@media (max-width: 1024px) {
+.featured-title {
+  font-size: 4rem;
+  font-weight: bold;
+  color:  #A11E4A; 
+  margin-bottom: 20px;
+  text-align: center;
+}}
+
+
