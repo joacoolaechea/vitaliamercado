@@ -49,8 +49,11 @@ app.get('/api/products', async (req, res) => {
           })(),
           destacado: (() => {
             const raw = (row["Destacado"] || "").trim().toLowerCase();
-            // Puede ser "SI", "TRUE", "1" para marcar como destacado
             return ["si", "true", "1"].includes(raw);
+          })(),
+          ocultar: (() => {
+            const raw = (row["Ocultar"] || "").trim();
+            return raw === "1"; // true si es 1, false si está vacío
           })()
         });
       })

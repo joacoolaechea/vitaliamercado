@@ -775,6 +775,8 @@ header {
 }
 /* PIE DE PAGINA SECUNDARIO (HORARIOS) */
 
+
+
 .footer-secondary {
   width: 100%;
   background-color: #A11E4A;
@@ -1258,8 +1260,7 @@ header {
 }
 
 
-
-/***PUBLICIDAD ESTILO Y DESLIZABLE**/
+/*** PUBLICIDAD ESTILO Y DESLIZABLE ***/
 .carousel {
   position: relative;
   width: 100%;
@@ -1277,6 +1278,7 @@ header {
   max-width: 100%;
 }
 
+/* Botones flecha */
 .carousel-btn {
   position: absolute;
   top: 50%;
@@ -1286,21 +1288,15 @@ header {
   cursor: pointer;
   z-index: 10;
   display: none; /* ocultas por defecto, se muestran solo en PC */
+  color: #6868688e; /* color de las flechas */
 }
 
 .carousel-btn svg {
-  width: 70px;  /* tamaño doble al original que tenías */
+  width: 70px;  /* tamaño doble al original */
   height: 70px;
-  stroke: currentColor; /* toma el color de la propiedad color del botón */
-  fill: currentColor;   /* idem */
+  stroke: currentColor; /* toma el color del botón */
+  fill: currentColor;
 }
-
-/* Colores manejados desde CSS */
-.carousel-btn {
- /* color: #ffffff7e; /* o el color que quieras para las flechas */
-  color:  #6868688e;
-}
-
 
 .carousel-btn.prev {
   left: 10px;
@@ -1315,6 +1311,31 @@ header {
   .carousel-btn {
     display: block;
   }
+}
+
+/* --- Puntitos estilo moderno --- */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.carousel-dots button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: #ccc;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  padding: 0; /* evita que agrande el botón */
+}
+
+.carousel-dots button.active {
+  background: #A11E4A;  /* tu color corporativo */
+  transform: scale(1.2);
 }
 
 /****/
@@ -1398,13 +1419,7 @@ header {
 
 /** DESTACADOS.*/
 
-/* Imágenes dentro de los productos destacados */
-.featured-list .product-card img {
-  width: 200px;       /* Ancho fijo */
-  height: 150px;      /* Alto fijo */
-  object-fit: cover;  /* Mantiene la proporción y recorta si es necesario */
-  border-radius: 8px; /* Opcional: bordes redondeados */
-}
+
 
 .featured-container {
   margin: 40px 0;

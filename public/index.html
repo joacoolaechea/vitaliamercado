@@ -162,7 +162,6 @@ ULTIMA PUBLICIDAD
 
 
 
-
 <div class="promo-image">
   <div class="carousel">
     <!-- Flecha izquierda (solo visible en PC) -->
@@ -222,33 +221,62 @@ ULTIMA PUBLICIDAD
       </svg>
     </button>
   </div>
+
+  <!-- Puntitos -->
+  <div class="carousel-dots" id="carousel-dots"></div>
 </div>
 
 <script>
   const promoContainer = document.getElementById("promo-container");
+  const dotsContainer = document.getElementById("carousel-dots");
   const isDesktop = window.innerWidth >= 1024;
 
-  // Mostrar portada inicial
-  promoContainer.innerHTML = `
-    <img src="${isDesktop ? "/portadapc.png" : "/portada.png"}" 
-         alt="Portada Vitalia" style="max-width:100%;" />
-  `;
+  // Imágenes que querés mostrar
+  const images = [
+    isDesktop ? "/portadapc.png" : "/portada.png",
+    isDesktop ? "/publicidadpc.png" : "/publicidad.png"
+  ];
 
-  // Precargar publicidad final
-  const publicidadFinal = new Image();
-  publicidadFinal.src = isDesktop ? "/publicidadpc.png" : "/publicidad.png";
+  let currentIndex = 0;
 
-  publicidadFinal.onload = () => {
-    promoContainer.innerHTML = `
-      <img src="${publicidadFinal.src}" 
-           alt="Publicidad Vitalia" style="max-width:100%;" />
-    `;
-  };
+  // Insertar imágenes en el contenedor
+  promoContainer.innerHTML = images.map(src =>
+    `<img src="${src}" alt="Publicidad">`
+  ).join("");
+
+  // Crear puntitos dinámicos
+  images.forEach((_, i) => {
+    const dot = document.createElement("button");
+    dot.addEventListener("click", () => {
+      currentIndex = i;
+      updateCarousel();
+    });
+    dotsContainer.appendChild(dot);
+  });
+
+  // Actualizar carrusel
+  function updateCarousel() {
+    promoContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+    document.querySelectorAll(".carousel-dots button").forEach((dot, i) => {
+      dot.classList.toggle("active", i === currentIndex);
+    });
+  }
+
+  // Botones de flechas
+  document.querySelector(".carousel-btn.prev").addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    updateCarousel();
+  });
+
+  document.querySelector(".carousel-btn.next").addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % images.length;
+    updateCarousel();
+  });
+
+  // Mostrar la primera imagen
+  updateCarousel();
 </script>
 
-
-
-<!-- Imagen de publicidad -->
 <!-- Imagen de publicidad -->
 
 <style>
@@ -583,13 +611,11 @@ ULTIMA PUBLICIDAD
       <span class="footer-secondary-title"> Horarios:</span>
     </span>
 
-    <br>Lunes a Viernes:  
-    <br>8:30 - 12:30  
-    <br>17:00 - 21:00  
+    <br>Lunes a Viernes:   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sábados:  
+    <br> 8:30 - 12:30     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10:00 - 13:00  
+    <br>17:00 - 21:00     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 16:30 - 19:30
     
-    <br><br>Sábados:  
-    <br>10:00 - 13:00  
-    <br>16:30 - 19:30
+
   </p>
 </div>
 

@@ -433,7 +433,6 @@ function ocultarPublicidadYExpandirContenido() {
 
 
 function mostrarPublicidadYRestaurarMargen() {
-  
   const promo = document.querySelector(".promo-image");
   const infoBar = document.querySelector(".info-bar"); 
   const productos = document.querySelectorAll(".product");
@@ -445,7 +444,6 @@ function mostrarPublicidadYRestaurarMargen() {
   document.getElementById("search").value = "";
 
   const isDesktop = window.innerWidth >= 1024;
-
   const start = isDesktop ? 4 : 0;
   const end = isDesktop ? 7 : 3;
 
@@ -456,7 +454,10 @@ function mostrarPublicidadYRestaurarMargen() {
   if (featured) featured.style.display = "block"; // 👉 Mostrar destacados
 
   const promoContainer = document.getElementById("promo-container");
+  const dotsContainer = document.getElementById("carousel-dots");
+
   promoContainer.innerHTML = "";
+  dotsContainer.innerHTML = "";
 
   const publicidades = [];
   for (let i = start; i <= end; i++) {
@@ -466,17 +467,33 @@ function mostrarPublicidadYRestaurarMargen() {
     }
   }
 
+  // Insertar imágenes
   publicidades.forEach(url => {
     const img = document.createElement("img");
     img.src = url;
     promoContainer.appendChild(img);
   });
 
+  // Generar puntitos
+  publicidades.forEach((_, i) => {
+    const dot = document.createElement("button");
+    dot.addEventListener("click", () => {
+      currentIndex = i;
+      updateCarousel();
+    });
+    dotsContainer.appendChild(dot);
+  });
+
   let currentIndex = 0;
+
   function updateCarousel() {
     promoContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+    dotsContainer.querySelectorAll("button").forEach((dot, i) => {
+      dot.classList.toggle("active", i === currentIndex);
+    });
   }
 
+  // Flechas en PC
   if (isDesktop) {
     document.querySelector(".carousel-btn.next").onclick = () => {
       currentIndex = (currentIndex + 1) % publicidades.length;
@@ -489,6 +506,7 @@ function mostrarPublicidadYRestaurarMargen() {
     };
   }
 
+  // Swipe en móvil
   let startX = 0;
   let endX = 0;
   promoContainer.addEventListener("touchstart", e => { startX = e.touches[0].clientX; });
@@ -536,14 +554,29 @@ function renderProducts(products) {
 
   list.style.gap = isDesktop ? "20px" : "0";
 
-  products.forEach(p => {
+  // 🔹 Antes de renderizar, limpiamos los favoritos de productos ocultos
+  const visibles = products.filter(p => !(p.ocultar === true || p.ocultar === "1"));
+
+  if (favorites.length > 0) {
+    const esObjeto = typeof favorites[0] === "object";
+    const visiblesNames = visibles.map(p => p.name);
+
+    favorites = favorites.filter(fav => {
+      const name = esObjeto ? fav.name : fav;
+      return visiblesNames.includes(name);
+    });
+
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }
+
+  visibles.forEach(p => {
     const div = document.createElement("div");
     div.className = "product";
     div.style.position = "relative";
-    div.style.width = "auto";  // El grid define el ancho
+    div.style.width = "auto"; // El grid define el ancho
 
     const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://i.imgur.com/p4tHxub.jpeg";
-    const isFavorite = favorites.some(f => f.name === p.name);
+    const isFavorite = favorites.some(f => (typeof f === "object" ? f.name === p.name : f === p.name));
 
     const favButton = document.createElement("button");
     favButton.className = "favorite-btn";
@@ -606,34 +639,33 @@ function renderProducts(products) {
       flex:1;
       height:${isDesktop ? "225px" : "450px"};
     `;
-info.innerHTML = `
-  <span style="font-size:${isDesktop ? "1.25rem" : "2.5rem"};
-               font-weight:700;
-               line-height:1.2;
-               word-wrap:break-word;
-               margin-bottom:8px;
-               color:#A11E4A; ">
-    ${p.name}
-  </span>
-  <span style="font-size:${isDesktop ? "1rem" : "2rem"};
-             color:#686868;
-             font-family:'MadeCarving', sans-serif;
-             margin-bottom:auto;">
-  ${p.category}
-</span>
-<div style="margin-top:auto;">
-  <span style="display:block;
-               font-size:${isDesktop ? "1rem" : "2rem"};
-               color:#686868;
-               font-family:'MadeCarving', sans-serif;
-               margin-bottom:12px;">
-    ${p.unit}
-  </span>
-</div>
-        <span style="display:block; font-size:${isDesktop ? "2.5rem" : "5rem"}; font-weight:700;">
-          $${p.price}
+    info.innerHTML = `
+      <span style="font-size:${isDesktop ? "1.25rem" : "2.5rem"};
+                   font-weight:700;
+                   line-height:1.2;
+                   word-wrap:break-word;
+                   margin-bottom:8px;
+                   color:#A11E4A;">
+        ${p.name}
+      </span>
+      <span style="font-size:${isDesktop ? "1rem" : "2rem"};
+                   color:#686868;
+                   font-family:'MadeCarving', sans-serif;
+                   margin-bottom:auto;">
+        ${p.category}
+      </span>
+      <div style="margin-top:auto;">
+        <span style="display:block;
+                     font-size:${isDesktop ? "1rem" : "2rem"};
+                     color:#686868;
+                     font-family:'MadeCarving', sans-serif;
+                     margin-bottom:12px;">
+          ${p.unit}
         </span>
       </div>
+      <span style="display:block; font-size:${isDesktop ? "2.5rem" : "5rem"}; font-weight:700;">
+        $${p.price}
+      </span>
     `;
 
     mainContent.appendChild(img);
@@ -646,6 +678,7 @@ info.innerHTML = `
 
   updateFavoriteIcons();
 }
+
 
 
 function renderFeatured(products) {
