@@ -817,16 +817,21 @@ header {
 
 
 /*------------------*/
-
 /* PUBLICIDAD */
 .promo-image {
   text-align: center;
-  margin: 400px 0 40px;
+  margin: 400px 0; /* ajusté el margen vertical para que no esté tan abajo */
+  display: flex;
+    flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .promo-image img {
-  max-width: 100%;
-  height: auto;
+  width: 90vw;           /* ocupa el 90% del ancho del dispositivo */
+  max-width: 600px;      /* no se hace gigante en pantallas grandes */
+  aspect-ratio: 1 / 1;   /* mantiene proporción cuadrada */
+  object-fit: cover;     /* recorta la imagen si no es cuadrada */
   border-radius: 20px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 }
@@ -834,6 +839,7 @@ header {
 .hidden {
   display: none !important;
 }
+
 
 
 
@@ -847,6 +853,19 @@ header {
 
 /*pc  AJUSTE TAMAÑO PANTALLA A PC*/
 
+@media (max-width: 1920px) {
+  #filterContainer {
+    left: 520px; /* desplazalo a la derecha (ajustá este valor) */
+  }
+}
+
+@media (max-width: 1366px) {
+  #filterContainer {
+     left: 18vw; /* 25% del ancho de la pantalla */
+  }
+}
+
+
 @media (min-width: 1024px) {
 
 
@@ -857,10 +876,27 @@ header {
 
 }
 
-  
+/* Mantiene igual en celular (por defecto no cambia nada) */
 #filterContainer {
-  display: none;
+  transition: all 0.3s ease;
 }
+
+
+
+  #filterContainer {
+    transform: scale(0.45); /* achica un 40% */
+    transform-origin: top left;
+
+
+    top: 190px;  /* bajalo un poco */
+    position: fixed; /* aseguramos que mantenga su posición fija */
+  }
+
+  #filterButton {
+    transform: translateY(80%); /* baja el botón */
+  }
+
+
 
   /* PUBLICIDAD pc*/
 .promo-image {

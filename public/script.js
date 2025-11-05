@@ -431,13 +431,12 @@ function ocultarPublicidadYExpandirContenido() {
 
 /**** mostrar  */
 
-
 function mostrarPublicidadYRestaurarMargen() {
   const promo = document.querySelector(".promo-image");
   const infoBar = document.querySelector(".info-bar"); 
   const productos = document.querySelectorAll(".product");
   const content = document.querySelector(".content");
-  const featured = document.getElementById("featuredContainer"); // 👉 Referencia a destacados
+  const featured = document.getElementById("featuredContainer");
 
   document.getElementById("unitFilter").value = "";
   document.getElementById("priceFilter").value = "";
@@ -448,10 +447,25 @@ function mostrarPublicidadYRestaurarMargen() {
   const end = isDesktop ? 7 : 3;
 
   if (!promo) return;
-  promo.style.display = "block";
+
+  // Ajuste de márgenes
+  promo.style.display = "flex";
+  promo.style.justifyContent = "center";
+  promo.style.alignItems = "center";
+  promo.style.height = "auto"; // contenedor se ajusta a la imagen
+
+  if (isDesktop) {
+    // PC: no tocar márgenes
+    promo.style.marginTop = "";
+    promo.style.marginBottom = "";
+  } else {
+    // Móvil: margen superior 400px, inferior 10px
+    promo.style.marginTop = "400px";
+    promo.style.marginBottom = "10px";
+  }
 
   if (infoBar) infoBar.style.display = "flex"; 
-  if (featured) featured.style.display = "block"; // 👉 Mostrar destacados
+  if (featured) featured.style.display = "block";
 
   const promoContainer = document.getElementById("promo-container");
   const dotsContainer = document.getElementById("carousel-dots");
@@ -471,6 +485,11 @@ function mostrarPublicidadYRestaurarMargen() {
   publicidades.forEach(url => {
     const img = document.createElement("img");
     img.src = url;
+    img.style.width = isDesktop ? "600px" : "90vw";
+    img.style.height = "auto";
+    img.style.borderRadius = "20px";
+    img.style.objectFit = "cover";
+    img.style.boxShadow = "0 4px 16px rgba(0,0,0,0.2)";
     promoContainer.appendChild(img);
   });
 
@@ -532,7 +551,6 @@ function mostrarPublicidadYRestaurarMargen() {
 }
 
 
-
 function renderProducts(products) {
   const list = document.getElementById("productList");
   list.innerHTML = "";
@@ -554,20 +572,8 @@ function renderProducts(products) {
 
   list.style.gap = isDesktop ? "20px" : "0";
 
-  // 🔹 Antes de renderizar, limpiamos los favoritos de productos ocultos
+  // 🔹 Ya no limpiamos favoritos acá
   const visibles = products.filter(p => !(p.ocultar === true || p.ocultar === "1"));
-
-  if (favorites.length > 0) {
-    const esObjeto = typeof favorites[0] === "object";
-    const visiblesNames = visibles.map(p => p.name);
-
-    favorites = favorites.filter(fav => {
-      const name = esObjeto ? fav.name : fav;
-      return visiblesNames.includes(name);
-    });
-
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }
 
   visibles.forEach(p => {
     const div = document.createElement("div");
@@ -677,6 +683,23 @@ function renderProducts(products) {
   });
 
   updateFavoriteIcons();
+}
+
+
+function limpiarFavoritosOcultos(products) {
+  const visibles = products.filter(p => !(p.ocultar === true || p.ocultar === "1"));
+
+  if (favorites && favorites.length > 0) {
+    const esObjeto = typeof favorites[0] === "object";
+    const visiblesNames = visibles.map(p => p.name);
+
+    favorites = favorites.filter(fav => {
+      const name = esObjeto ? fav.name : fav;
+      return visiblesNames.includes(name);
+    });
+
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }
 }
 
 
@@ -926,6 +949,14 @@ function toggleFavorites() {
     btn.setAttribute("fill", "none");
   }
 }
+
+async function init() {
+  const products = await cargarProductosDesdeSheets(); // tu función de carga
+
+  limpiarFavoritosOcultos(products); // limpia favoritos ocultos una sola vez
+  renderProducts(products);           // luego renderiza
+}
+
 
 window.addEventListener("popstate", () => {
   const btn = document.querySelector(".favorites-button svg");
@@ -1542,6 +1573,13 @@ function actualizarPublicidad(products) {
 fetch("/api/products")
   .then(res => res.json())
   .then(products => {
+    // 🔹 Limpiar favoritos ocultos antes de renderizar
+    limpiarFavoritosOcultos(products);
+
+    // 🔹 Guardar productos globalmente si los usás en otros lugares
+    allProducts = products;
+
+    // 🔹 Luego tu flujo normal
     loadProducts(products);          // Tu función que carga productos en pantalla
     actualizarPublicidad(products);  // Actualiza el src de la imagen de publicidad
     mostrarPublicidadYRestaurarMargen();
