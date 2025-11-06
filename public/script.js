@@ -572,8 +572,38 @@ function renderProducts(products) {
 
   list.style.gap = isDesktop ? "20px" : "0";
 
-  // 🔹 Ya no limpiamos favoritos acá
   const visibles = products.filter(p => !(p.ocultar === true || p.ocultar === "1"));
+// 🔹 Filtrar productos visibles
+
+// 🔹 Obtener categoría seleccionada
+const select = document.getElementById("categorySelect");
+const selectedCategory = select ? select.value : "";
+
+// 🔹 Obtener texto de búsqueda
+const searchInput = document.getElementById("searchInput");
+const searchValue = searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+// 🔹 Ordenar priorizando búsqueda y categoría
+if (searchValue || selectedCategory) {
+  visibles.sort((a, b) => {
+    const aMatchesSearch = searchValue && a.name.toLowerCase().includes(searchValue);
+    const bMatchesSearch = searchValue && b.name.toLowerCase().includes(searchValue);
+    const aMatchesCategory = selectedCategory && a.category === selectedCategory;
+    const bMatchesCategory = selectedCategory && b.category === selectedCategory;
+
+    // 🥇 Prioridad 1: productos que coinciden con la búsqueda
+    if (aMatchesSearch && !bMatchesSearch) return -1;
+    if (!aMatchesSearch && bMatchesSearch) return 1;
+
+    // 🥈 Prioridad 2: productos de la categoría seleccionada
+    if (aMatchesCategory && !bMatchesCategory) return -1;
+    if (!aMatchesCategory && bMatchesCategory) return 1;
+
+    return 0; // el resto mantiene el orden original
+  });
+}
+
+
 
   visibles.forEach(p => {
     const div = document.createElement("div");
@@ -1575,15 +1605,25 @@ fetch("/api/products")
   .then(products => {
     // 🔹 Limpiar favoritos ocultos antes de renderizar
     limpiarFavoritosOcultos(products);
+ 
+    // 🔹 Precargar imágenes de productos destacados antes que el resto
+const destacados = products.filter(p => p.destacado && !p.ocultar && p.image);
+destacados.forEach(p => {
+  const img = new Image();
+  img.src = p.image;
+});
 
+    renderFeatured(products);
+    
     // 🔹 Guardar productos globalmente si los usás en otros lugares
     allProducts = products;
 
+    actualizarPublicidad(products);  // Actualiza el src de la imagen de publicidad
     // 🔹 Luego tu flujo normal
     loadProducts(products);          // Tu función que carga productos en pantalla
-    actualizarPublicidad(products);  // Actualiza el src de la imagen de publicidad
+   
     mostrarPublicidadYRestaurarMargen();
-    renderFeatured(products);
+   
   })
   .catch(err => {
     console.error("Error cargando productos:", err);
