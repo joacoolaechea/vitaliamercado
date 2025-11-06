@@ -853,18 +853,19 @@ header {
 
 /*pc  AJUSTE TAMAÑO PANTALLA A PC*/
 
-@media (max-width: 1920px) {
+
+/* ✅ Notebooks y pantallas medianas (de 1366px a 1919px) */
+@media (min-width: 1366px) and (max-width: 1919px) {
   #filterContainer {
-    left: 520px; /* desplazalo a la derecha (ajustá este valor) */
+    left: 18vw;
   }
 }
-
-@media (max-width: 1366px) {
+/* ✅ Monitores grandes (1920px o más) */
+@media (min-width: 1920px) {
   #filterContainer {
-     left: 18vw; /* 25% del ancho de la pantalla */
+    left: 520px;
   }
 }
-
 
 @media (min-width: 1024px) {
 
