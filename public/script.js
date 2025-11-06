@@ -581,7 +581,7 @@ function renderProducts(products) {
     div.style.position = "relative";
     div.style.width = "auto"; // El grid define el ancho
 
-    const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://i.imgur.com/p4tHxub.jpeg";
+    const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://iili.io/KtUXFzQ.webp";
     const isFavorite = favorites.some(f => (typeof f === "object" ? f.name === p.name : f === p.name));
 
     const favButton = document.createElement("button");
@@ -735,7 +735,7 @@ function renderFeatured(products) {
       position: relative;
     `;
 
-    const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://i.imgur.com/p4tHxub.jpeg";
+    const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://iili.io/KtUXFzQ.webp";
 
     // Contenido de la tarjeta
     card.innerHTML = `
@@ -1101,7 +1101,7 @@ document.body.style.overflow = "hidden";
   styleTag.id = 'product-detail-styles';
   document.head.appendChild(styleTag);
 
-  const imageSrc = product.image && product.image.trim() !== "" ? product.image : "https://i.imgur.com/p4tHxub.jpeg";
+  const imageSrc = product.image && product.image.trim() !== "" ? product.image : "https://iili.io/KtUXFzQ.webp";
 
   content.innerHTML = `
     <div class="product-detail-container">

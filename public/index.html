@@ -2,9 +2,21 @@
 <html lang="es">
   
 <head>
+
   <meta charset="UTF-8">
   <title>Vitalia</title>
+
+    <!-- Precarga de imágenes del carrusel -->
+  <link rel="preload" as="image" href="/portadapc.webp">
+  <link rel="preload" as="image" href="/portada.webp">
+  <link rel="preload" as="image" href="/publicidadpc.webp">
+  <link rel="preload" as="image" href="/publicidad.webp">
+
+  
+
+
   <link rel="stylesheet" href="style.css">
+  
 
 <!-- FILTRO PRODUCTOS -->
 <div id="filterContainer" style="margin: -120px 20px 20px 20px; position:fixed; z-index: 1500;">
@@ -161,6 +173,7 @@ ULTIMA PUBLICIDAD
 <---------------------->
 
 
+
 <div class="promo-image">
   <div class="carousel">
     <!-- Flecha izquierda (solo visible en PC) -->
@@ -229,75 +242,51 @@ ULTIMA PUBLICIDAD
   const promoContainer = document.getElementById("promo-container");
   const dotsContainer = document.getElementById("carousel-dots");
   const isDesktop = window.innerWidth >= 1024;
+
+  // Imágenes que querés mostrar
   const images = [
-    isDesktop ? "/portadapc.png" : "/portada.png",
+    isDesktop ? "/portadapc.webp" : "/portada.webp",
     isDesktop ? "/publicidadpc.png" : "/publicidad.png"
   ];
+
   let currentIndex = 0;
 
-  // 🔹 Función para convertir imagen a Base64
-  async function toBase64(url) {
-    const res = await fetch(url);
-    const blob = await res.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
+  // Insertar imágenes en el contenedor
+  promoContainer.innerHTML = images.map(src =>
+    `<img src="${src}" alt="Publicidad">`
+  ).join("");
+
+  // Crear puntitos dinámicos
+  images.forEach((_, i) => {
+    const dot = document.createElement("button");
+    dot.addEventListener("click", () => {
+      currentIndex = i;
+      updateCarousel();
+    });
+    dotsContainer.appendChild(dot);
+  });
+
+  // Actualizar carrusel
+  function updateCarousel() {
+    promoContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+    document.querySelectorAll(".carousel-dots button").forEach((dot, i) => {
+      dot.classList.toggle("active", i === currentIndex);
     });
   }
 
-  // 🔹 Precarga de imágenes y almacenamiento en localStorage
-  async function preloadImages() {
-    const cached = JSON.parse(localStorage.getItem("carouselCache")) || {};
-    const result = {};
-    for (const src of images) {
-      if (cached[src]) {
-        result[src] = cached[src];
-      } else {
-        result[src] = await toBase64(src);
-      }
-    }
-    localStorage.setItem("carouselCache", JSON.stringify(result));
-    return result;
-  }
-
-  // 🔹 Mostrar el carrusel solo después de cargar todas las imágenes
-  preloadImages().then((data) => {
-    promoContainer.innerHTML = images.map(src =>
-      `<img src="${data[src]}" alt="Publicidad">`
-    ).join("");
-
-    // Crear puntitos dinámicos
-    images.forEach((_, i) => {
-      const dot = document.createElement("button");
-      dot.addEventListener("click", () => {
-        currentIndex = i;
-        updateCarousel();
-      });
-      dotsContainer.appendChild(dot);
-    });
-
-    // Actualizar carrusel
-    function updateCarousel() {
-      promoContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
-      document.querySelectorAll(".carousel-dots button").forEach((dot, i) => {
-        dot.classList.toggle("active", i === currentIndex);
-      });
-    }
-
-    // Botones de flechas
-    document.querySelector(".carousel-btn.prev").addEventListener("click", () => {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      updateCarousel();
-    });
-    document.querySelector(".carousel-btn.next").addEventListener("click", () => {
-      currentIndex = (currentIndex + 1) % images.length;
-      updateCarousel();
-    });
-
-    // Mostrar la primera imagen
+  // Botones de flechas
+  document.querySelector(".carousel-btn.prev").addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
     updateCarousel();
   });
+
+  document.querySelector(".carousel-btn.next").addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % images.length;
+    updateCarousel();
+  });
+
+  // Mostrar la primera imagen
+  updateCarousel();
 </script>
 
 <!-- Imagen de publicidad -->
@@ -320,6 +309,7 @@ ULTIMA PUBLICIDAD
 
 
 <body>
+
   <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
  <header>
   <img src="logo.png" alt="Logo Vitalia" class="logo" onclick="mostrarPublicidadYRestaurarMargen()" style="cursor: pointer;">
@@ -668,4 +658,7 @@ ULTIMA PUBLICIDAD
 
 
 </body>
+
+
+
 </html>
