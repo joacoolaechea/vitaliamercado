@@ -818,11 +818,12 @@ header {
 
 /*------------------*/
 /* PUBLICIDAD */
+/* Evita el salto visual debajo del carrusel */
 .promo-image {
   text-align: center;
-  margin: 400px 0; /* ajusté el margen vertical para que no esté tan abajo */
+  margin: 400px 0 0 0; /* mantenés el margen superior */
   display: flex;
-    flex-direction: column;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
