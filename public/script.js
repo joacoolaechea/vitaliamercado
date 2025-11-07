@@ -572,38 +572,36 @@ function renderProducts(products) {
 
   list.style.gap = isDesktop ? "20px" : "0";
 
+  // 🔹 Filtrar productos visibles
   const visibles = products.filter(p => !(p.ocultar === true || p.ocultar === "1"));
-// 🔹 Filtrar productos visibles
 
-// 🔹 Obtener categoría seleccionada
-const select = document.getElementById("categorySelect");
-const selectedCategory = select ? select.value : "";
+  // 🔹 Obtener categoría seleccionada
+  const select = document.getElementById("categorySelect");
+  const selectedCategory = select ? select.value : "";
 
-// 🔹 Obtener texto de búsqueda
-const searchInput = document.getElementById("searchInput");
-const searchValue = searchInput ? searchInput.value.trim().toLowerCase() : "";
+  // 🔹 Obtener texto de búsqueda
+  const searchInput = document.getElementById("searchInput");
+  const searchValue = searchInput ? searchInput.value.trim().toLowerCase() : "";
 
-// 🔹 Ordenar priorizando búsqueda y categoría
-if (searchValue || selectedCategory) {
-  visibles.sort((a, b) => {
-    const aMatchesSearch = searchValue && a.name.toLowerCase().includes(searchValue);
-    const bMatchesSearch = searchValue && b.name.toLowerCase().includes(searchValue);
-    const aMatchesCategory = selectedCategory && a.category === selectedCategory;
-    const bMatchesCategory = selectedCategory && b.category === selectedCategory;
+  // 🔹 Ordenar priorizando búsqueda y categoría
+  if (searchValue || selectedCategory) {
+    visibles.sort((a, b) => {
+      const aMatchesSearch = searchValue && a.name.toLowerCase().includes(searchValue);
+      const bMatchesSearch = searchValue && b.name.toLowerCase().includes(searchValue);
+      const aMatchesCategory = selectedCategory && a.category === selectedCategory;
+      const bMatchesCategory = selectedCategory && b.category === selectedCategory;
 
-    // 🥇 Prioridad 1: productos que coinciden con la búsqueda
-    if (aMatchesSearch && !bMatchesSearch) return -1;
-    if (!aMatchesSearch && bMatchesSearch) return 1;
+      // 🥇 Prioridad 1: productos que coinciden con la búsqueda
+      if (aMatchesSearch && !bMatchesSearch) return -1;
+      if (!aMatchesSearch && bMatchesSearch) return 1;
 
-    // 🥈 Prioridad 2: productos de la categoría seleccionada
-    if (aMatchesCategory && !bMatchesCategory) return -1;
-    if (!aMatchesCategory && bMatchesCategory) return 1;
+      // 🥈 Prioridad 2: productos de la categoría seleccionada
+      if (aMatchesCategory && !bMatchesCategory) return -1;
+      if (!aMatchesCategory && bMatchesCategory) return 1;
 
-    return 0; // el resto mantiene el orden original
-  });
-}
-
-
+      return 0; // el resto mantiene el orden original
+    });
+  }
 
   visibles.forEach(p => {
     const div = document.createElement("div");
@@ -611,7 +609,7 @@ if (searchValue || selectedCategory) {
     div.style.position = "relative";
     div.style.width = "auto"; // El grid define el ancho
 
-    const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://iili.io/KtUXFzQ.webp";
+    const placeholder = "https://iili.io/KtUXFzQ.webp";
     const isFavorite = favorites.some(f => (typeof f === "object" ? f.name === p.name : f === p.name));
 
     const favButton = document.createElement("button");
@@ -654,19 +652,30 @@ if (searchValue || selectedCategory) {
     `;
     mainContent.addEventListener("click", () => openProductDetail(p));
 
+    // 🔹 Imagen con placeholder y carga diferida
     const img = document.createElement("img");
-    img.src = imageSrc;
+    img.src = placeholder;
     img.alt = p.name;
     img.style.cssText = `
       width:${isDesktop ? "225px" : "450px"};
       height:${isDesktop ? "225px" : "450px"};
       object-fit:cover;
       border-radius:8px;
+      transition: opacity 0.3s ease;
+      opacity: 0.8;
     `;
-    img.onerror = function () {
-      this.onerror = null;
-      this.src = 'data/default.jpeg';
-    };
+
+    if (p.image && p.image.trim() !== "") {
+      const realImg = new Image();
+      realImg.src = p.image;
+      realImg.onload = () => {
+        img.src = p.image;
+        img.style.opacity = "1"; // efecto suave al cargar
+      };
+      realImg.onerror = () => {
+        img.src = placeholder;
+      };
+    }
 
     const info = document.createElement("div");
     info.style.cssText = `
@@ -706,7 +715,6 @@ if (searchValue || selectedCategory) {
 
     mainContent.appendChild(img);
     mainContent.appendChild(info);
-
     div.appendChild(favButton);
     div.appendChild(mainContent);
     list.appendChild(div);
@@ -714,6 +722,7 @@ if (searchValue || selectedCategory) {
 
   updateFavoriteIcons();
 }
+
 
 
 function limpiarFavoritosOcultos(products) {
@@ -748,6 +757,7 @@ function renderFeatured(products) {
   }
 
   const isMobile = window.innerWidth <= 1024; // Detecta celular
+  const placeholder = "https://iili.io/KtUXFzQ.webp";
 
   destacados.forEach(p => {
     const card = document.createElement("div");
@@ -765,31 +775,50 @@ function renderFeatured(products) {
       position: relative;
     `;
 
-    const imageSrc = p.image && p.image.trim() !== "" ? p.image : "https://iili.io/KtUXFzQ.webp";
+    // 🔹 Imagen con placeholder y carga diferida
+    const img = document.createElement("img");
+    img.src = placeholder;
+    img.alt = p.name;
+    img.style.cssText = `
+      width: 100%;
+      height: ${isMobile ? "360px" : "180px"};
+      object-fit: cover;
+      border-radius: ${isMobile ? "16px" : "8px"};
+      transition: opacity 0.3s ease;
+      opacity: 0.8;
+      display: block;
+    `;
 
-    // Contenido de la tarjeta
-    card.innerHTML = `
-      <img src="${imageSrc}" alt="${p.name}" 
-           style="
-             width:100%; 
-             height:${isMobile ? "360px" : "180px"}; 
-             object-fit:cover; 
-             border-radius:${isMobile ? "16px" : "8px"};">
-      <h3 style="
-           font-size:${isMobile ? "2rem" : "1rem"}; 
-           font-weight:normal; 
-           margin:10px 0 5px 0; 
-           color:#686868; 
-           font-family: 'MadeCarving', sans-serif;">
-        ${p.name}
-      </h3>
-      <p style="
-           font-size:${isMobile ? "3rem" : "1.5rem"}; 
-           font-weight:bold; 
-           color:#A11E4A; 
-           margin:0;">
-        $${p.price}
-      </p>
+    if (p.image && p.image.trim() !== "") {
+      const realImg = new Image();
+      realImg.src = p.image;
+      realImg.onload = () => {
+        img.src = p.image;
+        img.style.opacity = "1"; // transición suave al cargar
+      };
+      realImg.onerror = () => {
+        img.src = placeholder;
+      };
+    }
+
+    // Contenedor de texto
+    const title = document.createElement("h3");
+    title.textContent = p.name;
+    title.style.cssText = `
+      font-size:${isMobile ? "2rem" : "1rem"};
+      font-weight:normal;
+      margin:10px 0 5px 0;
+      color:#686868;
+      font-family:'MadeCarving', sans-serif;
+    `;
+
+    const price = document.createElement("p");
+    price.textContent = `$${p.price}`;
+    price.style.cssText = `
+      font-size:${isMobile ? "3rem" : "1.5rem"};
+      font-weight:bold;
+      color:#A11E4A;
+      margin:0;
     `;
 
     // Botón de favoritos
@@ -822,6 +851,10 @@ function renderFeatured(products) {
       toggleFavorite(p);
     });
 
+    // Ensamblar elementos
+    card.appendChild(img);
+    card.appendChild(title);
+    card.appendChild(price);
     card.appendChild(favButton);
 
     // Abrir detalle al clickear
@@ -832,6 +865,7 @@ function renderFeatured(products) {
 
   updateFavoriteIcons();
 }
+
 
 
 
@@ -1010,13 +1044,33 @@ window.addEventListener("popstate", () => {
 
 
 function openProductDetail(product) {
-
-  // Desactivar scroll de fondo
-document.body.style.overflow = "hidden";
-
   const modal = document.getElementById("productDetailModal");
   const content = document.getElementById("productDetailContent");
 
+  const imageSrc = product.image && product.image.trim() !== ""
+    ? product.image
+    : "https://iili.io/KtUXFzQ.webp";
+
+  // Mostrar el detalle inmediatamente (usando placeholder de entrada)
+  renderProductDetail(product, "https://iili.io/KtUXFzQ.webp");
+
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+
+  // Luego precargar la imagen real y reemplazarla cuando esté lista
+  const preload = new Image();
+  preload.src = imageSrc;
+  preload.onload = () => {
+    const imgEl = content.querySelector("img");
+    if (imgEl) imgEl.src = imageSrc;
+  };
+}
+
+
+
+function renderProductDetail(product, imageSrc) {
+  const modal = document.getElementById("productDetailModal");
+  const content = document.getElementById("productDetailContent");
   const isDesktop = window.innerWidth >= 1024;
 
   const styleTag = document.createElement('style');
@@ -1131,18 +1185,16 @@ document.body.style.overflow = "hidden";
   styleTag.id = 'product-detail-styles';
   document.head.appendChild(styleTag);
 
-  const imageSrc = product.image && product.image.trim() !== "" ? product.image : "https://iili.io/KtUXFzQ.webp";
-
   content.innerHTML = `
     <div class="product-detail-container">
       <button id="closeDetailBtn" class="close-detail-btn">×</button>
       <h2>${product.name}</h2>
       <img src="${imageSrc}" alt="${product.name}" />
-<p style="color:#686868; font-family:'MadeCarving', sans-serif;">
-  Precio unitario: <strong style="color:#686868; font-family:'MadeCarving', sans-serif;">
-    $${parseFloat(product.price).toFixed(2)}
-  </strong> / ${product.unit}
-</p>
+      <p style="color:#686868; font-family:'MadeCarving', sans-serif;">
+        Precio unitario: <strong style="color:#686868; font-family:'MadeCarving', sans-serif;">
+          $${parseFloat(product.price).toFixed(2)}
+        </strong> / ${product.unit}
+      </p>
       <div class="quantity-control">
         <label for="productDetailQty">Cantidad:</label>
         <div class="qty-input-wrapper">
@@ -1169,7 +1221,6 @@ document.body.style.overflow = "hidden";
       </div>
     </div>
   `;
-  modal.style.display = "flex";
 
   document.getElementById("closeDetailBtn").onclick = closeProductDetail;
 
@@ -1220,6 +1271,7 @@ document.body.style.overflow = "hidden";
 
   history.pushState({ modalOpen: true }, "", "#detalle");
 }
+
 
 window.addEventListener("popstate", (event) => {
   const modal = document.getElementById("productDetailModal");
