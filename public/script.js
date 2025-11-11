@@ -619,7 +619,7 @@ function renderProducts(products) {
     div.style.position = "relative";
     div.style.width = "auto"; // El grid define el ancho
 
-    const placeholder = "https://iili.io/KtUXFzQ.webp";
+    const placeholder = "fotoproducto.webp";
     const isFavorite = favorites.some(f => (typeof f === "object" ? f.name === p.name : f === p.name));
 
     const favButton = document.createElement("button");
@@ -767,7 +767,7 @@ function renderFeatured(products) {
   }
 
   const isMobile = window.innerWidth <= 1024; // Detecta celular
-  const placeholder = "https://iili.io/KtUXFzQ.webp";
+  const placeholder = "fotoproducto.webp";
 
   destacados.forEach(p => {
     const card = document.createElement("div");
@@ -1059,10 +1059,10 @@ function openProductDetail(product) {
 
   const imageSrc = product.image && product.image.trim() !== ""
     ? product.image
-    : "https://iili.io/KtUXFzQ.webp";
+    : "fotoproducto.webp";
 
   // Mostrar el detalle inmediatamente (usando placeholder de entrada)
-  renderProductDetail(product, "https://iili.io/KtUXFzQ.webp");
+  renderProductDetail(product, "fotoproducto.webp");
 
   modal.style.display = "flex";
   document.body.style.overflow = "hidden";
